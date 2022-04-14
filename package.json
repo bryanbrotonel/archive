@@ -15,7 +15,7 @@
     "type": "git",
     "url": "git+https://github.com/bryanbrotonel/NewNew.git"
   },
-  "author": "",
+  "author": "Bryan Brotonel",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/bryanbrotonel/NewNew/issues"
@@ -41,6 +41,7 @@
     "firebase": "^9.6.10",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
-    "react-router-dom": "^6.3.0"
+    "react-router-dom": "^6.3.0",
+    "styled-components": "^5.3.5"
   }
 }
