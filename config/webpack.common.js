@@ -1,7 +1,9 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const { webpack } = require('webpack');
 
 const APP_DIR = path.resolve(__dirname, '../src');
+const Dotenv = require('dotenv-webpack');
 
 module.exports = {
   entry: {
@@ -38,6 +40,7 @@ module.exports = {
         removeRedundantAttributes: true,
       },
     }),
+    new Dotenv(),
   ],
   output: {
     filename: '[name].bundle.js',

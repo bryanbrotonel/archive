@@ -9,6 +9,7 @@
       {
         "ssr": false
       }
-    ]
+    ],
+    ["@babel/transform-runtime"]
   ]
 }

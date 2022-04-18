@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import getSpotifyAuth from '../../api/SpotifyAuthAPI';
 
 import styled from 'styled-components';
 
@@ -14,15 +15,19 @@ const HomeContainer = styled.div`
 `;
 
 function Home() {
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [data, setData] = useState('');
+
+  useEffect(() => {
+    getSpotifyAuth().then((res) => {
+      setData(res);
+    });
+  }, []);
+
   return (
     <HomeContainer className="container">
       <h1>Hello World</h1>
-      <p>
-        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Iusto
-        architecto nesciunt veniam hic quod cum? Ducimus expedita ipsum minus
-        ratione, laborum, iure cupiditate aliquid laudantium eos repellat,
-        molestias maiores quis?
-      </p>
+      <span>{data}</span>
     </HomeContainer>
   );
 }
