@@ -37,6 +37,13 @@ const GlobalStyle = createGlobalStyle`
     --colour-black: #1D1A05;
     --colour-darkGrey: #6b7280;
     --colour-lightGrey: #f9fafb;
+
+    --gradient-primary: linear-gradient(
+                          64.3deg,
+                          rgba(254, 122, 152, 0.81) 17.7%,
+                          rgba(255, 206, 134, 1) 64.7%,
+                          rgba(172, 253, 163, 0.64) 112.1%
+                        );
   }
 
   @media (min-width: 992px) {

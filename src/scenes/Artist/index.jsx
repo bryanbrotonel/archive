@@ -1,14 +1,45 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import styled from 'styled-components';
+
 import { getSpotifyArtist } from '../../api/SpotifyArtistAPI';
 import getContentfulData from '../../api/ContentfulDataAPI';
+
+import ArtistImage from '../../components/ArtistImage';
+import SpotifyTrack from '../../components/SpotifyTrack';
+
+const ArtistContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const ArtistName = styled.h1`
+  font-size: var(--text-xxxxl);
+  margin: 0;
+`;
+
+const SpotifyButton = styled.a`
+  display: block;
+  padding: 1.5rem;
+  margin: 1em 0;
+
+  background-color: var(--colour-black);
+  border: none;
+
+  font-size: var(--text-md);
+  font-family: var(--font-primary);
+
+  text-align: center;
+  text-decoration: none;
+  color: var(--colour-white);
+`;
 
 function Artist() {
   const [isLoaded, setIsLoaded] = useState(false);
   const [artist, setArtist] = useState(null);
 
   let params = useParams();
-  let dataElement;
+  let artistComponent;
 
   // Get artist parameter from url
   const linkParam = params.artistID;
@@ -48,13 +79,14 @@ function Artist() {
             const spotifyArtistData = values[0];
             const spotifyTopTracks = values[1];
 
+            console.log(spotifyTopTracks.tracks);
+
             // Create artist object with artist data
             setArtist({
               name: spotifyArtistData.name,
               bio: contentfulRes.artistBio,
-              image: spotifyArtistData.images[0],
-              genres: spotifyArtistData.genres,
-              tracks: spotifyTopTracks.tracks,
+              image: spotifyArtistData.images[1],
+              tracks: spotifyTopTracks.tracks.slice(0, 3),
               url: spotifyArtistData.external_urls.spotify,
             });
             setIsLoaded(true);
@@ -66,43 +98,44 @@ function Artist() {
 
   if (isLoaded) {
     if (artist == null)
-      dataElement = (
+      artistComponent = (
         <div>
           <h1>Artist not Found</h1>
           <p>Is that a new artist? Share it with the world!</p>
         </div>
       );
     else {
-      const { name, bio, image, genres, tracks, url } = artist;
+      const { name, bio, image, tracks, url } = artist;
 
-      dataElement = (
-        <div>
-          <img
-            src={image.url}
-            alt={`${name} - Image`}
-            width={`${image.width}`}
-            height={`${image.height}`}
+      artistComponent = (
+        <ArtistContainer>
+          <ArtistImage
+            url={image.url}
+            width={image.width}
+            height={image.height}
+            alt={`${image.name} - Image`}
           />
-          <h1>{name}</h1>
-          <h4>{genres.join(' ')}</h4>
+          <ArtistName>{name}</ArtistName>
           <p>{bio}</p>
-          <ul>
+          <h1>Top Tracks</h1>
+          <div>
             {tracks.map((track) => (
-              <li key={track.id}>{track.name}</li>
+              <SpotifyTrack
+                key={track.id}
+                title={track.name}
+                href={track.external_urls.spotify}
+              />
             ))}
-          </ul>
-          <a href={url}>Listen to more {name} on Spotify</a>
-        </div>
+          </div>
+          <div>
+            <SpotifyButton as="button" href={url}>More from {name} on Spotify</SpotifyButton>
+          </div>
+        </ArtistContainer>
       );
     }
   }
 
-  return (
-    <div className="container">
-      <h1>Artist Page</h1>
-      {dataElement}
-    </div>
-  );
+  return <div className="container">{artistComponent}</div>;
 }
 
 export default Artist;
