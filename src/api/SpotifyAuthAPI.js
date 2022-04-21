@@ -10,7 +10,7 @@ async function getSpotifyAuth() {
   // API headers
   const headers = {
     Authorization: `Basic ${Buffer.from(
-      `${process.env.REACT_APP_CLIENT_ID}:${process.env.REACT_APP_CLIENT_SECRET}`,
+      `${process.env.REACT_APP_SPOTIFY_CLIENT_ID}:${process.env.REACT_APP_SPOTIFY_CLIENT_SECRET}`,
       'utf-8'
     ).toString('base64')}`,
     'Content-Type': 'application/x-www-form-urlencoded',

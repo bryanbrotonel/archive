@@ -3,7 +3,7 @@ import getSpotifyAuth from './SpotifyAuthAPI';
 const axios = require('axios').default;
 
 // Fetch Spotify artist info
-export async function getArtist(id, param = '', query = null) {
+export async function getSpotifyArtist(id, param = '', query = null) {
   // Get Spotify auth token
   const auth = await getSpotifyAuth();
 
@@ -14,8 +14,6 @@ export async function getArtist(id, param = '', query = null) {
   const headers = {
     Authorization: `Bearer ${auth}`,
   };
-
-  console.log(headers)
 
   try {
     // Fetch data using Axios
