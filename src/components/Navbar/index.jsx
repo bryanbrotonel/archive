@@ -73,8 +73,8 @@ function Navbar() {
           React Starter Template
         </Link>
         <PagesWrapper>
-          <Link to="/Artist">Artist</Link>
-          <Link to="/#contact">Contact</Link>
+          <Link to="/artist">Artist</Link>
+          <Link to="/share">Share</Link>
         </PagesWrapper>
       </NavWrapper>
     </NavContainer>
