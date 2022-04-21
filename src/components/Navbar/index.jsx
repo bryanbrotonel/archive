@@ -69,12 +69,11 @@ function Navbar() {
   return (
     <NavContainer>
       <NavWrapper className="container-sm">
-        <Link to="/#top" className="homeLink">
+        <Link to="/" className="homeLink">
           React Starter Template
         </Link>
         <PagesWrapper>
-          <Link to="/#about">About</Link>
-          <Link to="/#work">Work</Link>
+          <Link to="/Artist">Artist</Link>
           <Link to="/#contact">Contact</Link>
         </PagesWrapper>
       </NavWrapper>

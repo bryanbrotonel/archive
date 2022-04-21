@@ -15,6 +15,8 @@ export async function getArtist(id, param = '', query = null) {
     Authorization: `Bearer ${auth}`,
   };
 
+  console.log(headers)
+
   try {
     // Fetch data using Axios
     const response = await axios.get(token_url, {
