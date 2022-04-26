@@ -1,6 +1,7 @@
-import React from 'react';
-import { NavLink } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import DesktopNavbar from './DesktopNavbar';
+import MobileNavbar from './MobileNavbar';
 
 const NavContainer = styled.div`
   position: -webkit-sticky;
@@ -8,48 +9,39 @@ const NavContainer = styled.div`
   top: 0;
 
   padding: 1.5rem 0;
-  margin: 1rem 0;
   z-index: 1;
   background: var(--colour-white);
 `;
 
-const LinksWrapper = styled.div`
-  display: flex;
-  gap: 1rem;
-  flex-flow: end;
-  justify-content: center;
-  align-items: center;
-`;
-
-const Link = styled(NavLink)`
-  text-decoration: none;
-  align-self: center;
-
-  font-family: var(--font-primary);
-  font-size: var(--text-sm);
-  color: var(--colour-black);
-
-  &.homeLink {
-    font-weight: bold;
-    font-size: var(--text-lg);
-    color: var(--colour-black);
-  }
-
-  &:hover {
-    color: var(--colour-primary);
-  }
-`;
-
 function Navbar() {
+  const [isDesktop, setDesktop] = useState(false);
+
+  useEffect(() => {
+    function checkDesktop() {
+      setDesktop(window.innerWidth > 992);
+    }
+
+    window.addEventListener('resize', checkDesktop);
+
+    checkDesktop();
+
+    return function cleanup() {
+      window.removeEventListener('resize', checkDesktop);
+    };
+  }, []);
+
+  const links = [
+    ['/about', 'About'],
+    ['/', 'New New'],
+    ['/share', 'Share'],
+  ];
   return (
     <NavContainer>
-        <LinksWrapper>
-          <Link to="/about">About</Link>
-          <Link to="/" className="homeLink">
-            New New
-          </Link>
-          <Link to="/share">Share</Link>
-        </LinksWrapper>
+      {isDesktop ? (
+        <DesktopNavbar links={links} />
+      ) : (
+        <MobileNavbar links={links} />
+      )}
     </NavContainer>
   );
 }
