@@ -70,6 +70,10 @@ const GlobalStyle = createGlobalStyle`
   #app {
     height: 100%;
   }
+
+  #app {
+    overflow-x: hidden;
+  }
   
   body {
     font-family: var(--font-secondary);

@@ -25,9 +25,11 @@ function Home() {
   }, []);
 
   return (
-    <HomeContainer className="container">
-      <h1>Hello World</h1>
-      <span>{data}</span>
+    <HomeContainer>
+      <div className="container">
+        <h1>Hello World</h1>
+        <span>{data}</span>
+      </div>
     </HomeContainer>
   );
 }

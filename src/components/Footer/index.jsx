@@ -23,7 +23,7 @@ const FooterContent = styled.div`
 `;
 
 const FooterTitle = styled.h1`
-  font-size: var(--text-xxxl);
+  font-size: var(--text-xxl);
   font-weight: bold;
   margin: 0;
 `;

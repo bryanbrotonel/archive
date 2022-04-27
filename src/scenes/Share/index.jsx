@@ -6,7 +6,7 @@ import getContentfulData from '../../api/ContentfulDataAPI';
 
 import Header from '../../components/Header';
 
-const Container = styled.div`
+const ShareContainer = styled.div`
   @media (min-width: 768px) {
     max-width: 525px;
   }
@@ -15,7 +15,7 @@ const Container = styled.div`
 const Input = styled.input`
   border: solid var(--colour-black);
   font-family: var(--font-secondary);
-  font-size: var(--text-md);
+  font-size: var(--text-sm);
   color: var(--colour-black);
   padding: 0.5em 0.5em;
   margin: 1em 0.5em 1em 0;
@@ -72,7 +72,7 @@ function Share() {
 
   return (
     <div className="container">
-      <Container>
+      <ShareContainer>
         <Header title="Sharing is Caring" subtitle="Share" />
         <p>{shareContent}</p>
         <form onSubmit={handleSubmit}>
@@ -97,7 +97,7 @@ function Share() {
           <Submit type="submit">Submit</Submit>
         </form>
         {formSubmitted && <p>Thanks for sharing!</p>}
-      </Container>
+      </ShareContainer>
     </div>
   );
 }

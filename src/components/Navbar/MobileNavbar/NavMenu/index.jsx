@@ -15,14 +15,10 @@ const Menu = styled.div`
   background: var(--colour-black);
   color: var(--colour-white);
 
-  list-style-type: none;
-  -webkit-font-smoothing: antialiased;
-  /* to stop flickering of text in safari */
+  transform: ${(props) => (props.display ? 'none' : 'translateX(100%)')};
+  transition: 0.5s;
 
-  transform-origin: 0% 0%;
-  transform: ${(props) => (props.display ? 'none' : 'translate(100%, 0)')};
-
-  transition: transform 0.5s cubic-bezier(0.77, 0.2, 0.05, 1);
+  z-index: 1;
 `;
 
 const MenuContainer = styled.div`
@@ -40,9 +36,9 @@ const Icon = styled(FontAwesomeIcon)`
 
 const NavLinkWrapper = styled.ul`
   margin-bottom: 50px;
-  list-style-type: none; /* Remove bullets */
-  padding: 0; /* Remove padding */
-  margin: 0; /* Remove margins */
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
 
   & > li {
     margin-bottom: 1.5rem;
@@ -63,6 +59,24 @@ const Footer = styled.div`
 `;
 
 function NavMenu(props) {
+  const links = props.links;
+  // Find index of home link
+  const homeLinkIndex = links.findIndex((link) => link[0] == '/');
+
+  // If not first link, swap with first link
+  if (homeLinkIndex != 0) {
+    // Get home link element
+    const homeLink = links[homeLinkIndex];
+
+    // Move home link element to front
+    links.sort(function (x, y) {
+      return x == homeLink ? -1 : y == homeLink ? 1 : 0;
+    });
+
+    // Rename link name
+    links[0][1] = 'Home';
+  }
+
   return (
     <Menu display={props.display}>
       <MenuContainer>
@@ -70,7 +84,7 @@ function NavMenu(props) {
           <Icon icon={faX} size="lg" onClick={() => props.toggleMenu(false)} />
         </IconContainer>
         <NavLinkWrapper>
-          {props.links.map((link) => {
+          {links.map((link) => {
             const linkPath = link[0];
             const linkName = link[1];
 
