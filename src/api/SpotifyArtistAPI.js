@@ -5,7 +5,12 @@ const axios = require('axios').default;
 // Fetch Spotify artist info
 export async function getSpotifyArtist(id, param = '', query = null) {
   // Get Spotify auth token
-  const auth = await getSpotifyAuth();
+  // const auth = await getSpotifyAuth();
+    const auth = () => {
+      return fetch('/.netlify/functions/SpotifyAuthAPI').then((response) => {
+        return response;
+      });
+    };
 
   // Token url for API request
   const token_url = `https://api.spotify.com/v1/artists/${id}/${param}`;
