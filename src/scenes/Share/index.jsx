@@ -59,23 +59,26 @@ function Share() {
     }
   `;
 
-  const body = JSON.stringify({ query });
-  console.log(body);
-
   useEffect(() => {
-    const fetchContentfulData = async () => {
-      setIsLoading(true);
-      try {
-        const { data: response } = await axios.get(
-          `/.netlify/functions/ContentfulDataAPI?query='${body}'&collection='blurbCollection`
-        );
-        console.log(response);
-        setShareContent(response.content);
-      } catch (error) {
+    setIsLoading(true);
+
+    // POST request to fetch Contentful data
+    axios
+      .post('/.netlify/functions/ContentfulDataAPI', {
+        // Query to fetch sepcified data
+        query: query,
+        // Collection to fetch data from
+        collection: 'blurbCollection',
+      })
+      .then(function (response) {
+        // Set content with fetched data
+        setShareContent(response.data.content);
+      })
+      .catch(function (error) {
         console.log(error);
-      }
-    };
-    fetchContentfulData();
+      });
+
+    setIsLoading(false);
   }, []);
 
   const handleSubmit = (event) => {

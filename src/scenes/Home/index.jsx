@@ -26,8 +26,7 @@ function Home() {
         const { data: response } = await axios.get(
           `/.netlify/functions/SpotifyAuthAPI`
         );
-        console.log(response);
-        setData(response.content);
+        setData(response);
         setIsLoading(false)
       } catch (error) {
         console.log(error);

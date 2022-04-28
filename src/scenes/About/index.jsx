@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-// import getContentfulData from '../../api/ContentfulDataAPI';
 
 import Header from '../../components/Header';
 
 const axios = require('axios').default;
 
-const Container = styled.div`
+const AboutContainer = styled.div`
   @media (min-width: 768px) {
     max-width: 525px;
   }
@@ -28,37 +27,33 @@ function About() {
   `;
 
   useEffect(() => {
-    const fetchContentfulData = async () => {
-      setIsLoading(true);
-      try {
-        const { data: response } = await axios.post(
-          '/.netlify/functions/ContentfulDataAPI',
-          {
-            body: {
-              query: query,
-              collection: 'blurbCollection',
-            },
-          }
-        );
+    setIsLoading(true);
 
-        // const { data: response } = await axios.get(
-        //   `/.netlify/functions/ContentfulDataAPI?query='${body}'&collection='blurbCollection`
-        // );
-        console.log(response);
-        setAboutContent(response.content);
-      } catch (error) {
+    // POST request to fetch Contentful data
+    axios
+      .post('/.netlify/functions/ContentfulDataAPI', {
+        // Query to fetch sepcified data
+        query: query,
+        // Collection to fetch data from
+        collection: 'blurbCollection',
+      })
+      .then(function (response) {
+        // Set content with fetched data
+        setAboutContent(response.data.content);
+      })
+      .catch(function (error) {
         console.log(error);
-      }
-    };
-    fetchContentfulData();
+      });
+
+    setIsLoading(false);
   }, []);
 
   return (
-    <div>
-      <Container className="container">
+    <div className='container'>
+      <AboutContainer>
         <Header title="Motive" subtitle="About" />
         {!isLoading && <p>{aboutContent}</p>}
-      </Container>
+      </AboutContainer>
     </div>
   );
 }

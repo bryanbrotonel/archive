@@ -3,9 +3,8 @@ const axios = require('axios').default;
 exports.handler = async function (event, context) {
   // Only allow POST
   if (event.httpMethod !== 'POST') {
-    return { statusCode: 405, body: 'Method Not Allowed' };
+    return { statusCode: 405, body: JSON.stringify(event) };
   }
-
   const { query, collection } = JSON.parse(event.body);
 
   const token_url = `https://graphql.contentful.com/content/v1/spaces/${process.env.REACT_APP_CONTENTFUL_SPACE}`;
@@ -16,7 +15,6 @@ exports.handler = async function (event, context) {
   };
 
   const body = JSON.stringify({ query });
-  console.log(body);
 
   return (
     axios

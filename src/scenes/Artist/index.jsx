@@ -3,10 +3,11 @@ import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { getSpotifyArtist } from '../../api/SpotifyArtistAPI';
-import getContentfulData from '../../api/ContentfulDataAPI';
 
 import ArtistImage from '../../components/ArtistImage';
 import SpotifyTrack from '../../components/SpotifyTrack';
+
+const axios = require('axios').default;
 
 const ArtistContainer = styled.div`
   display: flex;
@@ -35,7 +36,7 @@ const SpotifyButton = styled.a`
 `;
 
 function Artist() {
-  const [isLoaded, setIsLoaded] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [artist, setArtist] = useState(null);
 
   let params = useParams();
@@ -48,7 +49,7 @@ function Artist() {
   var capitalLinkParam =
     linkParam[0].toUpperCase() + linkParam.slice(1).toLowerCase();
 
-  const contentfulQuery = `
+  const query = `
   query {
     artistCollection(where:{name: "${capitalLinkParam}"}){
       items{
@@ -59,12 +60,18 @@ function Artist() {
   }`;
 
   useEffect(() => {
-    // Fetch artist data from Contentful
-    getContentfulData(contentfulQuery, 'artistCollection').then(
-      (contentfulRes) => {
-        if (contentfulRes.length == 0) {
-          setIsLoaded(true);
-        } else {
+    // POST request to fetch Contentful data
+    axios
+      .post('/.netlify/functions/ContentfulDataAPI', {
+        // Query to fetch sepcified data
+        query: query,
+        // Collection to fetch data from
+        collection: 'artistCollection',
+      })
+      .then(function (response) {
+        const contentfulRes = response.data;
+
+        if (contentfulRes != null) {
           // Fetch artist data from Spotify
           const artistData = getSpotifyArtist(contentfulRes.artistId);
 
@@ -87,14 +94,17 @@ function Artist() {
               tracks: spotifyTopTracks.tracks.slice(0, 3),
               url: spotifyArtistData.external_urls.spotify,
             });
-            setIsLoaded(true);
+            setIsLoading(false);
           });
         }
-      }
-    );
+      })
+      .catch(function (error) {
+        console.log(error);
+        setIsLoading(false);
+      });
   }, []);
 
-  if (isLoaded) {
+  if (!isLoading) {
     if (artist == null)
       artistComponent = (
         <div>
@@ -126,14 +136,20 @@ function Artist() {
             ))}
           </div>
           <div>
-            <SpotifyButton as="button" href={url}>More from {name} on Spotify</SpotifyButton>
+            <SpotifyButton as="button" href={url}>
+              More from {name} on Spotify
+            </SpotifyButton>
           </div>
         </ArtistContainer>
       );
     }
   }
 
-  return <div className="container">{artistComponent}</div>;
+  return (
+    <div className="container">
+      {isLoading ? <h1>Loading</h1> : artistComponent}
+    </div>
+  );
 }
 
 export default Artist;

@@ -7,5 +7,11 @@ module.exports = merge(common, {
   devServer: {
     static: './dist',
     historyApiFallback: true,
+    proxy: {
+      '/.netlify/functions': {
+        target: 'http://localhost:8888',
+        secure: false,
+      },
+    },
   },
 });
