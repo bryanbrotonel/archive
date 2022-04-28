@@ -27,16 +27,23 @@ function About() {
     }
   `;
 
-  const body = JSON.stringify({ query });
-  console.log(body)
-
   useEffect(() => {
     const fetchContentfulData = async () => {
       setIsLoading(true);
       try {
-        const { data: response } = await axios.get(
-          `/.netlify/functions/ContentfulDataAPI?query='${body}'&collection='blurbCollection`
+        const { data: response } = await axios.post(
+          '/.netlify/functions/ContentfulDataAPI',
+          {
+            body: {
+              query: query,
+              collection: 'blurbCollection',
+            },
+          }
         );
+
+        // const { data: response } = await axios.get(
+        //   `/.netlify/functions/ContentfulDataAPI?query='${body}'&collection='blurbCollection`
+        // );
         console.log(response);
         setAboutContent(response.content);
       } catch (error) {
