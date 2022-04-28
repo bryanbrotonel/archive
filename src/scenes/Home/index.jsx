@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import getSpotifyAuth from '../../api/SpotifyAuthAPI';
-
 import styled from 'styled-components';
+
+const axios = require('axios').default;
 
 const HomeContainer = styled.div`
   & > div {

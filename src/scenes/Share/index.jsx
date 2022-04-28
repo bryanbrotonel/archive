@@ -6,6 +6,8 @@ import getContentfulData from '../../api/ContentfulDataAPI';
 
 import Header from '../../components/Header';
 
+const axios = require('axios').default;
+
 const ShareContainer = styled.div`
   @media (min-width: 768px) {
     max-width: 525px;

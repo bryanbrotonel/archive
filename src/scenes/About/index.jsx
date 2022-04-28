@@ -1,9 +1,10 @@
-import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 // import getContentfulData from '../../api/ContentfulDataAPI';
 
 import Header from '../../components/Header';
+
+const axios = require('axios').default;
 
 const Container = styled.div`
   @media (min-width: 768px) {
