@@ -30,11 +30,6 @@ const Link = styled(NavLink)`
 `;
 
 function DesktopNavbar(props) {
-  console.log(
-    props.links.map((link) => {
-      return link[0];
-    })
-  );
   return (
     <React.Fragment>
       <LinksWrapper>

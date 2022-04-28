@@ -28,6 +28,7 @@ function Home() {
         );
         console.log(response);
         setData(response.content);
+        setIsLoading(false)
       } catch (error) {
         console.log(error);
       }

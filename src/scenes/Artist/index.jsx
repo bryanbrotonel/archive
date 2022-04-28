@@ -79,8 +79,6 @@ function Artist() {
             const spotifyArtistData = values[0];
             const spotifyTopTracks = values[1];
 
-            console.log(spotifyTopTracks.tracks);
-
             // Create artist object with artist data
             setArtist({
               name: spotifyArtistData.name,

@@ -67,7 +67,7 @@ function Share() {
       setIsLoading(true);
       try {
         const { data: response } = await axios.get(
-          `/.netlify/functions/ContentfulDataAPI?query=${body}&collection='blurbCollection`
+          `/.netlify/functions/ContentfulDataAPI?query='${body}'&collection='blurbCollection`
         );
         console.log(response);
         setShareContent(response.content);
