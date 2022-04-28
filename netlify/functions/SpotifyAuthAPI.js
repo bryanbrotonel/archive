@@ -16,11 +16,11 @@ exports.handler = async function (event, context) {
   };
 
   // Format grant-type to string
-  const form = qs.stringify({ grant_type: 'client_credentials' });
+  const body = qs.stringify({ grant_type: 'client_credentials' });
 
   return (
     axios
-      .post(token_url, form, {
+      .post(token_url, body, {
         headers: headers,
       })
       // Retrun auth access token

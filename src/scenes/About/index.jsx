@@ -1,6 +1,7 @@
+import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import getContentfulData from '../../api/ContentfulDataAPI';
+// import getContentfulData from '../../api/ContentfulDataAPI';
 
 import Header from '../../components/Header';
 
@@ -14,7 +15,8 @@ function About() {
   const [isLoading, setIsLoading] = useState(false);
   const [aboutContent, setAboutContent] = useState('');
 
-  const contentfulQuery = `
+  // NOTE: Variable must be named query
+  const query = `
     query {
       blurbCollection(where:{title: "About"}){
         items {
@@ -24,18 +26,29 @@ function About() {
     }
   `;
 
+  const body = JSON.stringify({ query });
+
   useEffect(() => {
-    getContentfulData(contentfulQuery, 'blurbCollection').then((res) => {
-      setAboutContent(res.content);
+    const fetchContentfulData = async () => {
       setIsLoading(true);
-    });
-  });
+      try {
+        const { data: response } = await axios.get(
+          `/.netlify/functions/ContentfulDataAPI?query=${body}&collection='blurbCollection`
+        );
+        console.log(response);
+        setAboutContent(response.content);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchContentfulData();
+  }, []);
 
   return (
-    <div className="container">
-      <Container>
+    <div>
+      <Container className="container">
         <Header title="Motive" subtitle="About" />
-        {isLoading && <p>{aboutContent}</p>}
+        {!isLoading && <p>{aboutContent}</p>}
       </Container>
     </div>
   );
