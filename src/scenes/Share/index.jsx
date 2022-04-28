@@ -46,7 +46,8 @@ function Share() {
   const [isLoading, setIsLoading] = useState(false);
   const [shareContent, setShareContent] = useState('');
 
-  const contentfulQuery = `
+  // NOTE: Variable must be named query
+  const query = `
     query {
       blurbCollection(where:{title: "Share"}){
         items {
@@ -56,12 +57,24 @@ function Share() {
     }
   `;
 
+  const body = JSON.stringify({ query });
+  console.log(body);
+
   useEffect(() => {
-    getContentfulData(contentfulQuery, 'blurbCollection').then((res) => {
-      setShareContent(res.content);
+    const fetchContentfulData = async () => {
       setIsLoading(true);
-    });
-  });
+      try {
+        const { data: response } = await axios.get(
+          `/.netlify/functions/ContentfulDataAPI?query=${body}&collection='blurbCollection`
+        );
+        console.log(response);
+        setShareContent(response.content);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchContentfulData();
+  }, []);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -74,7 +87,7 @@ function Share() {
     <div className="container">
       <ShareContainer>
         <Header title="Sharing is Caring" subtitle="Share" />
-        <p>{shareContent}</p>
+        {!isLoading && <p>{shareContent}</p>}
         <form onSubmit={handleSubmit}>
           <Input
             type="text"

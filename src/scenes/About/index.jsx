@@ -27,6 +27,7 @@ function About() {
   `;
 
   const body = JSON.stringify({ query });
+  console.log(body)
 
   useEffect(() => {
     const fetchContentfulData = async () => {

@@ -15,20 +15,30 @@ const HomeContainer = styled.div`
 `;
 
 function Home() {
-  const [isLoaded, setIsLoaded] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [data, setData] = useState('');
 
   useEffect(() => {
-    getSpotifyAuth().then((res) => {
-      setData(res);
-    });
+    const fetchAuth = async () => {
+      setIsLoading(true);
+      try {
+        const { data: response } = await axios.get(
+          `/.netlify/functions/SpotifyAuthAPI`
+        );
+        console.log(response);
+        setData(response.content);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchAuth();
   }, []);
 
   return (
     <HomeContainer>
       <div className="container">
         <h1>Hello World</h1>
-        <span>{data}</span>
+        {!isLoading && <p>{data}</p>}
       </div>
     </HomeContainer>
   );

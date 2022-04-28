@@ -29,6 +29,7 @@
     "@babel/preset-react": "^7.16.7",
     "babel-loader": "^8.2.4",
     "babel-plugin-styled-components": "^2.0.7",
+    "copy-webpack-plugin": "^10.2.4",
     "dotenv-webpack": "^7.1.0",
     "html-webpack-plugin": "^5.5.0",
     "mini-css-extract-plugin": "^2.6.0",
