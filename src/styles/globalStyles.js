@@ -31,7 +31,7 @@ const GlobalStyle = createGlobalStyle`
     --colour-primary: #0B6E4F;
     --colour-secondary: #0f956a;
     --colour-tertiary: #074a35;
-    --colour-light: #95d5b2;
+    --colour-light: #FFB2CE;
 
     --colour-white: #FFFFFF;
     --colour-black: #1D1A05;
@@ -93,6 +93,25 @@ const GlobalStyle = createGlobalStyle`
   h4 {
     font-family: var(--font-primary);
     --heading-font-weight: 700;
+  }
+
+  h1 {
+    font-size: var(--text-xxl);
+  }
+
+  h2 {
+    font-size: var(--text-xl);
+
+  }
+
+  h3 {
+    font-size: var(--text-lg);
+
+  }
+
+  h4 {
+    font-size: var(--text-md);
+
   }
 
   ::-moz-selection { /* Code for Firefox */

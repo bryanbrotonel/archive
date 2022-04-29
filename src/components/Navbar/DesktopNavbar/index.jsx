@@ -25,7 +25,7 @@ const Link = styled(NavLink)`
   }
 
   &:hover {
-    color: var(--colour-primary);
+    color: var(--colour-light);
   }
 `;
 

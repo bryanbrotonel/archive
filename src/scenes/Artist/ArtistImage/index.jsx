@@ -2,26 +2,27 @@ import React from 'react';
 import styled from 'styled-components';
 
 const ArtistImageContainer = styled.div`
-  padding: 30px 0;
-`;
+  display: grid;
 
-const ArtistImageWrapper = styled.div`
-  position: relative;
-  height: 320px;
-  width: 320px;
+  div {
+    grid-area: 1 / 1 / 2 / 2;
+  }
 `;
 
 const ArtistBackground = styled.div`
-  position: absolute;
-  height: 100%;
-  width: 100%;
+  height: ${(props) => props.height + 'px'};
+  width: ${(props) => props.width + 'px'};
+  
   background-image: var(--gradient-primary);
+  margin-top: 20px;
 `;
 
-const ProfileImage = styled.img`
-  position: absolute;
-  top: -20px;
-  right: -20px;
+const ProfileImageWrapper = styled.div`
+  margin-left: 20px;
+
+  img {
+    object-fit: cover;
+  }
 `;
 
 function ArtistImage(props) {
@@ -29,15 +30,15 @@ function ArtistImage(props) {
 
   return (
     <ArtistImageContainer>
-      <ArtistImageWrapper>
-        <ArtistBackground></ArtistBackground>
-        <ProfileImage
+      <ArtistBackground width={width} height={height}></ArtistBackground>
+      <ProfileImageWrapper>
+        <img
           src={url}
           alt={`${name} - Image`}
           width={`${width}`}
           height={`${height}`}
         />
-      </ArtistImageWrapper>
+      </ProfileImageWrapper>
     </ArtistImageContainer>
   );
 }

@@ -2,37 +2,45 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { getSpotifyArtist } from '../../api/SpotifyArtistAPI';
+import fetchArtistData from './fetchArtistData';
 
-import ArtistImage from '../../components/ArtistImage';
-import SpotifyTrack from '../../components/SpotifyTrack';
-
-const axios = require('axios').default;
+import ArtistImage from './ArtistImage';
+import SpotifyTrack from './SpotifyTrack';
+import ArtistFooter from './ArtistFooter';
 
 const ArtistContainer = styled.div`
+  position: relative;
   display: flex;
   flex-direction: column;
+
+  @media (min-width: 768px) {
+    flex-direction: row;
+    gap: 4rem;
+
+    justify-content: center;
+
+    padding: 100px 0;
+  }
+`;
+
+const ArtistImageWrapper = styled.div`
+  height: 100%;
+  
+  @media (min-width: 768px) {
+    position: -webkit-sticky;
+    position: sticky;
+    top: calc(71px + 3rem);
+  }
+`;
+
+const ArtistContentWrapper = styled.div`
+  width: 100%;
+  max-width: 556px;
 `;
 
 const ArtistName = styled.h1`
   font-size: var(--text-xxxxl);
   margin: 0;
-`;
-
-const SpotifyButton = styled.a`
-  display: block;
-  padding: 1.5rem;
-  margin: 1em 0;
-
-  background-color: var(--colour-black);
-  border: none;
-
-  font-size: var(--text-md);
-  font-family: var(--font-primary);
-
-  text-align: center;
-  text-decoration: none;
-  color: var(--colour-white);
 `;
 
 function Artist() {
@@ -43,65 +51,21 @@ function Artist() {
   let artistComponent;
 
   // Get artist parameter from url
-  const linkParam = params.artistID;
-
-  // Capitalize artist parameter
-  var capitalLinkParam =
-    linkParam[0].toUpperCase() + linkParam.slice(1).toLowerCase();
-
-  const query = `
-  query {
-    artistCollection(where:{name: "${capitalLinkParam}"}){
-      items{
-        artistId
-        artistBio
-      }
-    }
-  }`;
+  const linkParam = params.artistID.toLowerCase();
 
   useEffect(() => {
-    // POST request to fetch Contentful data
-    axios
-      .post('/.netlify/functions/ContentfulDataAPI', {
-        // Query to fetch sepcified data
-        query: query,
-        // Collection to fetch data from
-        collection: 'artistCollection',
-      })
-      .then(function (response) {
-        const contentfulRes = response.data;
+    // Async function that fetches artistData
+    async function fetch() {
+      let data = await fetchArtistData(linkParam);
 
-        if (contentfulRes != null) {
-          // Fetch artist data from Spotify
-          const artistData = getSpotifyArtist(contentfulRes.artistId);
+      // Set Artist data
+      setArtist(data);
 
-          // Fetch artist top tracks from Spotify
-          const topTracks = getSpotifyArtist(
-            contentfulRes.artistId,
-            'top-tracks',
-            { market: 'ES' }
-          );
+      // Set loading to false
+      setIsLoading(false);
+    }
 
-          Promise.all([artistData, topTracks]).then(function (values) {
-            const spotifyArtistData = values[0];
-            const spotifyTopTracks = values[1];
-
-            // Create artist object with artist data
-            setArtist({
-              name: spotifyArtistData.name,
-              bio: contentfulRes.artistBio,
-              image: spotifyArtistData.images[1],
-              tracks: spotifyTopTracks.tracks.slice(0, 3),
-              url: spotifyArtistData.external_urls.spotify,
-            });
-            setIsLoading(false);
-          });
-        }
-      })
-      .catch(function (error) {
-        console.log(error);
-        setIsLoading(false);
-      });
+    fetch();
   }, []);
 
   if (!isLoading) {
@@ -117,29 +81,30 @@ function Artist() {
 
       artistComponent = (
         <ArtistContainer>
-          <ArtistImage
-            url={image.url}
-            width={image.width}
-            height={image.height}
-            alt={`${image.name} - Image`}
-          />
-          <ArtistName>{name}</ArtistName>
-          <p>{bio}</p>
-          <h1>Top Tracks</h1>
-          <div>
-            {tracks.map((track) => (
-              <SpotifyTrack
-                key={track.id}
-                title={track.name}
-                href={track.external_urls.spotify}
-              />
-            ))}
-          </div>
-          <div>
-            <SpotifyButton as="button" href={url}>
-              More from {name} on Spotify
-            </SpotifyButton>
-          </div>
+          <ArtistImageWrapper>
+            <ArtistImage
+              url={image.url}
+              width={image.width}
+              height={image.height}
+              alt={`${image.name} - Image`}
+            />
+          </ArtistImageWrapper>
+
+          <ArtistContentWrapper>
+            <ArtistName>{name}</ArtistName>
+            <p>{bio}</p>
+            <h1>Top Tracks</h1>
+            <div>
+              {tracks.map((track) => (
+                <SpotifyTrack
+                  key={track.id}
+                  title={track.name}
+                  href={track.external_urls.spotify}
+                />
+              ))}
+            </div>
+            <ArtistFooter name={name} url={url} />
+          </ArtistContentWrapper>
         </ArtistContainer>
       );
     }
