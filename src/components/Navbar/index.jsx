@@ -30,8 +30,8 @@ function Navbar() {
   }, []);
 
   const links = [
-    ['/about', 'About'],
     ['/', 'New New'],
+    ['/about', 'About'],
     ['/share', 'Share'],
   ];
   return (
