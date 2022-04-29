@@ -4,13 +4,12 @@ import DesktopNavbar from './DesktopNavbar';
 import MobileNavbar from './MobileNavbar';
 
 const NavContainer = styled.div`
-  position: -webkit-sticky;
-  position: sticky;
-  top: 0;
-
-  padding: 1rem 0;
-  z-index: 1;
-  background: var(--colour-white);
+  height: 78px;
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 function Navbar() {

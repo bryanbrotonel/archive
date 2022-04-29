@@ -7,16 +7,26 @@ import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
 
 const Container = styled.section`
-  min-height: 100%;
-  display: grid;
-  grid-template-rows: auto 1fr auto;
+  min-height: 100vh;
+  position: relative;
+  width: 100%;
+`;
+
+const ContentWrap = styled.section`
+  padding-bottom: calc(70px + (64px*2)); /* Footer height and padding */
+
+  @media (min-width: 768px) {
+    padding-bottom: 220px; /* Footer height */
+  }
 `;
 
 const App = () => {
   return (
     <Container>
       <Navbar />
-      <NavRoutes />
+      <ContentWrap>
+        <NavRoutes />
+      </ContentWrap>
       <Footer />
     </Container>
   );

@@ -42,8 +42,7 @@ function ArtistFooter(props) {
     <SpotifyButtonContainer>
       <div>
         <SpotifyTtile>
-          Luckily, there is more from {name}. <br />
-          Check out their full discography.
+          Luckily, there is more from {name}. Check out their full discography.
         </SpotifyTtile>
         <SpotifyButton as="a" href={url}>
           More from {name}

@@ -1,8 +1,7 @@
-import { getSpotifyArtist } from '../../api/SpotifyArtistAPI';
+import { getSpotifyArtist } from './SpotifyArtistAPI';
 const axios = require('axios').default;
 
 export default async function fetchArtistData(linkParam) {
-
   // Contentful query that searches artist based on link parameter
   const query = `
   query {
@@ -40,8 +39,6 @@ export default async function fetchArtistData(linkParam) {
         return await Promise.all([artistData, topTracks]).then((values) => {
           const spotifyArtistData = values[0];
           const spotifyTopTracks = values[1];
-
-          console.log(values)
 
           // Create artist object with artist data
           return {

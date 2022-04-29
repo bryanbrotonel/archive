@@ -41,8 +41,7 @@ const GlobalStyle = createGlobalStyle`
     --gradient-primary: linear-gradient(
                           64.3deg,
                           rgba(254, 122, 152, 0.81) 17.7%,
-                          rgba(255, 206, 134, 1) 64.7%,
-                          rgba(172, 253, 163, 0.64) 112.1%
+                          rgba(255, 206, 134, 1) 64.7%
                         );
   }
 

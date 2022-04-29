@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 
 import shareArtist from '../../api/FirebaseDatabaseAPI';
-import getContentfulData from '../../api/ContentfulDataAPI';
 
 import Header from '../../components/Header';
 

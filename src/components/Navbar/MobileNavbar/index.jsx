@@ -6,13 +6,16 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 
 const NavbarContainer = styled.div`
+  width: 100%;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
 `;
 
-const TitleWrapper = styled.div``;
+const Title = styled.h1`
+  margin: 0;
+`;
 
 function MobileNavbar(props) {
   const [toggleMenu, setToggleMenu] = useState(false);
@@ -20,9 +23,9 @@ function MobileNavbar(props) {
   return (
     <React.Fragment>
       <NavbarContainer className="container">
-        <TitleWrapper>
-          <h1>New New</h1>
-        </TitleWrapper>
+        <div>
+          <Title>New New</Title>
+        </div>
         <FontAwesomeIcon
           icon={faBars}
           size="lg"

@@ -1,45 +1,66 @@
 import React, { useEffect, useState } from 'react';
-import getSpotifyAuth from '../../api/SpotifyAuthAPI';
+import fetchAllArtists from '../../api/fetchAllArtists';
 import styled from 'styled-components';
 
-const axios = require('axios').default;
+import ArtistBanner from './ArtistBanner';
+import HomeHero from './HomeHero';
 
 const HomeContainer = styled.div`
-  & > div {
-    margin-bottom: 5rem;
-  }
-  @media (min-width: 768px) {
-    & > div {
-      margin-bottom: 12rem;
-    }
-  }
+  margin-top: 55vh;
+`;
+const BannerContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  grid-gap: 10px;
+  justify-content: space-around;
 `;
 
 function Home() {
-  const [isLoading, setIsLoading] = useState(false);
-  const [data, setData] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
+  const [data, setData] = useState([]);
+
+  let homeComponent;
 
   useEffect(() => {
-    const fetchAuth = async () => {
-      setIsLoading(true);
-      try {
-        const { data: response } = await axios.get(
-          `/.netlify/functions/SpotifyAuthAPI`
-        );
-        setData(response);
-        setIsLoading(false)
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetchAuth();
+    // Async function that fetches all artists
+    async function fetch() {
+      let data = await fetchAllArtists();
+      // Set Artist data
+      setData(data);
+
+      // Set loading to false
+      setIsLoading(false);
+    }
+
+    fetch();
   }, []);
+
+  if (!isLoading) {
+    if (data == []) {
+      homeComponent = (
+        <div>
+          <h1>Artist not Found</h1>
+          <p>Is that a new artist? Share it with the world!</p>
+        </div>
+      );
+    } else {
+      homeComponent = (
+        <div>
+          <BannerContainer>
+            {data.map((artist) => {
+              return <ArtistBanner key={artist.link} artist={artist} />;
+            })}
+          </BannerContainer>
+        </div>
+      );
+    }
+  }
 
   return (
     <HomeContainer>
+      <HomeHero />
       <div className="container">
-        <h1>Hello World</h1>
-        {!isLoading && <p>{data}</p>}
+        {isLoading ? <h1>Loading</h1> : homeComponent}
       </div>
     </HomeContainer>
   );
