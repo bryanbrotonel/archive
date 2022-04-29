@@ -54,7 +54,7 @@ function ArtistBanner(props) {
 
   return (
     <div>
-      <LinkComponent to={`artist/${link}`}>
+      <LinkComponent to={`${link}`}>
         <Banner img={image.url}>
           <BannerContent>
             <BannerTitle>{name}</BannerTitle>

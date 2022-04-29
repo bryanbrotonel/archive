@@ -53,7 +53,6 @@ function DesktopNavbar(props) {
       </Link>
       <PagesWrapper>
         {pages.map((link) => {
-          console.log('item', link);
           const linkPath = link[0];
           const linkName = link[1];
 

@@ -31,8 +31,9 @@ function Navbar() {
 
   const links = [
     ['/', 'New New'],
-    ['/about', 'About'],
+    ['/artists', 'Artists'],
     ['/share', 'Share'],
+    ['/about', 'About'],
   ];
   return (
     <NavContainer>
