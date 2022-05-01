@@ -11,6 +11,7 @@ export default async function fetchPost(id, title) {
           title
           subtitle
           date
+          author
           content
           artistsCollection {
             items {
@@ -34,7 +35,7 @@ export default async function fetchPost(id, title) {
     })
     .then(async (response) => {
       const contentfulRes = response.data;
-      const {title, subtitle, date, content, artistsCollection} = contentfulRes
+      const {title, subtitle, date, content, author, artistsCollection} = contentfulRes
       const contentfulArtists = artistsCollection.items;
 
       let idsString = '';
@@ -67,6 +68,7 @@ export default async function fetchPost(id, title) {
         title: title,
         subtitle: subtitle,
         date: date,
+        author: author,
         content: content,
         artists: artists,
       };

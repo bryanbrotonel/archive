@@ -3,8 +3,13 @@ import { NavLink, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import fetchPost from '../../api/fetchPost';
+import PostHeader from './PostHeader';
 
 import ArtistBanner from '../../components/ArtistBanner';
+
+const PostContainer = styled.div`
+  margin: 10% 0;
+`;
 
 function Post() {
   const [isLoading, setIsLoading] = useState(true);
@@ -45,18 +50,21 @@ function Post() {
         </div>
       );
     else {
-      const { title, subtitle, date, content, artists } = post;
+      const { title, subtitle, date, content, author, artists } = post;
 
       postComponent = (
-        <div>
-          <h1>{title}</h1>
-          <h4>{subtitle}</h4>
-          <span>{date}</span>
-          <p>{content}</p>
+        <PostContainer>
+          <PostHeader
+            title={title}
+            subtitle={subtitle}
+            date={date}
+            author={author}
+            content={content}
+          />
           {artists.map((artist) => {
             return <ArtistBanner key={artist.link} artist={artist} />;
           })}
-        </div>
+        </PostContainer>
       );
     }
   }
