@@ -8,10 +8,10 @@ const FooterContainer = styled.div`
   width: 100%;
   height: 70px; /* Footer height */
 
-  background: var(--gradient-primary);
-  color: var(--colour-black);
+  background: var(--colour-black);
+  color: var(--colour-white);
   padding: 4rem 0;
-  
+
   @media (min-width: 768px) {
     padding: 0;
     height: 220px; /* Footer height */
@@ -30,7 +30,7 @@ const FooterContent = styled.div`
 `;
 
 const FooterTitle = styled.h1`
-  font-size: var(--text-xxl);
+  font-size: var(--text-lg);
   font-weight: bold;
   margin: 0;
 `;

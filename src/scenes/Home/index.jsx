@@ -67,8 +67,6 @@ function Home() {
         if (index > -1) {
           artists.splice(index, 1);
         }
-
-        console.log(featuredArtist);
       }
 
       homeComponent = (
