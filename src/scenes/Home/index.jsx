@@ -4,26 +4,24 @@ import { NavLink } from 'react-router-dom';
 
 import fetchAllArtists from '../../api/fetchAllArtists';
 
-import ArtistBanner from '../../components/ArtistBanner';
 import HomeHero from './HomeHero';
+import ArtistFeature from './ArtistFeature';
+import ArtistBanner from '../../components/ArtistBanner';
 
 const HomeContainer = styled.div`
   margin-top: 51vh;
 `;
 
 const BannerGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 300px);
+  justify-content: center;
+  grid-gap: 50px;
 
-
-display: grid;
-grid-template-columns: repeat(auto-fill, 300px);
-justify-content: center;
-grid-gap: 75px;
-
-padding: 75px 0;
+  padding: 75px 0;
 
   @media (min-width: 768px) {
-    grid-template-columns: repeat(auto-fill, 350px);
-      justify-content: center;
+    grid-template-columns: repeat(auto-fill, 300px);
   }
 `;
 
@@ -60,16 +58,32 @@ function Home() {
         </div>
       );
     } else {
+      // Find featured artist
+      const featuredArtist = artists.find((artist) => artist.featured);
+
+      if (featuredArtist != null) {
+        // Remove featured artist
+        const index = artists.indexOf(featuredArtist);
+        if (index > -1) {
+          artists.splice(index, 1);
+        }
+
+        console.log(featuredArtist);
+      }
+
       homeComponent = (
-        <BannerGrid>
-          {artists.map((artist) => {
-            return (
-              <LinkComponent key={artist.link} to={`artist/${artist.link}`}>
-                <ArtistBanner artist={artist} />
-              </LinkComponent>
-            );
-          })}
-        </BannerGrid>
+        <div>
+          {featuredArtist != null && <ArtistFeature artist={featuredArtist} />}
+          <BannerGrid>
+            {artists.map((artist) => {
+              return (
+                <LinkComponent key={artist.link} to={`artist/${artist.link}`}>
+                  <ArtistBanner artist={artist} />
+                </LinkComponent>
+              );
+            })}
+          </BannerGrid>
+        </div>
       );
     }
   }

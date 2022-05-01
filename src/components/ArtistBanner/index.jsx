@@ -22,8 +22,8 @@ const Banner = styled.div`
   color: var(--colour-white);
 
   @media (min-width: 768px) {
-    width: 350px;
-    height: 450px;
+    width: 250px;
+    height: 350px;
   }
 `;
 
@@ -34,11 +34,11 @@ const BannerContent = styled.div`
 
 const BannerTitle = styled.h1`
   margin: 0 0 1rem 1rem;
-  font-size: var(--text-xxxxl);
+  font-size: var(--text-xxxl);
   line-height: 1em;
 
   @media (min-width: 768px) {
-    font-size: var(--text-xxxl);
+    font-size: var(--text-xl);
   }
 `;
 

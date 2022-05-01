@@ -12,6 +12,7 @@ const ArtistContainer = styled.div`
   position: relative;
   display: flex;
   flex-direction: column;
+  padding: 1vh 0;
 
   @media (min-width: 768px) {
     flex-direction: row;
@@ -40,7 +41,7 @@ const ArtistContentWrapper = styled.div`
 
 const ArtistName = styled.h1`
   font-size: var(--text-xxxxl);
-  margin: 0;
+  margin: 1rem 0;
 `;
 
 function ArtistProfile() {

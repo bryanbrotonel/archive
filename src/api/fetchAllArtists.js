@@ -10,6 +10,8 @@ export default async function fetchArtistData() {
         items {
           artistId
           link
+          artistBio
+          featured
         }
       }
     }
@@ -39,17 +41,33 @@ export default async function fetchArtistData() {
 
       await getSpotifyArtist('', '', idQuery).then((response) => {
         response.artists.forEach((artist) => {
-          // Get link of artist from Contentful response
-          let artistLink = contentfulRes.find(
-            (element) => element.artistId == artist.id
-          ).link;
+          let artistData = {};
 
-          // Append artist data to array
-          artists.push({
+          const artistContentfulData = contentfulRes.find(
+            (element) => element.artistId == artist.id
+          );
+
+          // Get link of artist from Contentful data
+          let artistLink = artistContentfulData.link;
+
+          // Set base data
+          artistData = {
             name: artist.name,
             image: artist.images[1],
             link: artistLink,
-          });
+          };
+
+          // If featured artist, add necessary data
+          if (artistContentfulData.featured) {
+            artistData = {
+              featured: artistContentfulData.featured,
+              bio: artistContentfulData.artistBio,
+              ...artistData,
+            };
+          }
+
+          // Append artist data to array
+          artists.push(artistData);
         });
       });
 

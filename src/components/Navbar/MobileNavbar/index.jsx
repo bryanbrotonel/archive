@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import NavMenu from './NavMenu';
+import { NavLink } from 'react-router-dom';
+
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
@@ -13,8 +15,15 @@ const NavbarContainer = styled.div`
   align-items: center;
 `;
 
-const Title = styled.h1`
+const Link = styled(NavLink)`
+  text-decoration: none;
+  font-weight: bold;
+  color: var(--colour-black);
+`;
+
+const Title = styled.h3`
   margin: 0;
+  text-decoration:none;
 `;
 
 function MobileNavbar(props) {
@@ -23,9 +32,9 @@ function MobileNavbar(props) {
   return (
     <React.Fragment>
       <NavbarContainer className="container">
-        <div>
+        <Link to="/">
           <Title>New New</Title>
-        </div>
+        </Link>
         <FontAwesomeIcon
           icon={faBars}
           size="lg"
