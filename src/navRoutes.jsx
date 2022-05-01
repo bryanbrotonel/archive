@@ -2,7 +2,6 @@ import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 
 import Home from './scenes/Home';
-import Artist from './scenes/Artist';
 import ArtistProfile from './scenes/Artist/ArtistProfile';
 import Share from './scenes/Share';
 import About from './scenes/About';
@@ -11,8 +10,7 @@ const NavRoutes = () => (
   <Routes>
     <Route path="/" element={<Home />}></Route>
     <Route path="/about" element={<About />}></Route>
-    <Route path="/artists" element={<Artist />}></Route>
-    <Route path="/artists/:artistID" element={<ArtistProfile />}></Route>
+    <Route path="/artist/:artistID" element={<ArtistProfile />}></Route>
     <Route path="/share" element={<Share />}></Route>
     <Route
       path="*"

@@ -1,26 +1,48 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import fetchAllPosts from '../../api/fetchAllPosts';
+import { NavLink } from 'react-router-dom';
 
+import fetchAllArtists from '../../api/fetchAllArtists';
+
+import ArtistBanner from '../../components/ArtistBanner';
 import HomeHero from './HomeHero';
-import PostPreview from './PostPreview';
 
 const HomeContainer = styled.div`
-  margin-top: 55vh;
+  margin-top: 51vh;
+`;
+
+const BannerGrid = styled.div`
+
+
+display: grid;
+grid-template-columns: repeat(auto-fill, 300px);
+justify-content: center;
+grid-gap: 75px;
+
+padding: 75px 0;
+
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(auto-fill, 350px);
+      justify-content: center;
+  }
+`;
+
+const LinkComponent = styled(NavLink)`
+  text-decoration: none;
 `;
 
 function Home() {
   const [isLoading, setIsLoading] = useState(true);
-  const [posts, setPosts] = useState([]);
+  const [artists, setArtists] = useState([]);
 
   let homeComponent;
 
   useEffect(() => {
     // Async function that fetches all artists
     async function fetch() {
-      let data = await fetchAllPosts();
+      let data = await fetchAllArtists();
       // Set Artist data
-      setPosts(data);
+      setArtists(data);
 
       // Set loading to false
       setIsLoading(false);
@@ -30,7 +52,7 @@ function Home() {
   }, []);
 
   if (!isLoading) {
-    if (posts == []) {
+    if (artists == []) {
       homeComponent = (
         <div>
           <h1>Artist not Found</h1>
@@ -38,20 +60,16 @@ function Home() {
         </div>
       );
     } else {
-      // // Remove home page link and assign to postLatest
-      // const postLatest = posts.shift();
-
-      // // Remaining pages assing to postRemaining
-      // const postRemaining = posts;
-
-      console.log(posts.length, posts)
-
       homeComponent = (
-        <div>
-          {posts.map((post) => {
-            return <PostPreview key={post.date} post={post} />;
+        <BannerGrid>
+          {artists.map((artist) => {
+            return (
+              <LinkComponent key={artist.link} to={`artist/${artist.link}`}>
+                <ArtistBanner artist={artist} />
+              </LinkComponent>
+            );
           })}
-        </div>
+        </BannerGrid>
       );
     }
   }
@@ -60,7 +78,6 @@ function Home() {
     <HomeContainer>
       <HomeHero />
       <div className="container">
-        <h1>Home</h1>
         {isLoading ? <h1>Loading</h1> : homeComponent}
       </div>
     </HomeContainer>

@@ -1,13 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
-import { NavLink } from 'react-router-dom';
-
-const LinkComponent = styled(NavLink)`
-  text-decoration: none;
-`;
 
 const Banner = styled.div`
-  width: 300px;
+  width: 100%;
+  min-width: 300px;
   height: 400px;
 
   position: relative;
@@ -26,8 +22,8 @@ const Banner = styled.div`
   color: var(--colour-white);
 
   @media (min-width: 768px) {
-    width: 400px;
-    height: 500px;
+    width: 350px;
+    height: 450px;
   }
 `;
 
@@ -49,19 +45,15 @@ const BannerTitle = styled.h1`
 function ArtistBanner(props) {
   // Artist data
   const {
-    artist: { link, name, image },
+    artist: { name, image },
   } = props;
 
   return (
-    <div>
-      <LinkComponent to={`${link}`}>
-        <Banner img={image.url}>
-          <BannerContent>
-            <BannerTitle>{name}</BannerTitle>
-          </BannerContent>
-        </Banner>
-      </LinkComponent>
-    </div>
+    <Banner img={image.url}>
+      <BannerContent>
+        <BannerTitle>{name}</BannerTitle>
+      </BannerContent>
+    </Banner>
   );
 }
 

@@ -60,22 +60,9 @@ const Footer = styled.div`
 
 function NavMenu(props) {
   const links = props.links;
-  // Find index of home link
-  const homeLinkIndex = links.findIndex((link) => link[0] == '/');
-
-  // If not first link, swap with first link
-  if (homeLinkIndex != 0) {
-    // Get home link element
-    const homeLink = links[homeLinkIndex];
-
-    // Move home link element to front
-    links.sort(function (x, y) {
-      return x == homeLink ? -1 : y == homeLink ? 1 : 0;
-    });
-
-    // Rename link name
-    links[0][1] = 'Home';
-  }
+  
+  // Rename link name
+  links[0][1] = 'Home';
 
   return (
     <Menu display={props.display}>
