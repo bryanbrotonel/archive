@@ -2,14 +2,13 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
 
-import fetchAllArtists from '../../api/fetchAllArtists';
+import fetchAllPosts from '../../api/fetchAllPosts';
 
 import HomeHero from './HomeHero';
-import ArtistFeature from './ArtistFeature';
-import ArtistBanner from '../../components/ArtistBanner';
+import PostFeature from './PostFeature';
 
 const HomeContainer = styled.div`
-  margin-top: 51vh;
+  margin-top: 52vh;
 `;
 
 const BannerGrid = styled.div`
@@ -31,16 +30,16 @@ const LinkComponent = styled(NavLink)`
 
 function Home() {
   const [isLoading, setIsLoading] = useState(true);
-  const [artists, setArtists] = useState([]);
+  const [posts, setPosts] = useState([]);
 
   let homeComponent;
 
   useEffect(() => {
     // Async function that fetches all artists
     async function fetch() {
-      let data = await fetchAllArtists();
+      let data = await fetchAllPosts();
       // Set Artist data
-      setArtists(data);
+      setPosts(data);
 
       // Set loading to false
       setIsLoading(false);
@@ -50,7 +49,7 @@ function Home() {
   }, []);
 
   if (!isLoading) {
-    if (artists == []) {
+    if (posts == []) {
       homeComponent = (
         <div>
           <h1>Artist not Found</h1>
@@ -58,29 +57,14 @@ function Home() {
         </div>
       );
     } else {
-      // Find featured artist
-      const featuredArtist = artists.find((artist) => artist.featured);
-
-      if (featuredArtist != null) {
-        // Remove featured artist
-        const index = artists.indexOf(featuredArtist);
-        if (index > -1) {
-          artists.splice(index, 1);
-        }
-      }
-
+      console.log(posts);
       homeComponent = (
         <div>
-          {featuredArtist != null && <ArtistFeature artist={featuredArtist} />}
-          <BannerGrid>
-            {artists.map((artist) => {
-              return (
-                <LinkComponent key={artist.link} to={`artist/${artist.link}`}>
-                  <ArtistBanner artist={artist} />
-                </LinkComponent>
-              );
-            })}
-          </BannerGrid>
+          {posts.map((post) => {
+            return <div key={post.id}>
+              <PostFeature post={post}/>
+            </div>;
+          })}
         </div>
       );
     }

@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import formatDate from '../../../api/FormatDate';
 
 const HeaderContainer = styled.div`
   display: flex;
@@ -44,14 +45,7 @@ const ContentWrapper = styled.div`
 function PostHeader(props) {
   const { title, subtitle, date, author, content } = props;
 
-  // Format date
-  const dateObj = new window.Date(date);
-  var options = {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  };
-  const dateFormatted = dateObj.toLocaleDateString('en-US', options);
+  const dateFormatted = formatDate(date);
 
   return (
     <HeaderContainer>

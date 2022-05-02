@@ -12,8 +12,10 @@ export default async function fetchAllPosts() {
             id
           }
           title
-          date
+          subtitle
           content
+          author
+          date
           artistsCollection {
             items{
               artistId
@@ -38,11 +40,16 @@ export default async function fetchAllPosts() {
 
       const posts = [];
 
-      contentfulRes.forEach((post) => {
+      for (const post of contentfulRes) {
         const contentfulArtists = post.artistsCollection.items;
 
         let idsString = '';
         let artists = [];
+
+        // Format URL
+        const cleanTitle = post.title.replace(/[^a-zA-Z1-9 ]/g, '');
+        const urlTitleParam = cleanTitle.replaceAll(/\s+/g, '-');
+        const postLink = urlTitleParam + '-' + post.sys.id;
 
         contentfulArtists.forEach((artist) => {
           idsString = idsString.concat(artist.artistId + ',');
@@ -51,29 +58,27 @@ export default async function fetchAllPosts() {
         // Remove last comma from id qyer
         let idQuery = { ids: idsString.slice(0, -1) };
 
-        getSpotifyArtist('', '', idQuery).then((response) => {
+        await getSpotifyArtist('', '', idQuery).then((response) => {
           response.artists.forEach((artist) => {
-            // Get link of artist from Contentful response
-            let artistLink = contentfulArtists.find(
-              (element) => element.artistId == artist.id
-            ).link;
-
             // Append artist data to array
             artists.push({
               name: artist.name,
-              image: artist.images[1],
-              link: artistLink,
+              image: artist.images[0],
             });
           });
         });
 
         posts.push({
+          id: post.sys.id,
           title: post.title,
-          contnet: post.content,
+          subtitle: post.subtitle,
+          content: post.content,
+          author: post.author,
           date: post.date,
           artists: artists,
+          link: postLink,
         });
-      });
+      }
 
       return posts;
     })
