@@ -1,11 +1,13 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
+import Header from '../../../components/Header';
 
 const FeatureContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
+
   align-items: center;
   gap: 2rem;
 
@@ -16,18 +18,29 @@ const FeatureContainer = styled.div`
   }
 `;
 
-const FeatureImage = styled.div`
+const FeatureImageWrapper = styled.div`
   width: 100%;
   max-width: 500px;
   height: 400px;
 
-  position: relative;
+  overflow: hidden;
+`;
 
+const FeatureImage = styled.div`
+  width: 100%;
+  height: 100%;
   background-image: url(${(props) => props.img});
 
   background-repeat: no-repeat;
-  background-size: 500px;
+  background-size: cover;
   background-position: center center;
+
+  transition: ease-out 0.3s;
+
+  &:hover {
+    transform: scale(1.025);
+    transition: ease-out 0.3s;
+  }
 `;
 
 const FeatureContent = styled.div`
@@ -49,14 +62,6 @@ const FeatureContent = styled.div`
   }
 `;
 
-const FeatureTitle = styled.h1`
-  color: var(--colour-black);
-
-  font-size: var(--text-xxxxl);
-  margin: 0;
-  margin-bottom: 1rem;
-`;
-
 const ProfileLink = styled.span`
   display: inline-block;
 
@@ -75,10 +80,12 @@ function FeatureArtist(props) {
 
   return (
     <FeatureContainer>
-      <FeatureImage img={image.url} />
+      <FeatureImageWrapper as={NavLink} to={`/artist/${link}`}>
+        <FeatureImage img={image.url} />
+      </FeatureImageWrapper>
       <div>
         <FeatureContent>
-          <FeatureTitle>{name}</FeatureTitle>
+          <Header title={name} subtitle="Featured Artist" />
           <p>{bio}</p>
         </FeatureContent>
         <ProfileLink as={NavLink} to={`/artist/${link}`}>

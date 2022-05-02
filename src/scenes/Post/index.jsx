@@ -9,7 +9,25 @@ import FeatureArtist from './FeatureArtist';
 import ArtistBanner from '../../components/ArtistBanner';
 
 const PostContainer = styled.div`
-  margin: 10% 0;
+  margin-top: 10%;
+  margin-bottom: 20%;
+`;
+
+const ArtistWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 60px;
+
+  @media (min-width: 768px) {
+    flex-direction: row;
+    gap: 20px;
+  }
+`;
+
+const ArtistContainer = styled.div`
+  text-align: center;
 `;
 
 function Post() {
@@ -55,8 +73,6 @@ function Post() {
 
       const artistsFeature = artists.shift();
 
-      console.log(artistsFeature)
-
       postComponent = (
         <PostContainer>
           <PostHeader
@@ -67,9 +83,21 @@ function Post() {
             content={content}
           />
           <FeatureArtist artist={artistsFeature} />
-          {artists.map((artist) => {
-            return <ArtistBanner key={artist.link} artist={artist} />;
-          })}
+          <ArtistContainer>
+            <h2>More Fresh Finds</h2>
+            <ArtistWrapper>
+              {artists.map((artist) => {
+                return (
+                  <NavLink
+                    key={artist.link}
+                    to={`/artist/${artist.link}`}
+                  >
+                    <ArtistBanner artist={artist} />
+                  </NavLink>
+                );
+              })}
+            </ArtistWrapper>
+          </ArtistContainer>
         </PostContainer>
       );
     }

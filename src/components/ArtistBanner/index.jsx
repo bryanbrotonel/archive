@@ -2,28 +2,37 @@ import React from 'react';
 import styled from 'styled-components';
 
 const Banner = styled.div`
-  width: 100%;
-  min-width: 300px;
+  width: 300px;
   height: 400px;
 
   position: relative;
+  overflow: hidden;
 
-  background-image: linear-gradient(
+  color: var(--colour-white);
+
+  @media (min-width: 768px) {
+  }
+`;
+
+const BannerImage = styled.div`
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
       to bottom,
       rgba(255, 255, 255, 0),
       rgba(38, 38, 38, 0.73)
     ),
     url(${(props) => props.img});
 
-  background-repeat: no-repeat;
+  background-position: center;
   background-size: cover;
-  background-position: center center;
+  background-repeat: no-repeat;
 
-  color: var(--colour-white);
+  transition: ease-out 0.3s;
 
-  @media (min-width: 768px) {
-    width: 250px;
-    height: 350px;
+  &:hover {
+    transform: scale(1.025);
+    transition: ease-out 0.3s;
   }
 `;
 
@@ -49,7 +58,8 @@ function ArtistBanner(props) {
   } = props;
 
   return (
-    <Banner img={image.url}>
+    <Banner>
+      <BannerImage img={image.url} />
       <BannerContent>
         <BannerTitle>{name}</BannerTitle>
       </BannerContent>
