@@ -37,6 +37,7 @@ const ContentWrapper = styled.div`
 
   @media (min-width: 768px) {
     width: 50%;
+    min-width: 600px;
   }
 `;
 

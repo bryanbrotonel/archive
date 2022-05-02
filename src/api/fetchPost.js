@@ -16,6 +16,7 @@ export default async function fetchPost(id, title) {
           artistsCollection {
             items {
               artistId
+              artistBio
               link
             }
           }
@@ -50,15 +51,19 @@ export default async function fetchPost(id, title) {
 
       await getSpotifyArtist('', '', idQuery).then((response) => {
         response.artists.forEach((artist) => {
-          // Get link of artist from Contentful response
-          let artistLink = contentfulArtists.find(
+
+           let artistContentfulData = contentfulArtists.find(
             (element) => element.artistId == artist.id
-          ).link;
+          );
+          // Get link of artist from Contentful response
+          const artistLink = artistContentfulData.link;
+          const artistBio = artistContentfulData.artistBio;
 
           // Append artist data to array
           artists.push({
             name: artist.name,
-            image: artist.images[1],
+            image: artist.images[0],
+            bio: artistBio,
             link: artistLink,
           });
         });

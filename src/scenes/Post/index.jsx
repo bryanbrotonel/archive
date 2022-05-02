@@ -3,8 +3,9 @@ import { NavLink, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import fetchPost from '../../api/fetchPost';
-import PostHeader from './PostHeader';
 
+import PostHeader from './PostHeader';
+import FeatureArtist from './FeatureArtist';
 import ArtistBanner from '../../components/ArtistBanner';
 
 const PostContainer = styled.div`
@@ -52,6 +53,10 @@ function Post() {
     else {
       const { title, subtitle, date, content, author, artists } = post;
 
+      const artistsFeature = artists.shift();
+
+      console.log(artistsFeature)
+
       postComponent = (
         <PostContainer>
           <PostHeader
@@ -61,6 +66,7 @@ function Post() {
             author={author}
             content={content}
           />
+          <FeatureArtist artist={artistsFeature} />
           {artists.map((artist) => {
             return <ArtistBanner key={artist.link} artist={artist} />;
           })}
