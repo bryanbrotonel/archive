@@ -11,21 +11,50 @@ const HomeContainer = styled.div`
   margin-top: 52vh;
 `;
 
-const BannerGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fill, 300px);
-  justify-content: center;
-  grid-gap: 50px;
+const HomeWrapper = styled.div`
+  padding-top: 5%;
+  padding-bottom: 10%;
+`;
 
-  padding: 75px 0;
+const FeatureContainer = styled.div`
+  display flex;
+  flex-direction: column;
+  gap: 2rem;
 
-  @media (min-width: 768px) {
-    grid-template-columns: repeat(auto-fill, 300px);
+  margin-bottom: 15%;
+
+  @media (min-width: 992px) {
+      flex-direction: row;
   }
 `;
 
-const LinkComponent = styled(NavLink)`
-  text-decoration: none;
+const PrimaryWrapper = styled.div`
+  flex-basis: 60%;
+`;
+
+const LatestWrapper = styled.div`
+  @media (min-width: 768px) {
+    margin: auto;
+    width: 70%;
+  }
+`;
+
+const SecondaryWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+
+  width: 100%;
+  gap: 0.5rem;
+
+  div {
+    flex-basis: 50%;
+  }
+
+  @media (min-width: 992px) {
+    flex-basis: 40%;
+    flex-direction: column;
+    gap: 3rem;
+  }
 `;
 
 function Home() {
@@ -57,14 +86,38 @@ function Home() {
         </div>
       );
     } else {
-      console.log(posts);
+      // Get primary post from list
+      const primaryPost = posts.shift();
+
+      // Get secondary post from list
+      const secondaryPost = posts.shift();
+
+      // Get tertiary post from list
+      const tertiaryPost = posts.shift();
+
       homeComponent = (
         <div>
-          {posts.map((post) => {
-            return <div key={post.id}>
-              <PostFeature post={post}/>
-            </div>;
-          })}
+          <FeatureContainer>
+            <PrimaryWrapper>
+              <PostFeature post={primaryPost} theme={'primary'} />
+            </PrimaryWrapper>
+            <SecondaryWrapper>
+              <PostFeature post={secondaryPost} theme={'secondary'} />
+              <PostFeature post={tertiaryPost} theme={'secondary'} />
+            </SecondaryWrapper>
+          </FeatureContainer>
+          {posts.length != 0 && (
+            <div>
+              <h1>Latest Posts</h1>
+              {posts.map((post) => {
+                return (
+                  <LatestWrapper key={post.id}>
+                    <PostFeature post={post} />
+                  </LatestWrapper>
+                );
+              })}
+            </div>
+          )}
         </div>
       );
     }
@@ -73,9 +126,9 @@ function Home() {
   return (
     <HomeContainer>
       <HomeHero />
-      <div className="container">
+      <HomeWrapper className="container">
         {isLoading ? <h1>Loading</h1> : homeComponent}
-      </div>
+      </HomeWrapper>
     </HomeContainer>
   );
 }
