@@ -1,16 +1,57 @@
 import { createGlobalStyle } from 'styled-components';
 
 const GlobalStyle = createGlobalStyle`
+
+
+      /* playfair-display-regular - latin */
+  @font-face {
+    font-family: 'Playfair Display';
+    font-style: normal;
+    font-weight: 400;
+    src: url('./fonts/playfair-display-v29-latin-regular.eot'); /* IE9 Compat Modes */
+    src: local(''),
+         url('./fonts/playfair-display-v29-latin-regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('./fonts/playfair-display-v29-latin-regular.woff2') format('woff2'), /* Super Modern Browsers */
+         url('./fonts/playfair-display-v29-latin-regular.woff') format('woff'), /* Modern Browsers */
+         url('./fonts/playfair-display-v29-latin-regular.ttf') format('truetype'), /* Safari, Android, iOS */
+         url('./fonts/playfair-display-v29-latin-regular.svg#PlayfairDisplay') format('svg'); /* Legacy iOS */
+  }
+  /* playfair-display-700 - latin */
+  @font-face {
+    font-family: 'Playfair Display';
+    font-style: normal;
+    font-weight: 700;
+    src: url('./fonts/playfair-display-v29-latin-700.eot'); /* IE9 Compat Modes */
+    src: local(''),
+         url('./fonts/playfair-display-v29-latin-700.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('./fonts/playfair-display-v29-latin-700.woff2') format('woff2'), /* Super Modern Browsers */
+         url('./fonts/playfair-display-v29-latin-700.woff') format('woff'), /* Modern Browsers */
+         url('./fonts/playfair-display-v29-latin-700.ttf') format('truetype'), /* Safari, Android, iOS */
+         url('./fonts/playfair-display-v29-latin-700.svg#PlayfairDisplay') format('svg'); /* Legacy iOS */
+  }
   
+  /* adamina-regular - latin */
+  @font-face {
+    font-family: 'Adamina';
+    font-style: normal;
+    font-weight: 400;
+    src: url('./fonts/adamina-v21-latin-regular.eot'); /* IE9 Compat Modes */
+    src: local(''),
+         url('./fonts/adamina-v21-latin-regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('./fonts/adamina-v21-latin-regular.woff2') format('woff2'), /* Super Modern Browsers */
+         url('./fonts/adamina-v21-latin-regular.woff') format('woff'), /* Modern Browsers */
+         url('./fonts/adamina-v21-latin-regular.ttf') format('truetype'), /* Safari, Android, iOS */
+         url('./fonts/adamina-v21-latin-regular.svg#Adamina') format('svg'); /* Legacy iOS */
+  }
   :root {
 
     // font family
-    --font-primary: 'PT Serif', serif;
-    --font-secondary: 'Roboto', sans-serif;
+    --font-primary: 'Playfair Display', serif;
+    --font-secondary: 'Adamina', sans-serif;
 
     // font size
     --text-base-size: 1em; // body font-size
-    --text-scale-ratio: 1.2; // multiplier used to generate the type scale values 👇
+    --text-scale-ratio: 1.2; // multiplier used to generate the type scale values
     
     // line-height
     --body-line-height: 1.4;
@@ -203,7 +244,7 @@ const GlobalStyle = createGlobalStyle`
       opacity: 1;
     }
   }
-  
+
 `;
 
 export default GlobalStyle;

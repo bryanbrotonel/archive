@@ -95,7 +95,7 @@ function Home() {
 
     homeComponent = (
       <div>
-        <FeatureContainer id="home">
+        <FeatureContainer>
           <PrimaryWrapper>
             <PostFeature post={primaryPost} theme={'primary'} />
           </PrimaryWrapper>
@@ -125,7 +125,7 @@ function Home() {
   return (
     <HomeContainer>
       <HomeHero />
-      <HomeWrapper className="container">{homeComponent}</HomeWrapper>
+      <HomeWrapper className="container" id="home">{homeComponent}</HomeWrapper>
     </HomeContainer>
   );
 }
