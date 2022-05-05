@@ -60,6 +60,8 @@ function Share() {
   `;
 
   useEffect(() => {
+        document.title = `Share | New New`;
+
     setIsLoading(true);
 
     // POST request to fetch Contentful data

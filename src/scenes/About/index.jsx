@@ -28,6 +28,8 @@ function About() {
   `;
 
   useEffect(() => {
+        document.title = ` About | New New`;
+
     setIsLoading(true);
 
     // POST request to fetch Contentful data

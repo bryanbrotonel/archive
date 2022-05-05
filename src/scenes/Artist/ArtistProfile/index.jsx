@@ -80,6 +80,8 @@ function ArtistProfile() {
     else {
       const { name, bio, image, tracks, url } = artist;
 
+        document.title = `${name} | New New`;
+
       artistComponent = (
         <ArtistContainer>
           <ArtistImageWrapper>

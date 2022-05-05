@@ -68,6 +68,8 @@ function Home() {
   let homeComponent;
 
   useEffect(() => {
+    document.title = `New New`;
+
     // Async function that fetches all artists
     async function fetch() {
       let data = await fetchAllPosts();

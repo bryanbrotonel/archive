@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import ButtonLink from '../ButtonLink';
 
@@ -28,6 +28,10 @@ const NotFoundSubtitle = styled.h4`
 `;
 
 function NotFound() {
+  useEffect(() => {
+    document.title = ` About | New New`;
+  }, []);
+  
   return (
     <NotFoundContainer>
       <HeaderContainer>

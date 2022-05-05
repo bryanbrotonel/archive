@@ -7,7 +7,7 @@ import fetchPost from '../../api/fetchPost';
 import PostHeader from './PostHeader';
 import FeatureArtist from './FeatureArtist';
 import ArtistBanner from '../../components/ArtistBanner';
-import Loading from '../../components/Loading'
+import Loading from '../../components/Loading';
 import NotFound from '../../components/NotFound';
 
 const PostContainer = styled.div`
@@ -63,12 +63,11 @@ function Post() {
   }, []);
 
   if (!isLoading) {
-    if (post == null)
-      postComponent = (
-        <NotFound />
-      );
+    if (post == null) postComponent = <NotFound />;
     else {
       const { title, subtitle, date, content, author, artists } = post;
+
+        document.title = `${title} | New New`;
 
       const artistsFeature = artists.shift();
 
@@ -87,10 +86,7 @@ function Post() {
             <ArtistWrapper>
               {artists.map((artist) => {
                 return (
-                  <NavLink
-                    key={artist.link}
-                    to={`/artist/${artist.link}`}
-                  >
+                  <NavLink key={artist.link} to={`/artist/${artist.link}`}>
                     <ArtistBanner artist={artist} />
                   </NavLink>
                 );
@@ -103,9 +99,7 @@ function Post() {
   }
 
   return (
-    <div className="container">
-      {isLoading ? <Loading /> : postComponent}
-    </div>
+    <div className="container">{isLoading ? <Loading /> : postComponent}</div>
   );
 }
 

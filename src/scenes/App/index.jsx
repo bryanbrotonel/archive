@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 
 import NavRoutes from '../../navRoutes';
@@ -13,7 +13,9 @@ const Container = styled.section`
 `;
 
 const ContentWrap = styled.section`
-  padding-bottom: calc(187px + (50px * 2)); /* Footer height and padding minus header size */
+  padding-bottom: calc(
+    187px + (50px * 2)
+  ); /* Footer height and padding minus header size */
 
   @media (min-width: 768px) {
     padding-bottom: calc(166px + (50px * 2)); /* Footer height and padding */
@@ -21,6 +23,10 @@ const ContentWrap = styled.section`
 `;
 
 const App = () => {
+
+  useEffect(() => {
+    document.title = "New New"
+  }, [])
   return (
     <Container>
       <Navbar />
