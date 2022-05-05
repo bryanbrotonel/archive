@@ -38,8 +38,10 @@ const PrimaryWrapper = styled.div`
 `;
 
 const LatestWrapper = styled.div`
-  @media (min-width: 768px) {
+  @media (min-width: 992px) {
     margin: auto;
+  }
+  @media (min-width: 1200px) {
     width: 70%;
   }
 `;

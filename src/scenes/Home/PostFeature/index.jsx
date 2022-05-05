@@ -65,6 +65,13 @@ const Content = styled.div`
   text-overflow: ellipsis;
 
   color: var(--colour-darkGrey);
+
+  @media (min-width: 768px) {
+    -webkit-line-clamp: 5;
+  }
+  @media (min-width: 992px) {
+    -webkit-line-clamp: 3;
+  }
 `;
 
 const Title = styled.h2`
