@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faX } from '@fortawesome/free-solid-svg-icons';
 
 const Menu = styled.div`
-  position: absolute;
+  position: fixed;
   width: 100vw;
   height: 100vh;
   top: 0;
@@ -47,7 +47,7 @@ const NavLinkWrapper = styled.ul`
 
 const Link = styled(NavLink)`
   font-family: var(--font-secondary);
-  font-size: var(--text-lg);
+  font-size: var(--text-xxxl);
   font-weight: bold;
   text-transform: uppercase;
   text-decoration: none;
@@ -57,6 +57,13 @@ const Link = styled(NavLink)`
 const Footer = styled.div`
   margin-top: 100px;
 `;
+
+const FooterTitle = styled.h3`
+  margin-bottom: 0.5rem;
+`
+const FooterSubtitle = styled.p`
+  margin: 0;
+`
 
 function NavMenu(props) {
   const links = props.links;
@@ -86,7 +93,8 @@ function NavMenu(props) {
         </NavLinkWrapper>
         <Footer>
           <hr />
-          <h1>New New</h1>
+          <FooterTitle>New New</FooterTitle>
+          <FooterSubtitle>A curation of everday music discoveries</FooterSubtitle>
         </Footer>
       </MenuContainer>
     </Menu>
