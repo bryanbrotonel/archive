@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 const HeroContainer = styled.div`
   width: 100%;
-  height: 60vh;
+  height: 100vh;
 
   position: absolute;
   top: 0;
@@ -15,6 +15,10 @@ const HeroContainer = styled.div`
   background-image: var(--gradient-primary);
 
   text-align: center;
+
+  @media (min-width: 768px) {
+    height: 60vh;
+  }
 `;
 
 const HeroContent = styled.div`

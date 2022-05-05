@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import shareArtist from '../../api/FirebaseDatabaseAPI';
 
 import Header from '../../components/Header';
+import Loading from '../../components/Loading';
 
 const axios = require('axios').default;
 
@@ -91,29 +92,35 @@ function Share() {
     <div className="container">
       <ShareContainer>
         <Header title="Sharing is Caring" subtitle="Share" />
-        {!isLoading && <p>{shareContent}</p>}
-        <form onSubmit={handleSubmit}>
-          <Input
-            type="text"
-            placeholder="Artist"
-            value={artistValue}
-            onChange={(event) => setArtistValue(event.target.value)}
-          />
-          <Input
-            type="text"
-            placeholder="Notable"
-            value={notableValue}
-            onChange={(event) => setNotableValue(event.target.value)}
-          />
-          <Input
-            type="text"
-            placeholder="Handle"
-            value={handleValue}
-            onChange={(event) => setHandleValue(event.target.value)}
-          />
-          <Submit type="submit">Submit</Submit>
-        </form>
-        {formSubmitted && <p>Thanks for sharing!</p>}
+        {isLoading ? (
+          <Loading />
+        ) : (
+          <React.Fragment>
+            <p>{shareContent}</p>
+            <form onSubmit={handleSubmit}>
+              <Input
+                type="text"
+                placeholder="Artist"
+                value={artistValue}
+                onChange={(event) => setArtistValue(event.target.value)}
+              />
+              <Input
+                type="text"
+                placeholder="Notable"
+                value={notableValue}
+                onChange={(event) => setNotableValue(event.target.value)}
+              />
+              <Input
+                type="text"
+                placeholder="Handle"
+                value={handleValue}
+                onChange={(event) => setHandleValue(event.target.value)}
+              />
+              <Submit type="submit">Submit</Submit>
+            </form>
+            {formSubmitted && <p>Thanks for sharing!</p>}
+          </React.Fragment>
+        )}
       </ShareContainer>
     </div>
   );

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 import Header from '../../components/Header';
+import Loading from '../../components/Loading';
 
 const axios = require('axios').default;
 
@@ -52,7 +53,7 @@ function About() {
     <div className='container'>
       <AboutContainer>
         <Header title="Motive" subtitle="About" />
-        {!isLoading && <p>{aboutContent}</p>}
+        {isLoading ? <Loading /> : <p>{aboutContent}</p>}
       </AboutContainer>
     </div>
   );

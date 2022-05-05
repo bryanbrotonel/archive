@@ -7,6 +7,7 @@ import fetchPost from '../../api/fetchPost';
 import PostHeader from './PostHeader';
 import FeatureArtist from './FeatureArtist';
 import ArtistBanner from '../../components/ArtistBanner';
+import Loading from '../../components/Loading'
 
 const PostContainer = styled.div`
   margin-top: 10%;
@@ -105,7 +106,7 @@ function Post() {
 
   return (
     <div className="container">
-      {isLoading ? <h1>Loading</h1> : postComponent}
+      {isLoading ? <Loading /> : postComponent}
     </div>
   );
 }

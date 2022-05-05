@@ -6,9 +6,14 @@ import fetchAllPosts from '../../api/fetchAllPosts';
 
 import HomeHero from './HomeHero';
 import PostFeature from './PostFeature';
+import Loading from '../../components/Loading';
 
 const HomeContainer = styled.div`
-  margin-top: 52vh;
+  margin-top: 92vh;
+
+  @media (min-width: 768px) {
+    margin-top: 52vh;
+  }
 `;
 
 const HomeWrapper = styled.div`
@@ -78,57 +83,48 @@ function Home() {
   }, []);
 
   if (!isLoading) {
-    if (posts == []) {
-      homeComponent = (
-        <div>
-          <h1>Artist not Found</h1>
-          <p>Is that a new artist? Share it with the world!</p>
-        </div>
-      );
-    } else {
-      // Get primary post from list
-      const primaryPost = posts.shift();
+    // Get primary post from list
+    const primaryPost = posts.shift();
 
-      // Get secondary post from list
-      const secondaryPost = posts.shift();
+    // Get secondary post from list
+    const secondaryPost = posts.shift();
 
-      // Get tertiary post from list
-      const tertiaryPost = posts.shift();
+    // Get tertiary post from list
+    const tertiaryPost = posts.shift();
 
-      homeComponent = (
-        <div>
-          <FeatureContainer>
-            <PrimaryWrapper>
-              <PostFeature post={primaryPost} theme={'primary'} />
-            </PrimaryWrapper>
-            <SecondaryWrapper>
-              <PostFeature post={secondaryPost} theme={'secondary'} />
-              <PostFeature post={tertiaryPost} theme={'secondary'} />
-            </SecondaryWrapper>
-          </FeatureContainer>
-          {posts.length != 0 && (
-            <div>
-              <h1>Latest Posts</h1>
-              {posts.map((post) => {
-                return (
-                  <LatestWrapper key={post.id}>
-                    <PostFeature post={post} />
-                  </LatestWrapper>
-                );
-              })}
-            </div>
-          )}
-        </div>
-      );
-    }
+    homeComponent = (
+      <div>
+        <FeatureContainer>
+          <PrimaryWrapper>
+            <PostFeature post={primaryPost} theme={'primary'} />
+          </PrimaryWrapper>
+          <SecondaryWrapper>
+            <PostFeature post={secondaryPost} theme={'secondary'} />
+            <PostFeature post={tertiaryPost} theme={'secondary'} />
+          </SecondaryWrapper>
+        </FeatureContainer>
+        {posts.length != 0 && (
+          <div>
+            <h1>Latest Posts</h1>
+            {posts.map((post) => {
+              return (
+                <LatestWrapper key={post.id}>
+                  <PostFeature post={post} />
+                </LatestWrapper>
+              );
+            })}
+          </div>
+        )}
+      </div>
+    );
+  } else {
+    homeComponent = <Loading />;
   }
 
   return (
     <HomeContainer>
       <HomeHero />
-      <HomeWrapper className="container">
-        {isLoading ? <h1>Loading</h1> : homeComponent}
-      </HomeWrapper>
+      <HomeWrapper className="container">{homeComponent}</HomeWrapper>
     </HomeContainer>
   );
 }
