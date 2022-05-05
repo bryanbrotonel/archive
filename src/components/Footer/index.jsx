@@ -1,56 +1,106 @@
 import React from 'react';
 
+import { Link, NavLink } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHeart } from '@fortawesome/free-solid-svg-icons';
+
 import styled from 'styled-components';
 
 const FooterContainer = styled.div`
+  width: 100%;
+  min-height: 70px; /* Footer height */
+
   position: absolute;
   bottom: 0;
-  width: 100%;
-  height: 70px; /* Footer height */
 
   background: var(--colour-black);
   color: var(--colour-white);
-  padding: 4rem 0;
-
-  @media (min-width: 768px) {
-    padding: 0;
-    height: 220px; /* Footer height */
-  }
+  padding: 50px 0;
 `;
+
+const FooterWrapper = styled.div``;
+
 const FooterContent = styled.div`
-  display: grid;
-  gap: 0.5rem;
+  text-align: center;
+  margin-bottom: 50px;
+`;
 
-  text-align: left;
+const FooterTitle = styled.span`
+  display: block;
+
+  margin-bottom: 0.5rem;
+
+  font-family: var(--font-primary);
+  font-size: var(--text-xxl);
+  font-weight: bold;
+`;
+
+const FooterSubtitle = styled.span`
+  display: block;
+
+  font-family: var(--font-secondary);
+  font-weight: bold;
+`;
+
+const FooterNav = styled.div`
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 1rem;
+  text-align: center;
 
   @media (min-width: 768px) {
-    text-align: left;
-    padding: 4rem 0;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 0;
   }
 `;
 
-const FooterTitle = styled.h1`
-  font-size: var(--text-lg);
-  font-weight: bold;
-  margin: 0;
+const FooterLink = styled(NavLink)`
+  text-decoration: none;
+  color: var(--colour-white);
+
+  &:hover {
+    opacity: 0.6;
+  }
 `;
 
-const Copyright = styled.span`
-  font-size: var(--text-xs);
-  @media (min-width: 768px) {
-    font-size: var(--text-sm);
+const FooterLinksWrapper = styled.div`
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  
+  a {
+    text-decoration: none;
+    color: var(--colour-white);
   }
 `;
 
 function footer() {
   return (
     <FooterContainer>
-      <FooterContent className="container">
-        <FooterTitle>New New</FooterTitle>
-        <Copyright>
-          &#169; {new Date().getFullYear()}. All Rights Reserved | Vancouver, BC
-        </Copyright>
-      </FooterContent>
+      <FooterWrapper className="container">
+        <FooterContent>
+          <FooterTitle>New New</FooterTitle>
+          <FooterSubtitle>
+            A curation of everday music discoveries
+          </FooterSubtitle>
+        </FooterContent>
+        <FooterNav>
+          <div>
+            <span>
+              Made with <FontAwesomeIcon icon={faHeart} size="xs" /> by{' '}
+              <FooterLink as='a' href="https://bryanbrotonel.live/">
+                Bryan
+              </FooterLink>
+            </span>
+          </div>
+          <FooterLinksWrapper>
+            <FooterLink to="/">Home</FooterLink>
+            <FooterLink to="/about">About</FooterLink>
+            <FooterLink to="/share">Share</FooterLink>
+          </FooterLinksWrapper>
+        </FooterNav>
+      </FooterWrapper>
     </FooterContainer>
   );
 }

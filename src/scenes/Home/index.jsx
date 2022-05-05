@@ -18,7 +18,7 @@ const HomeContainer = styled.div`
 
 const HomeWrapper = styled.div`
   padding-top: 5%;
-  padding-bottom: 10%;
+  padding-bottom: 20%;
 `;
 
 const FeatureContainer = styled.div`
