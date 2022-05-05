@@ -1,6 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 
+import { HashLink } from 'react-router-hash-link';
+
 const HeroContainer = styled.div`
   width: 100%;
   height: 100vh;
@@ -23,18 +25,19 @@ const HeroContainer = styled.div`
 
 const HeroContent = styled.div`
   @media (min-width: 768px) {
-    width: 50%;
+    padding: 10% 0;
+    width: 40%;
   }
 `;
 
 const HeroTitle = styled.h1`
-  font-size: var(--text-xxl);
+  font-size: var(--text-xxxl);
   margin: 0;
 `;
 
 const DiscoverButton = styled.button`
   display: inline-block;
-  padding: 1rem;
+  padding: 1rem 1.5rem;
   margin: 1rem;
 
   background-color: var(--colour-black);
@@ -58,12 +61,19 @@ function HomeHero() {
   return (
     <HeroContainer>
       <HeroContent>
-        <HeroTitle>Lorem ipsum dolor</HeroTitle>
+        <HeroTitle>Discover the Newness</HeroTitle>
         <p>
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Explicabo
-          porro magnam
+          We introduce the exciitng sounds of tomorrow to the world. Get
+          familiar with these new artists now and discover your next favourite
+          artist.
         </p>
-        <DiscoverButton>Discover the New New</DiscoverButton>
+        <DiscoverButton
+          as={HashLink}
+          to="/#home"
+          smooth
+        >
+          Start Digging
+        </DiscoverButton>
       </HeroContent>
     </HeroContainer>
   );

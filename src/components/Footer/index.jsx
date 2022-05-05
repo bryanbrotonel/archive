@@ -57,7 +57,7 @@ const FooterNav = styled.div`
 
 const FooterLink = styled(NavLink)`
   text-decoration: none;
-  color: var(--colour-white);
+  color: inherit;
 
   &:hover {
     opacity: 0.6;
@@ -71,7 +71,7 @@ const FooterLinksWrapper = styled.div`
   
   a {
     text-decoration: none;
-    color: var(--colour-white);
+    color: inherit;
   }
 `;
 

@@ -93,7 +93,7 @@ function Home() {
 
     homeComponent = (
       <div>
-        <FeatureContainer>
+        <FeatureContainer id="home">
           <PrimaryWrapper>
             <PostFeature post={primaryPost} theme={'primary'} />
           </PrimaryWrapper>
