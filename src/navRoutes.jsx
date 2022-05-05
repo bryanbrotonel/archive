@@ -6,6 +6,7 @@ import ArtistProfile from './scenes/Artist/ArtistProfile';
 import Share from './scenes/Share';
 import About from './scenes/About';
 import Post from './scenes/Post';
+import NotFound from './components/NotFound';
 
 const NavRoutes = () => (
   <Routes>
@@ -14,14 +15,7 @@ const NavRoutes = () => (
     <Route path=":blogID" element={<Post />}></Route>
     <Route path="/artist/:artistID" element={<ArtistProfile />}></Route>
     <Route path="/share" element={<Share />}></Route>
-    <Route
-      path="*"
-      element={
-        <div className="container">
-          <p>Nothing here!</p>
-        </div>
-      }
-    />
+    <Route path="*" element={<NotFound />} />
   </Routes>
 );
 

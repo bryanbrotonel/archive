@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import ButtonLink from '../../../components/ButtonLink';
 
 const SpotifyTtile = styled.h3`
   margin-bottom: 1rem;
@@ -44,9 +45,7 @@ function ArtistFooter(props) {
         <SpotifyTtile>
           Luckily, there is more from {name}. Check out their full discography.
         </SpotifyTtile>
-        <SpotifyButton as="a" href={url}>
-          More from {name}
-        </SpotifyButton>
+        <ButtonLink url={url}>More from {name}</ButtonLink>
       </div>
     </SpotifyButtonContainer>
   );

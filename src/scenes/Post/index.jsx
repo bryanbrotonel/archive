@@ -8,6 +8,7 @@ import PostHeader from './PostHeader';
 import FeatureArtist from './FeatureArtist';
 import ArtistBanner from '../../components/ArtistBanner';
 import Loading from '../../components/Loading'
+import NotFound from '../../components/NotFound';
 
 const PostContainer = styled.div`
   margin-top: 10%;
@@ -64,10 +65,7 @@ function Post() {
   if (!isLoading) {
     if (post == null)
       postComponent = (
-        <div>
-          <h1>post not Found</h1>
-          <p>Is that a new post? Share it with the world!</p>
-        </div>
+        <NotFound />
       );
     else {
       const { title, subtitle, date, content, author, artists } = post;

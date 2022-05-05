@@ -13,10 +13,10 @@ const Container = styled.section`
 `;
 
 const ContentWrap = styled.section`
-  padding-bottom: calc(70px + (64px*2)); /* Footer height and padding */
+  padding-bottom: calc(187px + (50px * 2) - 78px); /* Footer height and padding minus header size */
 
   @media (min-width: 768px) {
-    padding-bottom: 220px; /* Footer height */
+    padding-bottom: calc(166px + (50px * 2)); /* Footer height and padding */
   }
 `;
 

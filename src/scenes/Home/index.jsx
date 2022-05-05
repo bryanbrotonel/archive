@@ -18,7 +18,7 @@ const HomeContainer = styled.div`
 
 const HomeWrapper = styled.div`
   padding-top: 5%;
-  padding-bottom: 20%;
+  padding-bottom: 15%;
 `;
 
 const FeatureContainer = styled.div`
@@ -38,9 +38,6 @@ const PrimaryWrapper = styled.div`
 `;
 
 const LatestWrapper = styled.div`
-  @media (min-width: 992px) {
-    margin: auto;
-  }
   @media (min-width: 1200px) {
     width: 70%;
   }
