@@ -1,48 +1,70 @@
 import { createGlobalStyle } from 'styled-components';
 
+import AdaminaEOT from '../fonts/adamina-v21-latin-regular.eot';
+import AdaminaEotIE from '../fonts/adamina-v21-latin-regular.eot?#iefix';
+import AdaminaWoff from '../fonts/adamina-v21-latin-regular.woff';
+import AdaminaWoff2 from '../fonts/adamina-v21-latin-regular.woff2';
+import AdaminaTTF from '../fonts/adamina-v21-latin-regular.ttf';
+import AdaminaSVG from '../fonts/adamina-v21-latin-regular.svg#Adamina';
+
+import PlayfairRegularEOT from '../fonts/playfair-display-v29-latin-regular.eot';
+import PlayfairRegularEotIE from '../fonts/playfair-display-v29-latin-regular.eot?#iefix';
+import PlayfairRegularWoff from '../fonts/playfair-display-v29-latin-regular.woff';
+import PlayfairRegularWoff2 from '../fonts/playfair-display-v29-latin-regular.woff2';
+import PlayfairRegularTTF from '../fonts/playfair-display-v29-latin-regular.ttf';
+import PlayfairRegularSVG from '../fonts/playfair-display-v29-latin-regular.svg#PlayfairRegularDisplay';
+
+import Playfair700EOT from '../fonts/playfair-display-v29-latin-700.eot';
+import Playfair700EotIE from '../fonts/playfair-display-v29-latin-700.eot?#iefix';
+import Playfair700Woff from '../fonts/playfair-display-v29-latin-700.woff';
+import Playfair700Woff2 from '../fonts/playfair-display-v29-latin-700.woff2';
+import Playfair700TTF from '../fonts/playfair-display-v29-latin-700.ttf';
+import Playfair700SVG from '../fonts/playfair-display-v29-latin-700.svg#Playfair700Display';
+
 const GlobalStyle = createGlobalStyle`
 
-
-      /* playfair-display-regular - latin */
+  /* playfair-regular - latin */
   @font-face {
     font-family: 'Playfair Display';
     font-style: normal;
     font-weight: 400;
-    src: url('./fonts/playfair-display-v29-latin-regular.eot'); /* IE9 Compat Modes */
+    src: url(${PlayfairRegularEOT}); /* IE9 Compat Modes */
     src: local(''),
-         url('./fonts/playfair-display-v29-latin-regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
-         url('./fonts/playfair-display-v29-latin-regular.woff2') format('woff2'), /* Super Modern Browsers */
-         url('./fonts/playfair-display-v29-latin-regular.woff') format('woff'), /* Modern Browsers */
-         url('./fonts/playfair-display-v29-latin-regular.ttf') format('truetype'), /* Safari, Android, iOS */
-         url('./fonts/playfair-display-v29-latin-regular.svg#PlayfairDisplay') format('svg'); /* Legacy iOS */
+        url(${PlayfairRegularEotIE}) format('embedded-opentype'), /* IE6-IE8 */
+        url(${PlayfairRegularWoff2}) format('woff2'),
+        url(${PlayfairRegularWoff}) format('woff'),
+        url(${PlayfairRegularTTF}) format('truetype'), /* Safari, Android, iOS */
+        url(${PlayfairRegularSVG}) format('truetype'), format('svg'); /* Legacy iOS */
   }
+  
   /* playfair-display-700 - latin */
   @font-face {
     font-family: 'Playfair Display';
     font-style: normal;
     font-weight: 700;
-    src: url('./fonts/playfair-display-v29-latin-700.eot'); /* IE9 Compat Modes */
+    src: url(${Playfair700EOT}); /* IE9 Compat Modes */
     src: local(''),
-         url('./fonts/playfair-display-v29-latin-700.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
-         url('./fonts/playfair-display-v29-latin-700.woff2') format('woff2'), /* Super Modern Browsers */
-         url('./fonts/playfair-display-v29-latin-700.woff') format('woff'), /* Modern Browsers */
-         url('./fonts/playfair-display-v29-latin-700.ttf') format('truetype'), /* Safari, Android, iOS */
-         url('./fonts/playfair-display-v29-latin-700.svg#PlayfairDisplay') format('svg'); /* Legacy iOS */
+        url(${Playfair700EotIE}) format('embedded-opentype'), /* IE6-IE8 */
+        url(${Playfair700Woff2}) format('woff2'),
+        url(${Playfair700Woff}) format('woff'),
+        url(${Playfair700TTF}) format('truetype'), /* Safari, Android, iOS */
+        url(${Playfair700SVG}) format('truetype'), format('svg'); /* Legacy iOS */
   }
-  
-  /* adamina-regular - latin */
+
+  /* adamina-regular- - latin */
   @font-face {
     font-family: 'Adamina';
     font-style: normal;
     font-weight: 400;
-    src: url('./fonts/adamina-v21-latin-regular.eot'); /* IE9 Compat Modes */
+    src: url(${AdaminaEOT}); /* IE9 Compat Modes */
     src: local(''),
-         url('./fonts/adamina-v21-latin-regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
-         url('./fonts/adamina-v21-latin-regular.woff2') format('woff2'), /* Super Modern Browsers */
-         url('./fonts/adamina-v21-latin-regular.woff') format('woff'), /* Modern Browsers */
-         url('./fonts/adamina-v21-latin-regular.ttf') format('truetype'), /* Safari, Android, iOS */
-         url('./fonts/adamina-v21-latin-regular.svg#Adamina') format('svg'); /* Legacy iOS */
+        url(${AdaminaEotIE}) format('embedded-opentype'), /* IE6-IE8 */
+        url(${AdaminaWoff2}) format('woff2'),
+        url(${AdaminaWoff}) format('woff'),
+        url(${AdaminaTTF}) format('truetype'), /* Safari, Android, iOS */
+        url(${AdaminaSVG}) format('truetype'), format('svg'); /* Legacy iOS */
   }
+
   :root {
 
     // font family
