@@ -1,20 +1,56 @@
-import React from 'react';
+import React, { Suspense, lazy } from 'react';
 import { Routes, Route } from 'react-router-dom';
+import Loading from './components/Loading';
 
-import Home from './scenes/Home';
-import ArtistProfile from './scenes/Artist/ArtistProfile';
-import Share from './scenes/Share';
-import About from './scenes/About';
-import Post from './scenes/Post';
-import NotFound from './components/NotFound';
+const Home = lazy(() => import('./scenes/Home'));
+const Share = lazy(() => import('./scenes/Share'));
+const About = lazy(() => import('./scenes/About'));
+const Post = lazy(() => import('./scenes/Post'));
+const ArtistProfile = lazy(() => import('./scenes/Artist/ArtistProfile'));
+const NotFound = lazy(() => import('./components/NotFound'));
 
 const NavRoutes = () => (
   <Routes>
-    <Route path="/" element={<Home />}></Route>
-    <Route path="/about" element={<About />}></Route>
-    <Route path=":blogID" element={<Post />}></Route>
-    <Route path="/artist/:artistID" element={<ArtistProfile />}></Route>
-    <Route path="/share" element={<Share />}></Route>
+    <Route
+      path="/"
+      element={
+        <React.Suspense fallback={<Loading />}>
+          <Home />
+        </React.Suspense>
+      }
+    ></Route>
+    <Route
+      path="/about"
+      element={
+        <React.Suspense fallback={<Loading />}>
+          <About />
+        </React.Suspense>
+      }
+    ></Route>
+    <Route
+      path=":blogID"
+      element={
+        <React.Suspense fallback={<Loading />}>
+          <Post />
+        </React.Suspense>
+      }
+    ></Route>
+    <Route
+      path="/artist/:artistID"
+      element={
+        <React.Suspense fallback={<Loading />}>
+          <ArtistProfile />
+        </React.Suspense>
+      }
+    ></Route>
+    <Route
+      path="/share"
+      element={
+        <React.Suspense fallback={<Loading />}>
+          <Share />
+        </React.Suspense>
+      }
+    ></Route>
     <Route path="*" element={<NotFound />} />
   </Routes>
 );
