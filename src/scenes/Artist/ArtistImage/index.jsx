@@ -37,6 +37,7 @@ function ArtistImage(props) {
           alt={`${name} - Image`}
           width={`${width}`}
           height={`${height}`}
+          loading="lazy"
         />
       </ProfileImageWrapper>
     </ArtistImageContainer>

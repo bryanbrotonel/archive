@@ -8,40 +8,43 @@ const Banner = styled.div`
   position: relative;
   overflow: hidden;
 
+  display: flex;
+  justify-content: center;
+
   color: var(--colour-white);
 
-  @media (min-width: 768px) {
-  }
-`;
-
-const BannerImage = styled.div`
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(
-      to bottom,
-      rgba(255, 255, 255, 0),
-      rgba(38, 38, 38, 0.73)
-    ),
-    url(${(props) => props.img});
-
-  background-position: center;
-  background-size: cover;
-  background-repeat: no-repeat;
-
-  transition: ease-out 0.3s;
-
-  &:hover {
+  &:hover > img {
     transform: scale(1.025);
+    transition: ease-out 0.3s;
     transition: ease-out 0.3s;
   }
 `;
 
+const BannerImage = styled.img`
+  height: 100%;
+  width: auto;
+
+  transition: ease-out 0.3s;
+`;
+
 const BannerContent = styled.div`
+  height: 100%;
+  width: 100%;
   position: absolute;
-  bottom: 0;
+  
+  text-align: left;
+
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0),
+    rgba(38, 38, 38, 0.73)
+  );
 `;
 
 const BannerTitle = styled.h1`
+  position: absolute;
+  bottom: 0;
+
   margin: 0 0 1rem 1rem;
   font-size: var(--text-xxxl);
   line-height: 1em;
@@ -59,7 +62,7 @@ function ArtistBanner(props) {
 
   return (
     <Banner>
-      <BannerImage img={image.url} />
+      <BannerImage src={image.url} loading="lazy" />
       <BannerContent>
         <BannerTitle>{name}</BannerTitle>
       </BannerContent>

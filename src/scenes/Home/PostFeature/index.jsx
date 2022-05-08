@@ -31,18 +31,13 @@ const ImageWrapper = styled.div`
   @media (min-width: 768px) {
     height: ${(props) => props.theme.imageHeight};
     width: ${(props) => props.theme.imageWidth};
-    min-height: 250px;
   }
 `;
 
-const PostImage = styled.div`
+const PostImage = styled.img`
   width: 100%;
   height: 100%;
-  background-image: url(${(props) => props.img});
-
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center center;
+  object-fit: cover;
 
   transition: ease-out 0.3s;
 
@@ -96,24 +91,24 @@ const ProfileLink = styled.span`
 `;
 
 const themeDefault = {
-  imageHeight: '100%',
+  imageHeight: '250px',
   imageWidth: '400px',
   direction: 'row',
-  basis: '0'
+  basis: '0',
 };
 
 const themePrimary = {
   imageHeight: '400px',
   imageWidth: 'auto',
   direction: 'column',
-  basis: '50%'
+  basis: '50%',
 };
 
 const themeSecondary = {
   imageHeight: '100%',
   imageWidth: 'auto',
   direction: 'row',
-  basis: '50%'
+  basis: '50%',
 };
 
 function PostFeature(props) {
@@ -148,7 +143,7 @@ function PostFeature(props) {
       <Container>
         <ImageContainer as={NavLink} to={`${link}`}>
           <ImageWrapper>
-            <PostImage img={artistImage} />
+            <PostImage src={artistImage} loading="lazy"/>
           </ImageWrapper>
         </ImageContainer>
         <ContentWraper>

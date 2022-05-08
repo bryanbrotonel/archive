@@ -23,17 +23,15 @@ const FeatureImageWrapper = styled.div`
   max-width: 500px;
   height: 400px;
 
+  display: flex;
+  justify-content: center;
+  align-items: center;
   overflow: hidden;
 `;
 
-const FeatureImage = styled.div`
-  width: 100%;
-  height: 100%;
-  background-image: url(${(props) => props.img});
-
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center center;
+const FeatureImage = styled.img`
+  flex-shrink: 0;
+  max-width: 100%;
 
   transition: ease-out 0.3s;
 
@@ -81,11 +79,11 @@ function FeatureArtist(props) {
   return (
     <FeatureContainer>
       <FeatureImageWrapper as={NavLink} to={`/artist/${link}`}>
-        <FeatureImage img={image.url} />
+        <FeatureImage src={image.url} loading="lazy"/>
       </FeatureImageWrapper>
       <div>
         <FeatureContent>
-          <Header title={name} subtitle="Featured Artist" />
+          <Header title={name} subtitle="Artist Spotlight" />
           <p>{bio}</p>
         </FeatureContent>
         <ProfileLink as={NavLink} to={`/artist/${link}`}>
