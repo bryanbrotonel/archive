@@ -53,19 +53,17 @@ const ContentWraper = styled.div`
 `;
 
 const Content = styled.div`
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  display: none;
 
   color: var(--colour-darkGrey);
 
   @media (min-width: 768px) {
-    -webkit-line-clamp: 5;
-  }
-  @media (min-width: 992px) {
+    display: -webkit-box;
     -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    letter-spacing: 0;
+    text-overflow: ellipsis;
   }
 `;
 
@@ -113,7 +111,7 @@ const themeSecondary = {
 
 function PostFeature(props) {
   const {
-    post: { title, subtitle, date, author, link, content, artists },
+    post: { title, date, author, link, content, artists },
     theme,
   } = props;
 
@@ -143,7 +141,7 @@ function PostFeature(props) {
       <Container>
         <ImageContainer as={NavLink} to={`${link}`}>
           <ImageWrapper>
-            <PostImage src={artistImage} loading="lazy"/>
+            <PostImage src={artistImage} loading="lazy" />
           </ImageWrapper>
         </ImageContainer>
         <ContentWraper>
@@ -153,10 +151,10 @@ function PostFeature(props) {
           </MetaData>
           <Content>
             <p>{content}</p>
+            <ProfileLink as={NavLink} to={`${link}`}>
+              Read More
+            </ProfileLink>
           </Content>
-          <ProfileLink as={NavLink} to={`${link}`}>
-            Read More
-          </ProfileLink>
         </ContentWraper>
       </Container>
     </ThemeProvider>

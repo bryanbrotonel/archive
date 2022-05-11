@@ -9,6 +9,8 @@ import Loading from '../../components/Loading';
 const axios = require('axios').default;
 
 const ShareContainer = styled.div`
+  min-height: 90vh;
+
   @media (min-width: 768px) {
     max-width: 525px;
   }

@@ -7,6 +7,8 @@ import Loading from '../../components/Loading';
 const axios = require('axios').default;
 
 const AboutContainer = styled.div`
+  min-height: 90vh;
+  
   @media (min-width: 768px) {
     max-width: 525px;
   }
@@ -28,7 +30,7 @@ function About() {
   `;
 
   useEffect(() => {
-        document.title = ` About | New New`;
+    document.title = ` About | New New`;
 
     setIsLoading(true);
 
@@ -52,7 +54,7 @@ function About() {
   }, []);
 
   return (
-    <div className='container'>
+    <div className="container">
       <AboutContainer>
         <Header title="Motive" subtitle="About" />
         {isLoading ? <Loading /> : <p>{aboutContent}</p>}

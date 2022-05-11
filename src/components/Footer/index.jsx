@@ -39,7 +39,6 @@ const FooterSubtitle = styled.span`
   display: block;
 
   font-family: var(--font-secondary);
-  font-weight: bold;
 `;
 
 const FooterNav = styled.div`

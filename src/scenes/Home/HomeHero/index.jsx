@@ -67,11 +67,7 @@ function HomeHero() {
           familiar with these new artists now and discover your next favourite
           artist.
         </p>
-        <DiscoverButton
-          as={HashLink}
-          to="/#home"
-          smooth
-        >
+        <DiscoverButton as={HashLink} to="/#home" smooth>
           Start Digging
         </DiscoverButton>
       </HeroContent>
