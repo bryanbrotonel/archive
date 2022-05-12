@@ -10,6 +10,7 @@ const axios = require('axios').default;
 
 const ShareContainer = styled.div`
   min-height: 90vh;
+  margin-top: 10vh;
 
   @media (min-width: 768px) {
     max-width: 525px;
