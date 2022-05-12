@@ -84,6 +84,7 @@ function Home() {
   }, []);
 
   if (!isLoading) {
+
     // Get primary post from list
     const primaryPost = posts.shift();
 

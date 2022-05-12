@@ -21,8 +21,10 @@ const Banner = styled.div`
 `;
 
 const BannerImage = styled.img`
+  width: 100%;
   height: 100%;
-  width: auto;
+
+  object-fit: cover;
 
   transition: ease-out 0.3s;
 `;

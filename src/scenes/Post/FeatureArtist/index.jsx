@@ -30,9 +30,11 @@ const FeatureImageWrapper = styled.div`
 `;
 
 const FeatureImage = styled.img`
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  
   flex-shrink: 0;
-  max-width: 100%;
-
   transition: ease-out 0.3s;
 
   &:hover {

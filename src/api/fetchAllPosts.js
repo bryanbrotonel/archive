@@ -40,45 +40,47 @@ export default async function fetchAllPosts() {
 
       const posts = [];
 
-      for (const post of contentfulRes) {
-        const contentfulArtists = post.artistsCollection.items;
+      await Promise.all(
+        contentfulRes.map(async (post) => {
+          const contentfulArtists = post.artistsCollection.items;
 
-        let idsString = '';
-        let artists = [];
+          let idsString = '';
+          let artists = [];
 
-        // Format URL
-        const cleanTitle = post.title.replace(/[^a-zA-Z1-9 ]/g, '');
-        const urlTitleParam = cleanTitle.replaceAll(/\s+/g, '-');
-        const postLink = urlTitleParam + '-' + post.sys.id;
+          // Format URL
+          const cleanTitle = post.title.replace(/[^a-zA-Z1-9 ]/g, '');
+          const urlTitleParam = cleanTitle.replaceAll(/\s+/g, '-');
+          const postLink = urlTitleParam + '-' + post.sys.id;
 
-        contentfulArtists.forEach((artist) => {
-          idsString = idsString.concat(artist.artistId + ',');
-        });
+          contentfulArtists.forEach((artist) => {
+            idsString = idsString.concat(artist.artistId + ',');
+          });
 
-        // Remove last comma from id qyer
-        let idQuery = { ids: idsString.slice(0, -1) };
+          // Remove last comma from id qyer
+          let idQuery = { ids: idsString.slice(0, -1) };
 
-        await getSpotifyArtist('', '', idQuery).then((response) => {
-          response.artists.forEach((artist) => {
-            // Append artist data to array
-            artists.push({
-              name: artist.name,
-              image: artist.images[0],
+          await getSpotifyArtist('', '', idQuery).then((response) => {
+            response.artists.forEach((artist) => {
+              // Append artist data to array
+              artists.push({
+                name: artist.name,
+                image: artist.images[0],
+              });
             });
           });
-        });
 
-        posts.push({
-          id: post.sys.id,
-          title: post.title,
-          subtitle: post.subtitle,
-          content: post.content,
-          author: post.author,
-          date: post.date,
-          artists: artists,
-          link: postLink,
-        });
-      }
+          posts.push({
+            id: post.sys.id,
+            title: post.title,
+            subtitle: post.subtitle,
+            content: post.content,
+            author: post.author,
+            date: post.date,
+            artists: artists,
+            link: postLink,
+          });
+        })
+      );
 
       return posts;
     })
