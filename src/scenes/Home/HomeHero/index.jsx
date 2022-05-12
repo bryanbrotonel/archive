@@ -50,10 +50,10 @@ const DiscoverButton = styled.button`
   text-decoration: none;
   color: var(--colour-white);
 
-  transition: 0.3s;
+  transition: 0.2s;
 
   &:hover {
-    opacity: 0.9;
+    opacity: 0.6;
   }
 `;
 

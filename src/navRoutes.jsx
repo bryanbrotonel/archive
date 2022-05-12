@@ -28,7 +28,7 @@ const NavRoutes = () => (
       }
     ></Route>
     <Route
-      path=":blogID"
+      path="/blog/:blogID"
       element={
         <React.Suspense fallback={<Loading />}>
           <Post />

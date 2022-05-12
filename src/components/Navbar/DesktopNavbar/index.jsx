@@ -27,6 +27,8 @@ const Link = styled(NavLink)`
   font-weight: bold;
   color: var(--colour-black);
 
+  transition: 0.2s;
+
   &.homeLink {
     font-family: var(--font-primary);
     font-size: var(--text-lg);

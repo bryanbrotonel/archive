@@ -1,6 +1,8 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
+import ReactMarkdown from 'react-markdown';
+
 import Header from '../../../components/Header';
 
 const FeatureContainer = styled.div`
@@ -10,23 +12,32 @@ const FeatureContainer = styled.div`
 
   align-items: center;
   gap: 2rem;
-
   margin-bottom: 20%;
+
+  text-decoration: none;
 
   @media (min-width: 768px) {
     flex-direction: row;
   }
 `;
 
+const ContentContainer = styled.div`
+  width: 100%;
+
+`
+
 const FeatureImageWrapper = styled.div`
   width: 100%;
-  max-width: 500px;
   height: 400px;
 
   display: flex;
   justify-content: center;
   align-items: center;
   overflow: hidden;
+
+  @media (min-width: 768px) {
+    max-width: 500px;
+  }
 `;
 
 const FeatureImage = styled.img`
@@ -45,33 +56,32 @@ const FeatureImage = styled.img`
 `;
 
 const FeatureContent = styled.div`
-  display: -webkit-box;
-  width: 100%;
-  -webkit-line-clamp: 4;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-
-  color: var(--colour-darkGrey);
+  display: none;
 
   @media (min-width: 768px) {
     max-width: 600px;
-    -webkit-line-clamp: 6;
-  }
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
 
-  @media (min-width: 992px) {
-    -webkit-line-clamp: 4;
+    color: var(--colour-darkGrey);
   }
 `;
 
 const ProfileLink = styled.span`
-  display: inline-block;
+  display: none;
 
-  font-family: var(--font-secondary);
-  font-size: inherit;
-  font-weight: bold;
-  text-decoration: none;
-  color: var(--colour-black);
-  margin: 1rem 0;
+  @media (min-width: 768px) {
+    display: inline-block;
+
+    font-family: var(--font-secondary);
+    font-size: inherit;
+    font-weight: bold;
+    text-decoration: none;
+    color: var(--colour-black);
+    margin: 1rem 0;
+  }
 `;
 
 function FeatureArtist(props) {
@@ -80,19 +90,19 @@ function FeatureArtist(props) {
   } = props;
 
   return (
-    <FeatureContainer>
-      <FeatureImageWrapper as={NavLink} to={`/artist/${link}`}>
-        <FeatureImage src={image.url} loading="lazy"/>
+    <FeatureContainer as={NavLink} to={`/artist/${link}`}>
+      <FeatureImageWrapper>
+        <FeatureImage src={image.url} loading="lazy" />
       </FeatureImageWrapper>
-      <div>
+      <ContentContainer>
+        <Header title={name} subtitle="Artist Spotlight" />
         <FeatureContent>
-          <Header title={name} subtitle="Artist Spotlight" />
-          <p>{bio}</p>
+          <ReactMarkdown children={bio} />
         </FeatureContent>
-        <ProfileLink as={NavLink} to={`/artist/${link}`}>
+        <ProfileLink>
           Read More
         </ProfileLink>
-      </div>
+      </ContentContainer>
     </FeatureContainer>
   );
 }

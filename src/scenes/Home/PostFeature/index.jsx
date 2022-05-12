@@ -12,6 +12,9 @@ const Container = styled.div`
 
   gap: 1rem;
 
+  text-decoration: none;
+  color: initial;
+
   @media (min-width: 768px) {
     flex-direction: ${(props) => props.theme.direction};
   }
@@ -87,9 +90,14 @@ const ProfileLink = styled.span`
   font-family: var(--font-secondary);
   font-size: inherit;
   font-weight: bold;
-  text-decoration: none;
   color: var(--colour-black);
   margin: 1rem 0;
+
+  transition: 0.2s;
+
+  &:hover {
+    opacity: 0.8;
+  }
 `;
 
 const themeDefault = {
@@ -142,8 +150,8 @@ function PostFeature(props) {
 
   return (
     <ThemeProvider theme={currentTheme}>
-      <Container>
-        <ImageContainer as={NavLink} to={`${link}`}>
+      <Container as={NavLink} to={`blog/${link}`}>
+        <ImageContainer>
           <ImageWrapper>
             <PostImage src={artistImage} loading="lazy" />
           </ImageWrapper>
@@ -156,7 +164,7 @@ function PostFeature(props) {
           <Content>
             <p>{subtitle}</p>
           </Content>
-          <ProfileLink as={NavLink} to={`${link}`}>
+          <ProfileLink>
             Read More
           </ProfileLink>
         </ContentWraper>
