@@ -7,6 +7,7 @@ import fetchArtistData from '../../../api/fetchArtistData';
 import ArtistImage from '../ArtistImage';
 import SpotifyTrack from '../SpotifyTrack';
 import ArtistFooter from '../ArtistFooter';
+import Loading from '../../../components/Loading'
 
 const ArtistContainer = styled.div`
   position: relative;
@@ -114,9 +115,7 @@ function ArtistProfile() {
   }
 
   return (
-    <div className="container">
-      {isLoading ? <h1>Loading</h1> : artistComponent}
-    </div>
+    <div className="container">{isLoading ? <Loading /> : artistComponent}</div>
   );
 }
 

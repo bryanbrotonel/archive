@@ -40,47 +40,49 @@ export default async function fetchAllPosts() {
 
       const posts = [];
 
-      await Promise.all(
-        contentfulRes.map(async (post) => {
-          const contentfulArtists = post.artistsCollection.items;
+      await contentfulRes.reduce(async (prev, post) => {
+        // Wait for previous post to finish processing
+        await prev;
 
-          let idsString = '';
-          let artists = [];
+        // Process next post
+        const contentfulArtists = post.artistsCollection.items;
 
-          // Format URL
-          const cleanTitle = post.title.replace(/[^a-zA-Z1-9 ]/g, '');
-          const urlTitleParam = cleanTitle.replaceAll(/\s+/g, '-');
-          const postLink = urlTitleParam + '-' + post.sys.id;
+        let idsString = '';
+        let artists = [];
 
-          contentfulArtists.forEach((artist) => {
-            idsString = idsString.concat(artist.artistId + ',');
-          });
+        // Format URL
+        const cleanTitle = post.title.replace(/[^a-zA-Z1-9 ]/g, '');
+        const urlTitleParam = cleanTitle.replaceAll(/\s+/g, '-');
+        const postLink = urlTitleParam + '-' + post.sys.id;
 
-          // Remove last comma from id qyer
-          let idQuery = { ids: idsString.slice(0, -1) };
+        contentfulArtists.forEach((artist) => {
+          idsString = idsString.concat(artist.artistId + ',');
+        });
 
-          await getSpotifyArtist('', '', idQuery).then((response) => {
-            response.artists.forEach((artist) => {
-              // Append artist data to array
-              artists.push({
-                name: artist.name,
-                image: artist.images[0],
-              });
+        // Remove last comma from id qyer
+        let idQuery = { ids: idsString.slice(0, -1) };
+
+        await getSpotifyArtist('', '', idQuery).then((response) => {
+          response.artists.forEach((artist) => {
+            // Append artist data to array
+            artists.push({
+              name: artist.name,
+              image: artist.images[0],
             });
           });
+        });
 
-          posts.push({
-            id: post.sys.id,
-            title: post.title,
-            subtitle: post.subtitle,
-            content: post.content,
-            author: post.author,
-            date: post.date,
-            artists: artists,
-            link: postLink,
-          });
-        })
-      );
+        posts.push({
+          id: post.sys.id,
+          title: post.title,
+          subtitle: post.subtitle,
+          content: post.content,
+          author: post.author,
+          date: post.date,
+          artists: artists,
+          link: postLink,
+        });
+      }, Promise.resolve());
 
       return posts;
     })

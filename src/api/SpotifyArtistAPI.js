@@ -1,6 +1,11 @@
 const axios = require('axios').default;
 const qs = require('qs');
 
+// Get auth token
+const auth = axios
+  .get('/.netlify/functions/SpotifyAuthAPI')
+  .then((response) => response.data);
+
 // Fetch Spotify artist info
 export async function getSpotifyArtist(id = '', param = '', query = null) {
   // Get Spotify auth token
@@ -8,16 +13,12 @@ export async function getSpotifyArtist(id = '', param = '', query = null) {
   const idStringQuery = id != '' ? `/${id}` : '';
   const paramStringQuery = param != '' ? `/${param}` : '';
 
-  const auth = await axios
-    .get('/.netlify/functions/SpotifyAuthAPI')
-    .then((response) => response.data);
-
   // Token url for API request
   const token_url = `https://api.spotify.com/v1/artists${idStringQuery}${paramStringQuery}`;
 
   // API headers
   const headers = {
-    Authorization: `Bearer ${auth}`,
+    Authorization: `Bearer ${await auth}`,
   };
 
   try {
