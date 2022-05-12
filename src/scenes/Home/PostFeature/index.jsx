@@ -38,6 +38,7 @@ const PostImage = styled.img`
   width: 100%;
   height: 100%;
   object-fit: cover;
+  image-rendering: -webkit-optimize-contrast;
 
   transition: ease-out 0.3s;
 
@@ -53,13 +54,16 @@ const ContentWraper = styled.div`
 `;
 
 const Content = styled.div`
-  display: none;
-
   color: var(--colour-darkGrey);
+
+  p {
+    font-size: var(--text-md);
+    margin-bottom: 0;
+  }
 
   @media (min-width: 768px) {
     display: -webkit-box;
-    -webkit-line-clamp: 3;
+    -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
     letter-spacing: 0;
@@ -111,7 +115,7 @@ const themeSecondary = {
 
 function PostFeature(props) {
   const {
-    post: { title, date, author, link, content, artists },
+    post: { title, subtitle, date, author, link, artists },
     theme,
   } = props;
 
@@ -150,11 +154,11 @@ function PostFeature(props) {
             {dateFormatted}&ensp;<span>&#8226;</span>&ensp;{author}
           </MetaData>
           <Content>
-            <p>{content}</p>
-            <ProfileLink as={NavLink} to={`${link}`}>
-              Read More
-            </ProfileLink>
+            <p>{subtitle}</p>
           </Content>
+          <ProfileLink as={NavLink} to={`${link}`}>
+            Read More
+          </ProfileLink>
         </ContentWraper>
       </Container>
     </ThemeProvider>

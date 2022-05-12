@@ -25,6 +25,7 @@ const BannerImage = styled.img`
   height: 100%;
 
   object-fit: cover;
+  image-rendering: -webkit-optimize-contrast;
 
   transition: ease-out 0.3s;
 `;

@@ -91,15 +91,13 @@ const GlobalStyle = createGlobalStyle`
       --bs-gutter-y: 0;
 
     // Colours
-    --colour-primary: #0B6E4F;
-    --colour-secondary: #0f956a;
-    --colour-tertiary: #074a35;
+    --colour-primary: #FE7A98;
+    --colour-secondary: #FFCE86;
     --colour-light: #FFB2CE;
 
     --colour-white: #FFFFFF;
     --colour-black: #1D1A05;
     --colour-darkGrey: #6b7280;
-    --colour-lightGrey: #f9fafb;
 
     --gradient-primary: linear-gradient(
                           64.3deg,

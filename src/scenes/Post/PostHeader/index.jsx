@@ -1,5 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
+import ReactMarkdown from 'react-markdown';
+
 import formatDate from '../../../api/FormatDate';
 
 const HeaderContainer = styled.div`
@@ -18,7 +20,7 @@ const Title = styled.h1`
   margin-bottom: 1rem;
 `;
 
-const Subtitle = styled.h3`
+const Subtitle = styled.h2`
   margin: 0;
 
   font-family: var(--font-secondary);
@@ -55,7 +57,7 @@ function PostHeader(props) {
         {dateFormatted}&ensp;<span>&#8226;</span>&ensp;by {author}
       </MetaData>
       <ContentWrapper>
-        <p>{content}</p>
+        <ReactMarkdown children={content} />
       </ContentWrapper>
     </HeaderContainer>
   );

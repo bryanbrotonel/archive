@@ -24,7 +24,7 @@ const ArtistWrapper = styled.div`
 
   @media (min-width: 768px) {
     flex-direction: row;
-    gap: 20px;
+    gap: 40px;
   }
 `;
 

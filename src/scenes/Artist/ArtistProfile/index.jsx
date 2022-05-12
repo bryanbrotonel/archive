@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
+import ReactMarkdown from 'react-markdown';
 
 import fetchArtistData from '../../../api/fetchArtistData';
 
@@ -96,7 +97,7 @@ function ArtistProfile() {
 
           <ArtistContentWrapper>
             <ArtistName>{name}</ArtistName>
-            <p>{bio}</p>
+            <ReactMarkdown children={bio} />
             <h1>Top Tracks</h1>
             <div>
               {tracks.map((track) => (
