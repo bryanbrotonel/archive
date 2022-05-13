@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import ReactMarkdown from 'react-markdown';
 
 import Header from '../../components/Header';
 import Loading from '../../components/Loading';
@@ -58,7 +59,7 @@ function About() {
     <div className="container">
       <AboutContainer>
         <Header title="Motive" subtitle="About" />
-        {isLoading ? <Loading /> : <p>{aboutContent}</p>}
+        {isLoading ? <Loading /> : <ReactMarkdown children={aboutContent} />}
       </AboutContainer>
     </div>
   );

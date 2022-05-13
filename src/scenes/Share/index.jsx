@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import ReactMarkdown from 'react-markdown';
 
 import shareArtist from '../../api/FirebaseDatabaseAPI';
 
@@ -20,7 +21,6 @@ const ShareContainer = styled.div`
 const Input = styled.input`
   border: solid var(--colour-black);
   font-family: var(--font-secondary);
-  font-size: var(--text-sm);
   color: var(--colour-black);
   padding: 0.5em 0.5em;
   margin: 1em 0.5em 1em 0;
@@ -44,7 +44,6 @@ const Submit = styled.button`
 
 function Share() {
   const [artistValue, setArtistValue] = useState('');
-  const [notableValue, setNotableValue] = useState('');
   const [handleValue, setHandleValue] = useState('');
   const [formSubmitted, setFormSubmitted] = useState(false);
 
@@ -63,7 +62,7 @@ function Share() {
   `;
 
   useEffect(() => {
-        document.title = `Share | New New`;
+    document.title = `Share | New New`;
 
     setIsLoading(true);
 
@@ -88,9 +87,9 @@ function Share() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    shareArtist(artistValue, notableValue, handleValue).then(
-      setFormSubmitted(true)
-    );
+    shareArtist(artistValue, handleValue).then(setFormSubmitted(true));
+    setArtistValue('');
+    setHandleValue('');
   };
 
   return (
@@ -101,7 +100,7 @@ function Share() {
           <Loading />
         ) : (
           <React.Fragment>
-            <p>{shareContent}</p>
+            <ReactMarkdown children={shareContent} />
             <form onSubmit={handleSubmit}>
               <Input
                 type="text"
@@ -111,19 +110,13 @@ function Share() {
               />
               <Input
                 type="text"
-                placeholder="Notable"
-                value={notableValue}
-                onChange={(event) => setNotableValue(event.target.value)}
-              />
-              <Input
-                type="text"
                 placeholder="Handle"
                 value={handleValue}
                 onChange={(event) => setHandleValue(event.target.value)}
               />
               <Submit type="submit">Submit</Submit>
             </form>
-            {formSubmitted && <p>Thanks for sharing!</p>}
+            {formSubmitted && <p>Your artist has been shared. Thank you for sharing!</p>}
           </React.Fragment>
         )}
       </ShareContainer>

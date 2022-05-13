@@ -1,12 +1,11 @@
 import { getDatabase, ref, child, push, update } from 'firebase/database';
 
-async function shareArtist(artist, notable, handle) {
+async function shareArtist(artist, handle) {
   const database = getDatabase();
 
   // Create new Share entry
   const share = {
     artist: artist,
-    notable: notable,
     handle: handle,
   };
 

@@ -97,8 +97,8 @@ function footer() {
           </div>
           <FooterLinksWrapper>
             <FooterLink to="/">Home</FooterLink>
-            <FooterLink to="/about">About</FooterLink>
             <FooterLink to="/share">Share</FooterLink>
+            <FooterLink to="/about">About</FooterLink>
           </FooterLinksWrapper>
         </FooterNav>
       </FooterWrapper>
