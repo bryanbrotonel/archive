@@ -153,7 +153,11 @@ function PostFeature(props) {
       <Container as={NavLink} to={`blog/${link}`}>
         <ImageContainer>
           <ImageWrapper>
-            <PostImage src={artistImage} loading="lazy" />
+            <PostImage
+              src={artistImage}
+              alt={`${title} - Image`}
+              loading="lazy"
+            />
           </ImageWrapper>
         </ImageContainer>
         <ContentWraper>
@@ -164,9 +168,7 @@ function PostFeature(props) {
           <Content>
             <p>{subtitle}</p>
           </Content>
-          <ProfileLink>
-            Read More
-          </ProfileLink>
+          <ProfileLink>Read More</ProfileLink>
         </ContentWraper>
       </Container>
     </ThemeProvider>

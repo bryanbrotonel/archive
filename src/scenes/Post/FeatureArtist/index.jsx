@@ -23,8 +23,7 @@ const FeatureContainer = styled.div`
 
 const ContentContainer = styled.div`
   width: 100%;
-
-`
+`;
 
 const FeatureImageWrapper = styled.div`
   width: 100%;
@@ -92,16 +91,14 @@ function FeatureArtist(props) {
   return (
     <FeatureContainer as={NavLink} to={`/artist/${link}`}>
       <FeatureImageWrapper>
-        <FeatureImage src={image.url} loading="lazy" />
+        <FeatureImage src={image.url} alt={`${name} - Image`} loading="lazy" />
       </FeatureImageWrapper>
       <ContentContainer>
         <Header title={name} subtitle="Artist Spotlight" />
         <FeatureContent>
           <ReactMarkdown children={bio} />
         </FeatureContent>
-        <ProfileLink>
-          Read More
-        </ProfileLink>
+        <ProfileLink>Read More</ProfileLink>
       </ContentContainer>
     </FeatureContainer>
   );

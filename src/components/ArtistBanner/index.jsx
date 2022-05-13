@@ -34,7 +34,7 @@ const BannerContent = styled.div`
   height: 100%;
   width: 100%;
   position: absolute;
-  
+
   text-align: left;
 
   background: linear-gradient(
@@ -65,7 +65,7 @@ function ArtistBanner(props) {
 
   return (
     <Banner>
-      <BannerImage src={image.url} loading="lazy" />
+      <BannerImage src={image.url} alt={`${name} - Image`} loading="lazy" />
       <BannerContent>
         <BannerTitle>{name}</BannerTitle>
       </BannerContent>
