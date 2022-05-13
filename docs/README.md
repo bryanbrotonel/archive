@@ -4,15 +4,14 @@ New New is a platform where light is shed on new and upcoming artists.
 
 ## Deployment
 
-[Heroku](https://heroku.com/)
+[Netlify](https://www.netlify.com/)
 
 ## Built With
 
-* [React](https://reactjs.org/) -JavaScript UI library
+* [React](https://reactjs.org/) - JavaScript UI library
+* [Spotify Web API](https://developer.spotify.com/documentation/web-api/) - Spotify Data Web API
+* [Netlify Functions](https://www.netlify.com/products/functions/) - Server-side functions
 * [Google Firebase](https://firebase.google.com/) - Realtime database and cloud functions
-* [Bootstrap](https://getbootstrap.com/) - CSS framework
-* [Reactstrap](https://reactstrap.github.io/) - Bootstrap 4 React components
-* [React Loadable](https://github.com/jamiebuilds/react-loadable) - Higher order component for loading components with dynamic imports.
 
 ## Authors
 
