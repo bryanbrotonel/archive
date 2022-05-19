@@ -38,6 +38,8 @@ const PrimaryWrapper = styled.div`
 `;
 
 const LatestWrapper = styled.div`
+  margin-bottom: 40px;
+  
   @media (min-width: 1200px) {
     width: 70%;
   }
@@ -84,7 +86,6 @@ function Home() {
   }, []);
 
   if (!isLoading) {
-
     // Get primary post from list
     const primaryPost = posts.shift();
 
@@ -126,7 +127,9 @@ function Home() {
   return (
     <HomeContainer>
       <HomeHero />
-      <HomeWrapper className="container" id="home">{homeComponent}</HomeWrapper>
+      <HomeWrapper className="container" id="home">
+        {homeComponent}
+      </HomeWrapper>
     </HomeContainer>
   );
 }
