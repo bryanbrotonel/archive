@@ -1,4 +1,4 @@
-import { Album, Track } from "./types";
+import { Album, Artist, Track } from "./types";
 
 export const convertArtistData = (data: any): Artist => {
   return {

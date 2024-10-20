@@ -1,10 +1,8 @@
-import { fetchYouTubeVideoData } from './lib/api/youtube';
-import { loadSpotifyData } from './lib/dashboardData';
+'use client';
 
-export default async function Home() {
-  const spotifyData = await loadSpotifyData();
-  const youtubeData = await fetchYouTubeVideoData('FEkOYs6aWIg');
+import Dashboard from './ui/dashboard';
 
+export default function Home() {
   return (
     <div className='grid grid-rows-[20px_1fr_20px] min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-source-serif)]'>
       <main className='flex flex-col gap-8 row-start-2 items-center sm:items-start'>
@@ -14,14 +12,11 @@ export default async function Home() {
         <div className='grid grid-cols-2 gap-4'>
           <div>
             <h1>Spotify Data</h1>
-            <pre className='text-wrap'>
-              {JSON.stringify(spotifyData, null, 2)}
-            </pre>
+            <Dashboard />
           </div>
           <div>
             <h1>YouTube Data</h1>
             <pre className='text-wrap'>
-              {JSON.stringify(youtubeData, null, 2)}
             </pre>
           </div>
         </div>

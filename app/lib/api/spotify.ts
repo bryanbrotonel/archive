@@ -5,11 +5,8 @@ const ARTIST_ENDPOINT = (id: string) => `https://api.spotify.com/v1/artists/${id
 const TRACK_ENDPOINT = (id: string) => `https://api.spotify.com/v1/tracks/${id}`
 const ALBUM_ENDPOINT = (id: string) => `https://api.spotify.com/v1/albums/${id}`
 
-const { SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET, SPOTIFY_REFRESH_TOKEN } =
-  process.env;
-
 const basic = Buffer.from(
-  `${SPOTIFY_CLIENT_ID}:${SPOTIFY_CLIENT_SECRET}`,
+  `${process.env.SPOTIFY_CLIENT_ID}:${process.env.SPOTIFY_CLIENT_SECRET}`,
 ).toString('base64');
 
 export const getAccessToken = async () => {
@@ -21,7 +18,7 @@ export const getAccessToken = async () => {
     },
     body: qs.stringify({
       grant_type: 'refresh_token',
-      refresh_token: SPOTIFY_REFRESH_TOKEN,
+      refresh_token: process.env.SPOTIFY_REFRESH_TOKEN,
     }),
     cache: 'no-store',
   });
@@ -37,6 +34,7 @@ export const getArtist = async (id: string): Promise<Response> => {
     headers: {
       Authorization: `Bearer ${access_token}`,
     },
+    cache: 'no-store',
   });
 };
 
@@ -48,6 +46,7 @@ export const getAlbum = async (id: string): Promise<Response> => {
     headers: {
       Authorization: `Bearer ${access_token}`,
     },
+    cache: 'no-store',
   });
 };
 
@@ -59,5 +58,6 @@ export const getTrack = async (id: string): Promise<Response> => {
     headers: {
       Authorization: `Bearer ${access_token}`,
     },
+    cache: 'no-store',
   });
 };
