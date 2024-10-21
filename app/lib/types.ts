@@ -51,3 +51,28 @@ export interface Album {
   totalTracks: number
   externalUrl: string
 }
+
+export type VideoInput = {
+  id: string,
+  publishedAt: string;
+  channelId: string;
+  title: string;
+  thumbnails: {
+    standard: {
+      url: string;
+      width: number;
+      height: number;
+    };
+  };
+  channelTitle: string;
+};
+
+export type ConvertedVideo = {
+  id: string,
+  title: string;
+  videoUrl: string;
+  thumbnailUrl: string;
+  channelTitle: string;
+  channelId: string;
+  channelUrl: string;
+};

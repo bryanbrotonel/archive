@@ -1,4 +1,4 @@
-import { Album, Artist, Track } from "./types";
+import { Album, Artist, ConvertedVideo, Track, VideoInput } from "./types";
 
 export const convertArtistData = (data: any): Artist => {
   return {
@@ -42,3 +42,17 @@ export const convertTrackData = (data: any): Track => {
     trackNumber: data.track_number
   };
 }
+
+export const convertVideoData = (input: VideoInput): ConvertedVideo => {
+  const { id, title, thumbnails, channelTitle, channelId } = input;
+
+  return {
+    id,
+    title,
+    thumbnailUrl: thumbnails.standard.url,
+    videoUrl: `https://www.youtube.com/watch?v=${id}`,
+    channelTitle,
+    channelId,
+    channelUrl: `https://www.youtube.com/channel/${channelId}`
+  };
+};
