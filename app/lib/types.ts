@@ -1,3 +1,10 @@
+export enum MediaType {
+  Artist = 'Artist',
+  Album = 'Album',
+  Track = 'Track',
+  Video = 'Video',
+}
+
 export type spotifyListeningProps = {
   isPlaying: boolean
   timestamp?: string
@@ -9,7 +16,6 @@ export type spotifyListeningProps = {
     spotifyUrl: string
   }
 }
-
 
 export type spotifyApiError = {
   error: {

@@ -2,30 +2,32 @@
 
 import React, { useState } from 'react';
 import Data from './data';
+import { MediaType } from '@/app/lib/types';
 
 export default function Dashboard() {
-  const [data, setData] = useState<string | null>(null);
-  async function handleFormSubmit(formData: FormData) {
-    const rawFormData = {
-      mediaType: formData.get('mediaType'),
-    };
-    setData(String(rawFormData.mediaType));
+  const [mediaType, setMediaType] = useState<MediaType>(MediaType.Track);
+
+  function onSelectChange(val: MediaType) {
+    setMediaType(val);
   }
 
   return (
     <div>
       <div>Dashboard</div>
-      <form action={handleFormSubmit}>
-        <select name='mediaType' className='bg-blue-700'>
-          <option value='artist'>Artist</option>
-          <option value='album'>Album</option>
-          <option value='track'>Track</option>
+      <form>
+        <select
+          onChange={(e) => onSelectChange(e.target.value as MediaType)}
+          name='mediaType'
+          className='bg-blue-700'
+        >
+          {Object.values(MediaType).map((mediaType) => (
+            <option key={mediaType} value={mediaType}>
+              {mediaType}
+            </option>
+          ))}
         </select>
-        <button className='bg-red-900 p-2 rounded-full' type='submit'>
-          Submit
-        </button>
       </form>
-      <Data mediaType={data} />
+      <Data mediaType={mediaType} />
     </div>
   );
 }

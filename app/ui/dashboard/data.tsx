@@ -2,12 +2,15 @@
 
 import React, { Suspense } from 'react';
 import useSWR from 'swr';
-import { spotifyApiError } from '@/app/lib/types';
+import { MediaType, spotifyApiError, VideoInput } from '@/app/lib/types';
 import {
   convertAlbumData,
   convertArtistData,
   convertTrackData,
+  convertVideoData,
 } from '@/app/lib/utils';
+import { ResponseError } from '@/app/interfaces';
+import { getYouTubeVideoId } from '@/app/lib/api/youtube';
 
 const fetcher = async (url: string) => {
   const res = await fetch(url);
@@ -19,7 +22,7 @@ const fetcher = async (url: string) => {
   return data;
 };
 
-export default function Data(props: { mediaType: string | null }) {
+export default function Data(props: { mediaType: MediaType | null }) {
   const { mediaType } = props;
 
   const trackId = '23uLia0r9XqAIKrj0Rlc4D';
@@ -52,23 +55,42 @@ export default function Data(props: { mediaType: string | null }) {
     fetcher
   );
 
+  const videoId = getYouTubeVideoId(
+    'https://youtu.be/FEkOYs6aWIg?si=xz0wH1UeAe3prB-r'
+  );
+  const {
+    data: videoData,
+    error: videoError,
+    isLoading: videoIsLoading,
+  } = useSWR<object, ResponseError>(
+    () => `/api/youtube/video/${videoId}`,
+    fetcher
+  );
+
   let displayData;
 
   switch (mediaType) {
-    case 'album':
+    case MediaType.Album:
       displayData = albumIsLoading
         ? { loading: true }
         : albumError ?? convertAlbumData(albumData);
       break;
-    case 'artist':
+    case MediaType.Artist:
       displayData = artistIsLoading
         ? { loading: true }
         : artistError ?? convertArtistData(artistData);
       break;
-    case 'track':
+    case MediaType.Track:
       displayData = trackIsLoading
         ? { loading: true }
         : trackError ?? convertTrackData(trackData);
+      break;
+    case MediaType.Video:
+      displayData = videoIsLoading
+        ? { loading: true }
+        : videoError ?? videoData !== undefined
+        ? convertVideoData(videoData as VideoInput)
+        : null;
       break;
     default:
       if (albumIsLoading && artistIsLoading && trackIsLoading) {
