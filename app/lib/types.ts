@@ -35,13 +35,13 @@ export interface Artist {
   name: string
   externalUrl: string
   genres: string[]
-  images?: Image[]
+  images: Image[]
 }
 
 export interface Track {
   id: string
   album: Album
-  trackName: string
+  name: string
   artists: Artist[]
   trackNumber: number
   externalUrl: string
@@ -60,9 +60,10 @@ export interface Album {
 
 export type VideoInput = {
   id: string,
-  publishedAt: string;
-  channelId: string;
   title: string;
+  channelId: string;
+  channelTitle: string;
+  publishedAt: string;
   thumbnails: {
     standard: {
       url: string;
@@ -70,7 +71,6 @@ export type VideoInput = {
       height: number;
     };
   };
-  channelTitle: string;
 };
 
 export type ConvertedVideo = {

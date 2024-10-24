@@ -35,7 +35,7 @@ export const convertTrackData = (data: any): Track => {
   return {
     id: data.id,
     album: convertAlbumData(data.album),
-    trackName: data.name,
+    name: data.name,
     artists: data.artists.map((artist: any) => convertArtistData(artist)),
     externalUrl: data.external_urls.spotify,
     previewUrl: data.preview_url,

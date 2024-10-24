@@ -5,7 +5,9 @@ import Data from './data';
 import { MediaType } from '@/app/lib/types';
 
 export default function Dashboard() {
-  const [mediaType, setMediaType] = useState<MediaType>(MediaType.Track);
+  const [mediaType, setMediaType] = useState<MediaType>(
+    Object.values(MediaType)[0]
+  );
 
   function onSelectChange(val: MediaType) {
     setMediaType(val);

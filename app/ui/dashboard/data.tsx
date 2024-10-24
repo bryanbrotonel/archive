@@ -1,6 +1,6 @@
 'use client';
 
-import React, { Suspense } from 'react';
+import React from 'react';
 import useSWR from 'swr';
 import { MediaType, spotifyApiError, VideoInput } from '@/app/lib/types';
 import {
@@ -11,6 +11,7 @@ import {
 } from '@/app/lib/utils';
 import { ResponseError } from '@/app/interfaces';
 import { getYouTubeVideoId } from '@/app/lib/api/youtube';
+import MeidaPreview from './mediaPreview';
 
 const fetcher = async (url: string) => {
   const res = await fetch(url);
@@ -24,14 +25,16 @@ const fetcher = async (url: string) => {
 
 export default function Data(props: { mediaType: MediaType | null }) {
   const { mediaType } = props;
+  let mediaContent;
 
-  const trackId = '23uLia0r9XqAIKrj0Rlc4D';
+  const trackId = '63ABAnFKJCp28TAyqf2cGL';
   const {
     data: trackData,
     error: trackError,
     isLoading: trackIsLoading,
   } = useSWR<object, spotifyApiError>(
-    () => `/api/spotify/track/${trackId}`,
+    () =>
+      mediaType === MediaType.Track ? `/api/spotify/track/${trackId}` : null,
     fetcher
   );
 
@@ -41,7 +44,8 @@ export default function Data(props: { mediaType: MediaType | null }) {
     error: albumError,
     isLoading: albumIsLoading,
   } = useSWR<object, spotifyApiError>(
-    () => `/api/spotify/album/${albumId}`,
+    () =>
+      mediaType === MediaType.Album ? `/api/spotify/album/${albumId}` : null,
     fetcher
   );
 
@@ -51,7 +55,8 @@ export default function Data(props: { mediaType: MediaType | null }) {
     error: artistError,
     isLoading: artistIsLoading,
   } = useSWR<object, spotifyApiError>(
-    () => `/api/spotify/artist/${artistId}`,
+    () =>
+      mediaType === MediaType.Artist ? `/api/spotify/artist/${artistId}` : null,
     fetcher
   );
 
@@ -63,62 +68,90 @@ export default function Data(props: { mediaType: MediaType | null }) {
     error: videoError,
     isLoading: videoIsLoading,
   } = useSWR<object, ResponseError>(
-    () => `/api/youtube/video/${videoId}`,
+    () =>
+      mediaType === MediaType.Video ? `/api/youtube/video/${videoId}` : null,
     fetcher
   );
 
-  let displayData;
-
   switch (mediaType) {
     case MediaType.Album:
-      displayData = albumIsLoading
-        ? { loading: true }
-        : albumError ?? convertAlbumData(albumData);
+      if (albumError) mediaContent = <div>{albumError.error.message}</div>;
+      else if (albumIsLoading) mediaContent = <div>Album Loading...</div>;
+      else if (!albumData) mediaContent = <div>No album...</div>;
+      else {
+        const { id, name, artists, externalUrl, images } =
+          convertAlbumData(albumData);
+
+        mediaContent = (
+          <MeidaPreview
+            title={name}
+            subTitle={artists.map((artist) => artist.name).join(', ')}
+            imageUrl={images[0].url ?? ''}
+            externalUrl={externalUrl}
+          />
+        );
+      }
       break;
     case MediaType.Artist:
-      displayData = artistIsLoading
-        ? { loading: true }
-        : artistError ?? convertArtistData(artistData);
+      if (artistError) mediaContent = <div>{artistError.error.message}</div>;
+      else if (artistIsLoading) mediaContent = <div>Artist Loading...</div>;
+      else if (!artistData) mediaContent = <div>No artist...</div>;
+      else {
+        const { id, name, externalUrl, images } = convertArtistData(artistData);
+
+        mediaContent = (
+          <MeidaPreview
+            title={name}
+            imageUrl={images[0].url ?? ''}
+            externalUrl={externalUrl}
+          />
+        );
+      }
       break;
     case MediaType.Track:
-      displayData = trackIsLoading
-        ? { loading: true }
-        : trackError ?? convertTrackData(trackData);
+      if (trackError) mediaContent = <div>{trackError.error.message}</div>;
+      else if (trackIsLoading) mediaContent = <div>Track Loading...</div>;
+      else if (!trackData) mediaContent = <div>No track...</div>;
+      else {
+        const { id, name, album, artists, externalUrl } =
+          convertTrackData(trackData);
+
+        mediaContent = (
+          <MeidaPreview
+            title={name}
+            subTitle={artists.map((artist) => artist.name).join(', ')}
+            imageUrl={album.images[0].url ?? ''}
+            externalUrl={externalUrl}
+          />
+        );
+      }
       break;
     case MediaType.Video:
-      displayData = videoIsLoading
-        ? { loading: true }
-        : videoError ?? videoData !== undefined
-        ? convertVideoData(videoData as VideoInput)
-        : null;
+      if (videoError) mediaContent = <div>{videoError.message}</div>;
+      else if (videoIsLoading) mediaContent = <div>Video Loading...</div>;
+      else if (!videoData) mediaContent = <div>No video...</div>;
+      else {
+        const { id, title, channelTitle, thumbnailUrl, videoUrl } =
+          convertVideoData(videoData as VideoInput);
+
+        mediaContent = (
+          <MeidaPreview
+            title={title}
+            subTitle={channelTitle}
+            imageUrl={thumbnailUrl}
+            externalUrl={videoUrl}
+          />
+        );
+      }
       break;
     default:
-      if (albumIsLoading && artistIsLoading && trackIsLoading) {
-        displayData = {};
-      } else {
-        if (albumError && artistError && trackError) {
-          displayData = {
-            albumError,
-            artistError,
-            trackError,
-          };
-        } else {
-          displayData = {
-            albumData: albumData ? convertAlbumData(albumData) : {},
-            artistData: artistData ? convertArtistData(artistData) : {},
-            trackData: trackData ? convertTrackData(trackData) : {},
-          };
-        }
-      }
+      mediaContent = <div>No media type selected</div>;
       break;
   }
 
   return (
-    <div>
-      <p>{mediaType}</p>
-      <Suspense fallback={<p>loading...</p>}>
-        <pre>{JSON.stringify(displayData, null, 2)}</pre>
-      </Suspense>
+    <div className='mt-5'>
+      <div>{mediaContent}</div>
     </div>
   );
 }
