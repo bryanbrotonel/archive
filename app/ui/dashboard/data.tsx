@@ -2,23 +2,23 @@
 
 import React from 'react';
 import useSWR from 'swr';
-import { MediaType, spotifyApiError, VideoInput } from '@/app/lib/types';
+import { MediaType, VideoInput } from '@/app/lib/types';
 import {
   convertAlbumData,
   convertArtistData,
   convertTrackData,
   convertVideoData,
 } from '@/app/lib/utils';
-import { ResponseError } from '@/app/interfaces';
 import { getYouTubeVideoId } from '@/app/lib/api/youtube';
 import MeidaPreview from './mediaPreview';
+import { Album, Artist, Track } from '@spotify/web-api-ts-sdk';
 
 const fetcher = async (url: string) => {
   const res = await fetch(url);
   const data = await res.json();
 
   if (res.status !== 200) {
-    throw new Error(data.message);
+    throw new Error(data.error.message);
   }
   return data;
 };
@@ -32,7 +32,7 @@ export default function Data(props: { mediaType: MediaType | null }) {
     data: trackData,
     error: trackError,
     isLoading: trackIsLoading,
-  } = useSWR<object, spotifyApiError>(
+  } = useSWR<Track, Error>(
     () =>
       mediaType === MediaType.Track ? `/api/spotify/track/${trackId}` : null,
     fetcher
@@ -43,7 +43,7 @@ export default function Data(props: { mediaType: MediaType | null }) {
     data: albumData,
     error: albumError,
     isLoading: albumIsLoading,
-  } = useSWR<object, spotifyApiError>(
+  } = useSWR<Album, Error>(
     () =>
       mediaType === MediaType.Album ? `/api/spotify/album/${albumId}` : null,
     fetcher
@@ -54,20 +54,20 @@ export default function Data(props: { mediaType: MediaType | null }) {
     data: artistData,
     error: artistError,
     isLoading: artistIsLoading,
-  } = useSWR<object, spotifyApiError>(
+  } = useSWR<Artist, Error>(
     () =>
       mediaType === MediaType.Artist ? `/api/spotify/artist/${artistId}` : null,
     fetcher
   );
 
   const videoId = getYouTubeVideoId(
-    'https://youtu.be/FEkOYs6aWIg?si=xz0wH1UeAe3prB-r'
+    'https://youtu.be/FEkOYs6adWIg?si=xz0wH1UeAe3prB-r'
   );
   const {
     data: videoData,
     error: videoError,
     isLoading: videoIsLoading,
-  } = useSWR<object, ResponseError>(
+  } = useSWR<object>(
     () =>
       mediaType === MediaType.Video ? `/api/youtube/video/${videoId}` : null,
     fetcher
@@ -75,11 +75,11 @@ export default function Data(props: { mediaType: MediaType | null }) {
 
   switch (mediaType) {
     case MediaType.Album:
-      if (albumError) mediaContent = <div>{albumError.error.message}</div>;
+      if (albumError) mediaContent = <div>{albumError.message}</div>;
       else if (albumIsLoading) mediaContent = <div>Album Loading...</div>;
       else if (!albumData) mediaContent = <div>No album...</div>;
       else {
-        const { id, name, artists, externalUrl, images } =
+        const { name, artists, externalUrl, images } =
           convertAlbumData(albumData);
 
         mediaContent = (
@@ -93,11 +93,11 @@ export default function Data(props: { mediaType: MediaType | null }) {
       }
       break;
     case MediaType.Artist:
-      if (artistError) mediaContent = <div>{artistError.error.message}</div>;
+      if (artistError) mediaContent = <div>{artistError.message}</div>;
       else if (artistIsLoading) mediaContent = <div>Artist Loading...</div>;
       else if (!artistData) mediaContent = <div>No artist...</div>;
       else {
-        const { id, name, externalUrl, images } = convertArtistData(artistData);
+        const { name, externalUrl, images } = convertArtistData(artistData);
 
         mediaContent = (
           <MeidaPreview
@@ -109,11 +109,11 @@ export default function Data(props: { mediaType: MediaType | null }) {
       }
       break;
     case MediaType.Track:
-      if (trackError) mediaContent = <div>{trackError.error.message}</div>;
+      if (trackError) mediaContent = <div>{trackError.message}</div>;
       else if (trackIsLoading) mediaContent = <div>Track Loading...</div>;
       else if (!trackData) mediaContent = <div>No track...</div>;
       else {
-        const { id, name, album, artists, externalUrl } =
+        const { name, album, artists, externalUrl } =
           convertTrackData(trackData);
 
         mediaContent = (
@@ -129,9 +129,10 @@ export default function Data(props: { mediaType: MediaType | null }) {
     case MediaType.Video:
       if (videoError) mediaContent = <div>{videoError.message}</div>;
       else if (videoIsLoading) mediaContent = <div>Video Loading...</div>;
-      else if (!videoData) mediaContent = <div>No video...</div>;
+      else if (!videoData || Object.keys(videoData).length === 0)
+        mediaContent = <div>No video...</div>;
       else {
-        const { id, title, channelTitle, thumbnailUrl, videoUrl } =
+        const { title, channelTitle, thumbnailUrl, videoUrl } =
           convertVideoData(videoData as VideoInput);
 
         mediaContent = (

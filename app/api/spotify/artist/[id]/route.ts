@@ -1,11 +1,11 @@
 import { NextResponse } from 'next/server';
 import { getArtist } from '@/app/lib/api/spotify';
-import { spotifyApiError } from '@/app/lib/types';
+import { Artist } from '@spotify/web-api-ts-sdk';
 
 export async function GET(
   request: Request,
   { params }: { params: { id: string } },
-): Promise<NextResponse<object | spotifyApiError>> {
+): Promise<NextResponse<Artist | { error: unknown }>> {
 
   const { id } = params
 
@@ -20,8 +20,8 @@ export async function GET(
 
     return NextResponse.json(data)
 
-  } catch (error) {
+  } catch (error: unknown) {
     console.error('~ Fetch album failed:', error);
-    return NextResponse.json({ error })
+    return NextResponse.json({ error: error }, { status: 500 })
   }
 }

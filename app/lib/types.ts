@@ -17,13 +17,6 @@ export type spotifyListeningProps = {
   }
 }
 
-export type spotifyApiError = {
-  error: {
-    status: number
-    message: string
-  }
-}
-
 interface Image {
   url: string
   height: number
@@ -45,7 +38,7 @@ export interface Track {
   artists: Artist[]
   trackNumber: number
   externalUrl: string
-  previewUrl: string
+  previewUrl: string | null
 }
 
 export interface Album {

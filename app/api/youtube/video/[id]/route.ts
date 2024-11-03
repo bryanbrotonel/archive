@@ -1,11 +1,10 @@
 import { NextResponse } from 'next/server';
 import { getYouTubeVideo } from '@/app/lib/api/youtube';
-import { ResponseError } from '@/app/interfaces';
 
 export async function GET(
   request: Request,
   { params }: { params: { id: string } },
-): Promise<NextResponse<object | ResponseError>> {
+): Promise<NextResponse<object | { error: unknown }>> {
 
   const { id } = params
 
@@ -18,12 +17,12 @@ export async function GET(
       throw data.error
     }
 
-    let videoData = data.items && data.items.length > 0 ? { id: data.items[0].id, ...data.items[0].snippet } : {}
+    const videoData = data.items && data.items.length > 0 ? { id: data.items[0].id, ...data.items[0].snippet } : {}
 
     return NextResponse.json(videoData)
 
-  } catch (error) {
+  } catch (error: unknown) {
     console.error('~ Fetch video failed:', error);
-    return NextResponse.json({ error })
+    return NextResponse.json({ error: error }, { status: 500 })
   }
 }
