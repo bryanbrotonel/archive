@@ -61,7 +61,7 @@ export default function Data(props: { mediaType: MediaType | null }) {
   );
 
   const videoId = getYouTubeVideoId(
-    'https://youtu.be/FEkOYs6adWIg?si=xz0wH1UeAe3prB-r'
+    'https://youtu.be/FEkOYs6aWIg?si=Fx7ysoovYa0DW_oA'
   );
   const {
     data: videoData,
@@ -88,6 +88,7 @@ export default function Data(props: { mediaType: MediaType | null }) {
             subTitle={artists.map((artist) => artist.name).join(', ')}
             imageUrl={images[0].url ?? ''}
             externalUrl={externalUrl}
+            type={MediaType.Album}
           />
         );
       }
@@ -104,6 +105,7 @@ export default function Data(props: { mediaType: MediaType | null }) {
             title={name}
             imageUrl={images[0].url ?? ''}
             externalUrl={externalUrl}
+            type={MediaType.Artist}
           />
         );
       }
@@ -122,6 +124,7 @@ export default function Data(props: { mediaType: MediaType | null }) {
             subTitle={artists.map((artist) => artist.name).join(', ')}
             imageUrl={album.images[0].url ?? ''}
             externalUrl={externalUrl}
+            type={MediaType.Track}
           />
         );
       }
@@ -141,6 +144,7 @@ export default function Data(props: { mediaType: MediaType | null }) {
             subTitle={channelTitle}
             imageUrl={thumbnailUrl}
             externalUrl={videoUrl}
+            type={MediaType.Video}
           />
         );
       }
