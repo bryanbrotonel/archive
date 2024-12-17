@@ -8,20 +8,11 @@ import {
   convertArtistData,
   convertTrackData,
   convertVideoData,
+  swrFetcher,
 } from '@/app/lib/utils';
 import { getYouTubeVideoId } from '@/app/lib/api/youtube';
 import MeidaPreview from './mediaPreview';
 import { Album, Artist, Track } from '@spotify/web-api-ts-sdk';
-
-const fetcher = async (url: string) => {
-  const res = await fetch(url);
-  const data = await res.json();
-
-  if (res.status !== 200) {
-    throw new Error(data.error.message);
-  }
-  return data;
-};
 
 export default function Data(props: { mediaType: MediaType | null }) {
   const { mediaType } = props;
@@ -35,7 +26,7 @@ export default function Data(props: { mediaType: MediaType | null }) {
   } = useSWR<Track, Error>(
     () =>
       mediaType === MediaType.Track ? `/api/spotify/track/${trackId}` : null,
-    fetcher
+    swrFetcher
   );
 
   const albumId = '6DlLdXBGCsSDPOV8R2pCl7';
@@ -46,7 +37,7 @@ export default function Data(props: { mediaType: MediaType | null }) {
   } = useSWR<Album, Error>(
     () =>
       mediaType === MediaType.Album ? `/api/spotify/album/${albumId}` : null,
-    fetcher
+    swrFetcher
   );
 
   const artistId = '7tr9pbgNEKtG0GQTKe08Tz';
@@ -57,7 +48,7 @@ export default function Data(props: { mediaType: MediaType | null }) {
   } = useSWR<Artist, Error>(
     () =>
       mediaType === MediaType.Artist ? `/api/spotify/artist/${artistId}` : null,
-    fetcher
+    swrFetcher
   );
 
   const videoId = getYouTubeVideoId(
@@ -70,7 +61,7 @@ export default function Data(props: { mediaType: MediaType | null }) {
   } = useSWR<object>(
     () =>
       mediaType === MediaType.Video ? `/api/youtube/video/${videoId}` : null,
-    fetcher
+    swrFetcher
   );
 
   switch (mediaType) {
@@ -157,6 +148,9 @@ export default function Data(props: { mediaType: MediaType | null }) {
   return (
     <div className='mt-5'>
       <div>{mediaContent}</div>
+      <div className='mt-5'>
+        <button className='rounded-md bg-white text-black p-2'>Save Changes</button>
+      </div>
     </div>
   );
 }
