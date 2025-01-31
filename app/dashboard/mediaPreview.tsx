@@ -51,7 +51,7 @@ export default function MeidaPreview(props: artistProfileProps) {
   return (
     <div className='space-y-4'>
       <p className='text-sm text-white'>{type}</p>
-      <div>
+      <div className='w-fit'>
         <Link href={externalUrl} target='_blank' rel='noopener noreferrer'>
           <Image
             className='rounded-lg border-2 border-white bg-cover'

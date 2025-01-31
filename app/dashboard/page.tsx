@@ -3,26 +3,27 @@
 import React, { useState } from 'react';
 import Data from './data';
 import { MediaType } from '@/app/lib/types';
-import useSWR from 'swr';
-import { swrFetcher } from '../lib/utils';
+// import useSWR from 'swr';
+// import { swrFetcher } from '../lib/utils';
 
 export default function Dashboard() {
   const [mediaType, setMediaType] = useState<MediaType>(
     Object.values(MediaType)[0]
   );
 
-  const {
-    data: entryData,
-    error: entryError,
-    isLoading: insertEntryLoading,
-  } = useSWR<string, Error>(
-    () => (mediaType === MediaType.Artist ? `/api/database/insertEntry` : null),
-    swrFetcher
-  );
-
+  // const {
+  //   data: entryData,
+  //   error: entryError,
+  //   isLoading: addArtistLoading,
+  // } = useSWR<string, Error>(
+  //   () => (mediaType === MediaType.Artist ? `/api/database/addArtist` : null),
+  //   swrFetcher
+  // );
+  
   function onSelectChange(val: MediaType) {
     setMediaType(val);
   }
+  // console.log('🚀 ~ Dashboard ~ addArtist:', entryData, entryError, addArtistLoading)
 
   return (
     <div>
