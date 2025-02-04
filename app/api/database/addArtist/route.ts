@@ -4,7 +4,6 @@ import { NextResponse } from 'next/server';
 export async function POST(
   request: Request
 ): Promise<NextResponse<{ message: string } | { error: unknown }>> {
-  console.log('calling post')
 
   const { id, name, externalUrls, genres, imageUrl } = await request.json();
 

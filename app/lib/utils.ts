@@ -57,7 +57,7 @@ export const convertTrackData = (data: SpotifyTrack): Track => ({
 });
 
 export const convertVideoData = (input: VideoInput): ConvertedVideo => {
-  const { id, title, thumbnails, channelTitle, channelId } = input;
+  const { id, title, thumbnails, channelTitle, channelId, publishedAt } = input;
 
   return {
     id,
@@ -67,14 +67,13 @@ export const convertVideoData = (input: VideoInput): ConvertedVideo => {
     channelTitle,
     channelId,
     channelUrl: `https://www.youtube.com/channel/${channelId}`,
+    publishedAt,
   };
 };
 
 export const swrFetcher = async (url: string) => {
   const res = await fetch(url);
-  console.log('🚀 ~ fetcher ~ res:', res)
   const data = await res.json();
-  console.log('🚀 ~ fetcher ~ data:', data)
 
   if (res.status !== 200) {
     throw new Error(data.error.message);

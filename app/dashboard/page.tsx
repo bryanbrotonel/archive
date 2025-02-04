@@ -10,20 +10,10 @@ export default function Dashboard() {
   const [mediaType, setMediaType] = useState<MediaType>(
     Object.values(MediaType)[0]
   );
-
-  // const {
-  //   data: entryData,
-  //   error: entryError,
-  //   isLoading: addArtistLoading,
-  // } = useSWR<string, Error>(
-  //   () => (mediaType === MediaType.Artist ? `/api/database/addArtist` : null),
-  //   swrFetcher
-  // );
   
   function onSelectChange(val: MediaType) {
     setMediaType(val);
   }
-  // console.log('🚀 ~ Dashboard ~ addArtist:', entryData, entryError, addArtistLoading)
 
   return (
     <div>

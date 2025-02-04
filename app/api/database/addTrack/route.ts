@@ -5,19 +5,19 @@ export async function POST(
   request: Request
 ): Promise<NextResponse<{ message: string } | { error: unknown }>> {
 
-  const { id, name, totalTracks, releaseDate, externalUrls, genres, imageUrl } = await request.json();
+  const { id, name, trackNumber, previewUrl, externalUrls, genres, imageUrl } = await request.json();
 
   const client = await db.connect();
 
   try {
     await client.sql`
-      INSERT INTO albums (id, name, totalTracks, releaseDate, externalUrls, genres, imageUrl, createdAt, updatedAt)
+      INSERT INTO tracks (id, name, tracknumber, externalurls, previewurl, genres, imageurl, createdAt, updatedAt)
       VALUES (
         ${id},
         ${name},
-        ${totalTracks},
-        ${releaseDate},
+        ${trackNumber},
         ${JSON.stringify(externalUrls)},
+        ${previewUrl},
         ${JSON.stringify(genres)},
         ${imageUrl},
         CURRENT_TIMESTAMP,
@@ -25,7 +25,7 @@ export async function POST(
       );
     `;
 
-    return NextResponse.json({ message: 'Album inserted successfully!' });
+    return NextResponse.json({ message: 'Track inserted successfully!' });
   } catch (error) {
     return NextResponse.json({ error }, { status: 500 });
   } finally {

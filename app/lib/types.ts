@@ -51,20 +51,39 @@ export interface Album {
   externalUrl: string
 }
 
-export type VideoInput = {
-  id: string,
+interface Thumbnail {
+  url: string;
+  width: number;
+  height: number;
+}
+
+interface Thumbnails {
+  default: Thumbnail;
+  medium: Thumbnail;
+  high: Thumbnail;
+  standard: Thumbnail;
+}
+
+interface Localized {
   title: string;
-  channelId: string;
-  channelTitle: string;
+  description: string;
+}
+
+export interface VideoInput {
+  id: string;
   publishedAt: string;
-  thumbnails: {
-    standard: {
-      url: string;
-      width: number;
-      height: number;
-    };
-  };
-};
+  channelId: string;
+  title: string;
+  description: string;
+  thumbnails: Thumbnails;
+  channelTitle: string;
+  tags: string[];
+  categoryId: string;
+  liveBroadcastContent: string;
+  defaultLanguage: string;
+  localized: Localized;
+  defaultAudioLanguage: string;
+}
 
 export type ConvertedVideo = {
   id: string,
@@ -74,4 +93,5 @@ export type ConvertedVideo = {
   channelTitle: string;
   channelId: string;
   channelUrl: string;
+  publishedAt: string;
 };
