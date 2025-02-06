@@ -11,7 +11,7 @@ export async function POST(
 
   try {
     await client.sql`
-      INSERT INTO tracks (id, name, tracknumber, externalurls, previewurl, genres, imageurl, createdAt, updatedAt)
+      INSERT INTO track (id, name, tracknumber, externalurls, previewurl, genres, imageurl, createdAt, updatedAt)
       VALUES (
         ${id},
         ${name},

@@ -11,7 +11,7 @@ export async function POST(
 
   try {
     await client.sql`
-      INSERT INTO albums (id, name, totalTracks, releaseDate, externalUrls, genres, imageUrl, createdAt, updatedAt)
+      INSERT INTO album (id, name, totalTracks, releaseDate, externalUrls, genres, imageUrl, createdAt, updatedAt)
       VALUES (
         ${id},
         ${name},

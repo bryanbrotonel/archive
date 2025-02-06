@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import Data from './data';
 import { MediaType } from '@/app/lib/types';
+import ArchiveList from './archiveList';
 // import useSWR from 'swr';
 // import { swrFetcher } from '../lib/utils';
 
@@ -10,7 +11,7 @@ export default function Dashboard() {
   const [mediaType, setMediaType] = useState<MediaType>(
     Object.values(MediaType)[0]
   );
-  
+
   function onSelectChange(val: MediaType) {
     setMediaType(val);
   }
@@ -36,9 +37,7 @@ export default function Dashboard() {
           </form>
           <Data mediaType={mediaType} />
         </div>
-        <div>
-          <h2 className='mb-10 text-xl font-mono'>Archive List</h2>
-        </div>
+        <ArchiveList type={mediaType} />
       </div>
     </div>
   );

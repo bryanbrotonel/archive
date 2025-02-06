@@ -11,7 +11,7 @@ export async function POST(
 
   try {
     await client.sql`
-      INSERT INTO artists (id, name, externalUrls, genres, imageUrl, createdAt, updatedAt)
+      INSERT INTO artist (id, name, externalUrls, genres, imageUrl, createdAt, updatedAt)
       VALUES (
         ${id},
         ${name},
