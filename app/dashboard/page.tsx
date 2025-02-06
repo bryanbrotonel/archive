@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import Data from './data';
 import { MediaType } from '@/app/lib/types';
-import ArchiveList from './archiveList';
+import ArchiveList from './archiveList/archiveList';
 // import useSWR from 'swr';
 // import { swrFetcher } from '../lib/utils';
 

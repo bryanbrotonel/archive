@@ -5,16 +5,17 @@ export async function POST(
   request: Request
 ): Promise<NextResponse<{ message: string } | { error: unknown }>> {
 
-  const { videoID, videoTitle, channelID, channelTitle, thumbnailUrl, publishedAt, } = await request.json();
+  const { videoID, videoTitle, videoUrl, channelID, channelTitle, thumbnailUrl, publishedAt, } = await request.json();
 
   const client = await db.connect();
 
   try {
     await client.sql`
-      INSERT INTO video (videoid, videotitle, channelid, channeltitle, thumbnailurl, publishedat, createdat, updatedat)
+      INSERT INTO video (videoid, videotitle, videoUrl, channelid, channeltitle, thumbnailurl, publishedat, createdat, updatedat)
       VALUES (
         ${videoID},
         ${videoTitle},
+        ${videoUrl},
         ${channelID},
         ${channelTitle},
         ${thumbnailUrl},

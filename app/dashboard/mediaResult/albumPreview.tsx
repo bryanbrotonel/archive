@@ -15,6 +15,7 @@ export default function AlbumPreview(props: { id: string }) {
     const saveData = {
       id: data?.id,
       name: data?.name,
+      artist: data?.artists.map((artist) => artist.name).join(', '),
       totalTracks: data?.total_tracks,
       releaseDate: data?.release_date,
       externalUrls: data?.external_urls,

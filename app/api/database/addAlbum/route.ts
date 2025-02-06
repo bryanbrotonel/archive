@@ -5,16 +5,17 @@ export async function POST(
   request: Request
 ): Promise<NextResponse<{ message: string } | { error: unknown }>> {
 
-  const { id, name, totalTracks, releaseDate, externalUrls, genres, imageUrl } = await request.json();
+  const { id, name, artist, totalTracks, releaseDate, externalUrls, genres, imageUrl } = await request.json();
 
   const client = await db.connect();
 
   try {
     await client.sql`
-      INSERT INTO album (id, name, totalTracks, releaseDate, externalUrls, genres, imageUrl, createdAt, updatedAt)
+      INSERT INTO album (id, name, artist, totalTracks, releaseDate, externalUrls, genres, imageUrl, createdAt, updatedAt)
       VALUES (
         ${id},
         ${name},
+        ${artist},
         ${totalTracks},
         ${releaseDate},
         ${JSON.stringify(externalUrls)},
