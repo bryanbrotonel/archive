@@ -1,9 +1,10 @@
 import { useMemo } from 'react';
 import useSWR from 'swr';
 import { getYouTubeVideoId } from '@/app/lib/api/youtube';
-import { ConvertedVideo, MediaType, VideoInput } from '@/app/lib/types';
+import { MediaType, VideoInput } from '@/app/lib/types';
 import { convertVideoData, swrFetcher } from '@/app/lib/utils';
-import MediaPreview from '../mediaPreview';
+import MediaPreview from './mediaPreview';
+import { onSaveVideo } from './api';
 
 export default function VideoPreview({ url }: { url: string }) {
   const videoId = getYouTubeVideoId(url);
@@ -17,45 +18,6 @@ export default function VideoPreview({ url }: { url: string }) {
     return convertVideoData(data);
   }, [data]);
 
-  const onSave = async (convertedData: ConvertedVideo) => {
-    const {
-      id,
-      title,
-      channelId,
-      channelTitle,
-      thumbnailUrl,
-      videoUrl,
-      publishedAt,
-    } = convertedData;
-
-    const saveData = {
-      videoID: id,
-      videoTitle: title,
-      channelID: channelId,
-      channelTitle: channelTitle,
-      thumbnailUrl: thumbnailUrl,
-      videoUrl: videoUrl,
-      publishedAt: publishedAt,
-    };
-
-    try {
-      const response = await fetch(`/api/database/addVideo`, {
-        method: 'POST',
-        body: JSON.stringify(saveData),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to save video');
-      }
-
-      console.log('Save successful');
-    } catch (error) {
-      console.error('Error saving video:', error);
-    }
-  };
 
   if (error) return <div>{error.message}</div>;
   if (isLoading) return <div>Video Loading...</div>;
@@ -74,7 +36,7 @@ export default function VideoPreview({ url }: { url: string }) {
       />
       <div className='mt-5'>
         <button
-          onClick={() => onSave(convertedData)}
+          onClick={() => onSaveVideo(convertedData)}
           className='rounded-md bg-white text-black p-2'
         >
           Save Changes

@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { MediaType } from '@/app/lib/types';
-import AlbumPreview from './mediaResult/albumPreview';
-import ArtistPreview from './mediaResult/artistPreview';
-import TrackPreview from './mediaResult/trackPreview';
-import VideoPreview from './mediaResult/videoPreview';
+import AlbumPreview from './mediaPreviews/albumPreview';
+import ArtistPreview from './mediaPreviews/artistPreview';
+import TrackPreview from './mediaPreviews/trackPreview';
+import VideoPreview from './mediaPreviews/videoPreview';
 
-export default function Data(props: { mediaType: MediaType | null }) {
+export default function MediaSearch(props: { mediaType: MediaType | null }) {
   const { mediaType } = props;
 
   const [searchValue, setSearchValue] = useState<string>('');

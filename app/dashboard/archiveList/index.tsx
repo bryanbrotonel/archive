@@ -17,9 +17,7 @@ const ArchiveList = (props: { type: MediaType }) => {
       }[];
     },
     Error
-  >(`/api/database/getItems?type=${type}`, swrFetcher, {
-    revalidateOnFocus: false,
-  });
+  >(`/api/database/getItems?type=${type}`, swrFetcher, {});
 
   return (
     <div>

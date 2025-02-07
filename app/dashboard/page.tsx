@@ -1,11 +1,9 @@
 'use client';
 
 import React, { useState } from 'react';
-import Data from './data';
+import MediaSearch from './mediaSearch';
 import { MediaType } from '@/app/lib/types';
-import ArchiveList from './archiveList/archiveList';
-// import useSWR from 'swr';
-// import { swrFetcher } from '../lib/utils';
+import ArchiveList from './archiveList';
 
 export default function Dashboard() {
   const [mediaType, setMediaType] = useState<MediaType>(
@@ -35,7 +33,7 @@ export default function Dashboard() {
               ))}
             </select>
           </form>
-          <Data mediaType={mediaType} />
+          <MediaSearch mediaType={mediaType} />
         </div>
         <ArchiveList type={mediaType} />
       </div>
