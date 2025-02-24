@@ -1,25 +1,38 @@
+'use client'
+
 import React, { useState } from 'react';
 import { MediaType } from '@/app/lib/types';
 import AlbumPreview from './mediaPreviews/albumPreview';
 import ArtistPreview from './mediaPreviews/artistPreview';
 import TrackPreview from './mediaPreviews/trackPreview';
 import VideoPreview from './mediaPreviews/videoPreview';
+import SearchBar from '../ui/SearchBar';
 
-export default function MediaSearch(props: { mediaType: MediaType | null }) {
-  const { mediaType } = props;
+export default function MediaSearch() {
+  const [mediaPreview, setMediaPreview] = useState<{
+    type: MediaType;
+    id: string;
+  }>({ type: MediaType.Artist, id: '' });
 
-  const [searchValue, setSearchValue] = useState<string>('');
+  const handleSearchResults = (type: MediaType, id: string) => {
+    console.log('Search results:', type, id);
+    setMediaPreview({ type, id });
+  };
+
   let mediaContent;
 
-  switch (mediaType) {
+  switch (mediaPreview.type) {
     case MediaType.Album:
-      mediaContent = <AlbumPreview id='6DlLdXBGCsSDPOV8R2pCl7' />;
+      // mediaContent = <AlbumPreview id='6DlLdXBGCsSDPOV8R2pCl7' />;
+      mediaContent = <AlbumPreview id={mediaPreview.id} />;
       break;
     case MediaType.Artist:
       mediaContent = <ArtistPreview id='7tr9pbgNEKtG0GQTKe08Tz' />;
+      mediaContent = <ArtistPreview id={mediaPreview.id} />;
       break;
     case MediaType.Track:
-      mediaContent = <TrackPreview id='63ABAnFKJCp28TAyqf2cGL' />;
+      // mediaContent = <TrackPreview id='63ABAnFKJCp28TAyqf2cGL' />;
+      mediaContent = <TrackPreview id={mediaPreview.id} />;
       break;
     case MediaType.Video:
       mediaContent = (
@@ -33,17 +46,11 @@ export default function MediaSearch(props: { mediaType: MediaType | null }) {
 
   return (
     <div className='mt-5'>
-      {/* TODO: Add search bar */}
-      <div className='mb-2'>
-        <input
-          type='text'
-          value={searchValue}
-          placeholder='Search...'
-          onChange={(e) => setSearchValue(e.target.value)}
-          className='bg-white text-slate-900 rounded-md border-none p-2'
-        />
+      <SearchBar onSubmit={handleSearchResults} />
+      <div>
+        <span>{JSON.stringify(mediaPreview, null, 1)}</span>
       </div>
-      <div>{mediaContent}</div>
+      <div>{mediaPreview.id && mediaContent}</div>
     </div>
   );
 }

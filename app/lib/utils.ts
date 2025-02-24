@@ -5,8 +5,10 @@ import {
   SimplifiedArtist,
   SimplifiedAlbum,
   Image,
+  SearchResults,
+  SimplifiedTrack,
 } from '@spotify/web-api-ts-sdk';
-import { Album, Artist, ConvertedVideo, Track, VideoInput } from './types';
+import { Album, Artist, ConvertedVideo, MediaType, SearchItemType, Track, VideoInput } from './types';
 
 export const convertArtistData = (
   data: SpotifyArtist | SimplifiedArtist
@@ -71,8 +73,8 @@ export const convertVideoData = (input: VideoInput): ConvertedVideo => {
   };
 };
 
-export const swrFetcher = async (url: string) => {
-  const res = await fetch(url);
+export const swrFetcher = async (url: string, options?: RequestInit) => {
+  const res = await fetch(url, options);
   const data = await res.json();
 
   if (res.status !== 200) {
@@ -92,8 +94,11 @@ export const timeAgo = (timestamp: number): string => {
   const weeks = Math.floor(days / 7);
   const months = Math.floor(days / 30);
   const years = Math.floor(days / 365);
+  console.log('🚀 ~ timeAgo ~ seconds:', seconds)
 
-  if (seconds < 60) {
+  if (seconds <= 0) {
+    return "Just now"
+  } else if (seconds < 60) {
     return `${seconds} second${seconds === 1 ? '' : 's'} ago`;
   } else if (minutes < 60) {
     return `${minutes} minute${minutes === 1 ? '' : 's'} ago`;
@@ -109,3 +114,47 @@ export const timeAgo = (timestamp: number): string => {
     return `${years} year${years === 1 ? '' : 's'} ago`;
   }
 }
+
+export const sortSearchResults = (data: SearchResults<['album', 'artist', 'track']>): SearchItemType[] => {
+  const searchItems: SearchItemType[] = [];
+
+  if (data.albums) {
+    searchItems.push(
+      ...data.albums.items.map((album: SimplifiedAlbum) => ({
+        id: album.id,
+        type: MediaType.Album,
+        title: album.name,
+        subTitle: album.artists.map(artist => artist.name).join(', '),
+        imageUrl: album.images[0]?.url || '',
+        popularity: album.popularity,
+      }))
+    );
+  }
+
+  if (data.artists) {
+    searchItems.push(
+      ...data.artists.items.map((artist: SpotifyArtist) => ({
+        id: artist.id,
+        type: MediaType.Artist,
+        title: artist.name,
+        imageUrl: artist.images[0]?.url || '',
+        popularity: artist.popularity,
+      }))
+    );
+  }
+
+  if (data.tracks) {
+    searchItems.push(
+      ...data.tracks.items.map((track: SpotifyTrack) => ({
+        id: track.id,
+        type: MediaType.Track,
+        title: track.name,
+        subTitle: track.artists.map(artist => artist.name).join(', '),
+        imageUrl: track.album.images[0]?.url || '',
+        popularity: track.popularity,
+      }))
+    );
+  }
+
+  return searchItems.sort((a, b) => (b.popularity || 0) - (a.popularity || 0));
+};

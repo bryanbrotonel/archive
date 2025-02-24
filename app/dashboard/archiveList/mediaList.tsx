@@ -22,7 +22,6 @@ export default function MediaList(props: MediaListProps) {
           externalUrls: object;
           createdat: string;
         }) => {
-          console.log('🚀 ~ MediaList ~ album:', album);
           return (
             <ArchivePreview
               key={album.id}
@@ -108,5 +107,5 @@ export default function MediaList(props: MediaListProps) {
       mediaList = <></>;
   }
 
-  return <div>{mediaList}</div>;
+  return <div className='space-y-4'>{mediaList}</div>;
 }

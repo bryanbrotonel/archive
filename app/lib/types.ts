@@ -95,3 +95,5 @@ export type ConvertedVideo = {
   channelUrl: string;
   publishedAt: string;
 };
+
+export type SearchItemType = { id: string, type: MediaType, title: string, subTitle?: string, imageUrl: string, popularity?: number }

@@ -32,7 +32,6 @@ export async function GET(
   try {
     const query = `SELECT * FROM ${table}`;
     const result = await client.query(query);
-    console.log('🚀 ~ result:', result)
 
     return NextResponse.json({ data: result.rows });
   } catch (error) {
