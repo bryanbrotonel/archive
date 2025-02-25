@@ -10,32 +10,30 @@ interface SearchItemProps {
   onClick: () => void;
 }
 
-export default function SearchItem(props: SearchItemProps) {
-  const { type, title, subTitle, imageUrl, onClick } = props;
+export default function SearchItem({
+  type,
+  title,
+  subTitle,
+  imageUrl,
+  onClick,
+}: SearchItemProps) {
+  const subTitleComponent = () => (
+    <h2
+      className={`font-sans text-sm truncate ${
+        type === MediaType.Artist ? 'text-black/50' : 'text-black'
+      }`}
+    >
+      {type === MediaType.Artist ? type : subTitle}
+    </h2>
+  );
 
-  const subTitleComponent = () => {
-    switch (type) {
-      case MediaType.Artist:
-        return <h2 className='font-sans text-sm text-black/50'>{type}</h2>;
-      default:
-        return <h2 className='font-sans text-sm text-black'>{subTitle}</h2>;
-    }
-  };
-
-  const imageClass = () => {
-    switch (type) {
-      case MediaType.Artist:
-        return 'rounded-full';
-      default:
-        return 'rounded-md';
-    }
-  };
+  const imageClass = type === MediaType.Artist ? 'rounded-full' : 'rounded-md';
 
   return (
     <div className='mb-2'>
       <button
         onClick={onClick}
-        className='w-full text-left hover:bg-slate-400 rounded-md p-2'
+        className='w-full text-left hover:bg-indigo-400 rounded-md p-2'
       >
         <div className='flex row gap-2'>
           <Image
@@ -43,10 +41,10 @@ export default function SearchItem(props: SearchItemProps) {
             alt={`Image of ${title}`}
             width={50}
             height={50}
-            className={`${imageClass()} h-10 w-10`}
+            className={`${imageClass} h-10 w-10`}
           />
-          <div>
-            <h1 className='font-mono'>{title}</h1>
+          <div className='overflow-hidden'>
+            <p className='font-mono truncate'>{title}</p>
             {subTitleComponent()}
           </div>
         </div>

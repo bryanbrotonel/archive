@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import React, { useState } from 'react';
 import { MediaType } from '@/app/lib/types';
@@ -45,12 +45,13 @@ export default function MediaSearch() {
   }
 
   return (
-    <div className='mt-5'>
+    <div className='space-y-5'>
       <SearchBar onSubmit={handleSearchResults} />
-      <div>
-        <span>{JSON.stringify(mediaPreview, null, 1)}</span>
-      </div>
       <div>{mediaPreview.id && mediaContent}</div>
+      <details>
+        <summary>Show Raw Data</summary>
+        <pre>{JSON.stringify(mediaPreview, null, 1)}</pre>
+      </details>
     </div>
   );
 }

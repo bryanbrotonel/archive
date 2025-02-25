@@ -38,9 +38,9 @@ export default function SearchBar(props: SearchBarProps) {
   }, [searchQuery, onSubmit]);
 
   useEffect(() => {
-    if (searchData) {
+    if (searchData && searchQuery) {
       setShowResults(true);
-      setSearchResults(sortSearchResults(searchData));
+      setSearchResults(sortSearchResults(searchData, searchQuery));
     }
   }, [searchData]);
 
@@ -77,7 +77,7 @@ export default function SearchBar(props: SearchBarProps) {
       </div>
       {showResults && (
         <div
-          className={`absolute bg-white text-black border border-slate-200 rounded-md p-2 mt-1 max-h-96 overflow-y-scroll`}
+          className={`absolute max-h-96 min-w-60 max-w-96 bg-white text-black border border-indigo-200 rounded-md p-2 overflow-y-scroll overflow-x-hidden`}
         >
           {searchResults.map((result: SearchItemType) => {
             if (!result) return null;

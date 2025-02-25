@@ -118,9 +118,9 @@ export const timeAgo = (timestamp: number): string => {
 export const sortSearchResults = (data: SearchResults<['album', 'artist', 'track']>): SearchItemType[] => {
   const searchItems: SearchItemType[] = [];
 
-  if (data.albums) {
-    searchItems.push(
-      ...data.albums.items.map((album: SimplifiedAlbum) => ({
+  searchItems.push(
+    ...data.albums.items.filter((album: SimplifiedAlbum) => album.album_type !== 'single')
+      .map((album: SimplifiedAlbum) => ({
         id: album.id,
         type: MediaType.Album,
         title: album.name,
@@ -128,33 +128,28 @@ export const sortSearchResults = (data: SearchResults<['album', 'artist', 'track
         imageUrl: album.images[0]?.url || '',
         popularity: album.popularity,
       }))
-    );
-  }
+  );
 
-  if (data.artists) {
-    searchItems.push(
-      ...data.artists.items.map((artist: SpotifyArtist) => ({
-        id: artist.id,
-        type: MediaType.Artist,
-        title: artist.name,
-        imageUrl: artist.images[0]?.url || '',
-        popularity: artist.popularity,
-      }))
-    );
-  }
+  searchItems.push(
+    ...data.artists.items.map((artist: SpotifyArtist) => ({
+      id: artist.id,
+      type: MediaType.Artist,
+      title: artist.name,
+      imageUrl: artist.images[0]?.url || '',
+      popularity: artist.popularity,
+    }))
+  );
 
-  if (data.tracks) {
-    searchItems.push(
-      ...data.tracks.items.map((track: SpotifyTrack) => ({
-        id: track.id,
-        type: MediaType.Track,
-        title: track.name,
-        subTitle: track.artists.map(artist => artist.name).join(', '),
-        imageUrl: track.album.images[0]?.url || '',
-        popularity: track.popularity,
-      }))
-    );
-  }
+  searchItems.push(
+    ...data.tracks.items.map((track: SpotifyTrack) => ({
+      id: track.id,
+      type: MediaType.Track,
+      title: track.name,
+      subTitle: track.artists.map(artist => artist.name).join(', '),
+      imageUrl: track.album.images[0]?.url || '',
+      popularity: track.popularity,
+    }))
+  );
 
   return searchItems.sort((a, b) => (b.popularity || 0) - (a.popularity || 0));
 };
