@@ -27,7 +27,7 @@ export default function MediaSearch() {
       mediaContent = <AlbumPreview id={mediaPreview.id} />;
       break;
     case MediaType.Artist:
-      mediaContent = <ArtistPreview id='7tr9pbgNEKtG0GQTKe08Tz' />;
+      // mediaContent = <ArtistPreview id='7tr9pbgNEKtG0GQTKe08Tz' />;
       mediaContent = <ArtistPreview id={mediaPreview.id} />;
       break;
     case MediaType.Track:
