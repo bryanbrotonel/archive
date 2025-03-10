@@ -35,9 +35,7 @@ export default function MediaSearch() {
       mediaContent = <TrackPreview id={mediaPreview.id} />;
       break;
     case MediaType.Video:
-      mediaContent = (
-        <VideoPreview url='https://youtu.be/FEkOYs6aWIg?si=Fx7ysoovYa0DW_oA' />
-      );
+      mediaContent = <VideoPreview id={mediaPreview.id} />;
       break;
     default:
       mediaContent = <div>No media type selected</div>;

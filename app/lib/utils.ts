@@ -113,7 +113,7 @@ export const timeAgo = (timestamp: number): string => {
   }
 }
 
-export const sortSearchResults = (data: SearchResults<['album', 'artist', 'track']>, query: string): SearchItemType[] => {
+export const sortSearchResults = (data: SearchResults<['album', 'artist', 'track']>): SearchItemType[] => {
   const searchItems: SearchItemType[] = [];
 
   searchItems.push(

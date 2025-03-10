@@ -1,15 +1,13 @@
 import { useMemo } from 'react';
 import useSWR from 'swr';
-import { getYouTubeVideoId } from '@/app/lib/api/youtube';
 import { MediaType, VideoInput } from '@/app/lib/types';
 import { convertVideoData, swrFetcher } from '@/app/lib/utils';
 import MediaPreview from './mediaPreview';
 import { onSaveVideo } from './api';
 
-export default function VideoPreview({ url }: { url: string }) {
-  const videoId = getYouTubeVideoId(url);
+export default function VideoPreview({ id }: { id: string }) {
   const { data, error, isLoading } = useSWR<VideoInput>(
-    `/api/youtube/video/${videoId}`,
+    `/api/youtube/video/${id}`,
     swrFetcher
   );
 

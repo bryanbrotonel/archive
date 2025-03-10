@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
+import useSWR from 'swr';
 import { MediaType, SearchItemType } from '@/app/lib/types';
 import SearchItem from './searchItem';
 import { sortSearchResults, swrFetcher } from '@/app/lib/utils';
-import useSWR from 'swr';
+import { getYouTubeVideoId, isYouTubeUrl } from '@/app/lib/api/youtube';
 
 interface SearchBarProps {
   onSubmit: (type: MediaType, id: string) => void;
@@ -22,12 +23,25 @@ export default function SearchBar(props: SearchBarProps) {
 
   // Debounce search input
   useEffect(() => {
-    const delayDebounceFn = setTimeout(() => {
-      setSearchQuery(searchValue);
-    }, 800);
+    const debouncedSearch = setTimeout(() => {
+      let videoId: string | null = null;
+      if (isYouTubeUrl(searchValue)) {
+        videoId = getYouTubeVideoId(searchValue);
+      }
 
-    return () => clearTimeout(delayDebounceFn);
-  }, [searchValue]);
+      const isValidSearch = searchValue.trim().length > 2;
+
+      if (videoId) {
+        onSubmit(MediaType.Video, videoId);
+        setSearchQuery('');
+        setShowResults(false);
+      } else if (isValidSearch) {
+        setSearchQuery(searchValue);
+      }
+    }, 500);
+
+    return () => clearTimeout(debouncedSearch);
+  }, [onSubmit, searchValue]);
 
   // Simulate search results
   useEffect(() => {
@@ -40,7 +54,7 @@ export default function SearchBar(props: SearchBarProps) {
   useEffect(() => {
     if (searchData && searchQuery) {
       setShowResults(true);
-      setSearchResults(sortSearchResults(searchData, searchQuery));
+      setSearchResults(sortSearchResults(searchData));
     }
   }, [searchData, searchQuery]);
 
