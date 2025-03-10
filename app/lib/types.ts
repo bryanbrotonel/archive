@@ -5,18 +5,6 @@ export enum MediaType {
   Video = 'Video',
 }
 
-export type spotifyListeningProps = {
-  isPlaying: boolean
-  timestamp?: string
-  track?: {
-    title: string
-    album: string
-    albumImageUrl: string
-    artists: string
-    spotifyUrl: string
-  }
-}
-
 interface Image {
   url: string
   height: number
@@ -51,19 +39,6 @@ export interface Album {
   externalUrl: string
 }
 
-interface Thumbnail {
-  url: string;
-  width: number;
-  height: number;
-}
-
-interface Thumbnails {
-  default: Thumbnail;
-  medium: Thumbnail;
-  high: Thumbnail;
-  standard: Thumbnail;
-}
-
 interface Localized {
   title: string;
   description: string;
@@ -75,7 +50,16 @@ export interface VideoInput {
   channelId: string;
   title: string;
   description: string;
-  thumbnails: Thumbnails;
+  thumbnails: {
+    // default: Thumbnail;
+    // medium: Thumbnail;
+    // high: Thumbnail;
+    standard: {
+      url: string;
+      width: number;
+      height: number;
+    };
+  };
   channelTitle: string;
   tags: string[];
   categoryId: string;

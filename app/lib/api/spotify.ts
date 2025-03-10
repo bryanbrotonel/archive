@@ -1,5 +1,4 @@
 import qs from 'querystring';
-import { MediaType } from '../types';
 
 const TOKEN_ENDPOINT = `https://accounts.spotify.com/api/token`;
 const ARTIST_ENDPOINT = (id: string) => `https://api.spotify.com/v1/artists/${id}`

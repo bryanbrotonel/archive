@@ -5,7 +5,7 @@ import { NextRequest } from 'next/server';
 
 export async function GET(
   request: NextRequest
-): Promise<NextResponse<{ data: any[] } | { error: unknown }>> {
+): Promise<NextResponse<{ data: object[] } | { error: unknown }>> {
   const { searchParams } = new URL(request.url);
   const type = searchParams.get('type') as MediaType;
   let table;

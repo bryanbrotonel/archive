@@ -1,10 +1,11 @@
 import { NextResponse } from 'next/server';
 import { getYouTubeVideo } from '@/app/lib/api/youtube';
+import { VideoInput } from '@/app/lib/types';
 
 export async function GET(
   request: Request,
   { params }: { params: { id: string } },
-): Promise<NextResponse<object | { error: unknown }>> {
+): Promise<NextResponse<VideoInput | { error: unknown }>> {
 
   const { id } = params
 

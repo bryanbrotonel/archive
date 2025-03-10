@@ -42,7 +42,7 @@ export default function SearchBar(props: SearchBarProps) {
       setShowResults(true);
       setSearchResults(sortSearchResults(searchData, searchQuery));
     }
-  }, [searchData]);
+  }, [searchData, searchQuery]);
 
   return (
     <div className='mb-2'>
@@ -73,6 +73,13 @@ export default function SearchBar(props: SearchBarProps) {
           >
             Clear
           </button>
+        )}
+      </div>
+      <div>
+        {searchError && (
+          <p className='mt-3 text-red-500'>
+            Error fetching search results. Please try again later
+          </p>
         )}
       </div>
       {showResults && (

@@ -6,7 +6,6 @@ import {
   SimplifiedAlbum,
   Image,
   SearchResults,
-  SimplifiedTrack,
 } from '@spotify/web-api-ts-sdk';
 import { Album, Artist, ConvertedVideo, MediaType, SearchItemType, Track, VideoInput } from './types';
 
@@ -94,7 +93,6 @@ export const timeAgo = (timestamp: number): string => {
   const weeks = Math.floor(days / 7);
   const months = Math.floor(days / 30);
   const years = Math.floor(days / 365);
-  console.log('🚀 ~ timeAgo ~ seconds:', seconds)
 
   if (seconds <= 0) {
     return "Just now"
@@ -115,7 +113,7 @@ export const timeAgo = (timestamp: number): string => {
   }
 }
 
-export const sortSearchResults = (data: SearchResults<['album', 'artist', 'track']>): SearchItemType[] => {
+export const sortSearchResults = (data: SearchResults<['album', 'artist', 'track']>, query: string): SearchItemType[] => {
   const searchItems: SearchItemType[] = [];
 
   searchItems.push(

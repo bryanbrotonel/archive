@@ -3,7 +3,13 @@ import ArchivePreview from './archivePreview';
 
 interface MediaListProps {
   type: MediaType;
-  data: any; // TODO: Define the type of data
+  data: {
+    id: string;
+    name: string;
+    imageurl: string;
+    externalUrls: object;
+    createdat: string;
+  }[];
 }
 
 export default function MediaList(props: MediaListProps) {
