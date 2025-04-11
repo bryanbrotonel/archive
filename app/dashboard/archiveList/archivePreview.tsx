@@ -21,7 +21,7 @@ export default function ArchivePreview({
   return (
     <div>
       <div className='flex flex-row gap-2'>
-        <div className='flex-shrink-0 content-center'>
+        <div className='shrink-0 content-center'>
           <Link href={externalUrl} target='_blank' rel='noopener noreferrer'>
             <Image
               className='rounded-lg border-2 border-white bg-cover'

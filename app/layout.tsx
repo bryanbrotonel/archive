@@ -1,18 +1,18 @@
 import type { Metadata } from 'next';
-import localFont from 'next/font/local';
+import { Roboto_Mono, Source_Serif_4 } from 'next/font/google';
 import './globals.css';
 import Footer from './ui/footer';
 
-const robotoMono = localFont({
-  src: './fonts/RobotoMonoVF.ttf',
+const robotoMono = Roboto_Mono({
+  subsets: ['latin'],
+  display: 'swap',
   variable: '--font-roboto-mono',
-  weight: '400 500 600 700',
 });
 
-const sourceSerif = localFont({
-  src: './fonts/SourceSerif4VF.ttf',
+const sourceSerif = Source_Serif_4({
+  subsets: ['latin'],
+  display: 'swap',
   variable: '--font-source-serif',
-  weight: '400 500 600 700',
 });
 
 export const metadata: Metadata = {

@@ -1,36 +1,12 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-:root {
-  --background: #fbfbf2;
-  --foreground: #0b0014;
-}
-
-.dark {
-  /* :root { */
-  --background: #0b0014;
-  --foreground: #fbfbf2;
-  /* } */
-}
-
-body {
-  color: var(--foreground);
-  background: var(--background);
-  @apply font-mono;
-}
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  @apply font-serif;
-}
+@import 'tailwindcss';
 
 @layer utilities {
-  .text-balance {
-    text-wrap: balance;
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-serif;
   }
 }
