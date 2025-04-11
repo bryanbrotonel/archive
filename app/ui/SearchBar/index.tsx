@@ -65,7 +65,7 @@ export default function SearchBar(props: SearchBarProps) {
           type='text'
           value={searchValue}
           onChange={(e) => setSearchValue(e.target.value)}
-          className='border border-gray-300 rounded-md p-2 pr-16 w-full text-black'
+          className='border border-gray-300 rounded-md p-2 pr-16 w-full text-black dark:text-white'
           placeholder='Search...'
           onFocus={() => {
             if (searchResults.length > 0) {

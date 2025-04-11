@@ -1,7 +1,7 @@
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { MediaType } from '../../lib/types';
+import { MediaType } from '@/app/lib/types';
 
 export type artistProfileProps = {
   title: string;

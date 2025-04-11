@@ -33,7 +33,7 @@ export default function SearchItem({
     <div className='mb-2'>
       <button
         onClick={onClick}
-        className='w-full text-left hover:bg-indigo-400 rounded-md p-2'
+        className='w-full text-left hover:bg-indigo-400 rounded-md p-2 cursor-pointer'
       >
         <div className='flex row gap-2'>
           <Image

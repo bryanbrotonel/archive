@@ -6,7 +6,7 @@ import AlbumPreview from './mediaPreviews/albumPreview';
 import ArtistPreview from './mediaPreviews/artistPreview';
 import TrackPreview from './mediaPreviews/trackPreview';
 import VideoPreview from './mediaPreviews/videoPreview';
-import SearchBar from '../ui/SearchBar';
+import SearchBar from '@/app/ui/SearchBar';
 
 export default function MediaSearch() {
   const [mediaPreview, setMediaPreview] = useState<{

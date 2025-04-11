@@ -1,34 +1,29 @@
-import type { Metadata } from 'next';
+import { PropsWithChildren } from 'react';
 import { Roboto_Mono, Source_Serif_4 } from 'next/font/google';
-import './globals.css';
 import Footer from './ui/footer';
+import './globals.css';
 
 const robotoMono = Roboto_Mono({
   subsets: ['latin'],
   display: 'swap',
-  variable: '--font-roboto-mono',
 });
 
 const sourceSerif = Source_Serif_4({
   subsets: ['latin'],
   display: 'swap',
-  variable: '--font-source-serif',
 });
 
-export const metadata: Metadata = {
-  title: "Bryan's Archive",
-  description: "Bryan's home for music related stuff.",
-};
-
-export default function RootLayout({
+export default function GlobalLayout({
+  darkMode = false,
   children,
-}: Readonly<{
-  children: React.ReactNode;
+}: PropsWithChildren<{
+  darkMode?: boolean;
 }>) {
+  const theme = darkMode ? 'dark' : 'light';
   return (
     <html lang='en'>
       <body
-        className={`${robotoMono.variable} ${sourceSerif.variable} antialiased dark`}
+        className={`${robotoMono.className} ${sourceSerif.className} ${theme} antialiased dark:bg-black dark:text-primary text-black bg-primary`}
       >
         <div className='container mx-auto flex flex-col h-full min-h-screen p-8 lg:px-0 w-full max-w-4xl'>
           <div className='flex-1'>{children}</div>

@@ -1,8 +1,8 @@
 'use client';
 
 import useSWR, { mutate } from 'swr';
-import { MediaType } from '../../lib/types';
-import { swrFetcher } from '../../lib/utils';
+import { MediaType } from '@/app/lib/types';
+import { swrFetcher } from '@/app/lib/utils';
 import MediaList from './mediaList';
 import { useState } from 'react';
 
@@ -37,7 +37,7 @@ const ArchiveList = () => {
             <button
               key={type}
               onClick={() => setMediaType(type)}
-              className={`px-3 py-1 rounded-md ${
+              className={`px-3 py-1 rounded-md cursor-pointer ${
                 mediaType === type ? 'bg-indigo-700' : 'bg-indigo-700/30'
               }`}
             >
@@ -54,7 +54,7 @@ const ArchiveList = () => {
           <div>
             <button
               onClick={handleRefresh}
-              className='px-3 py-1 rounded-md bg-indigo-700 hover:bg-indigo-800 text-white'
+              className='px-3 py-1 rounded-md bg-indigo-700 hover:bg-indigo-800 text-white cursor-pointer'
             >
               <span>&#128260;</span>
             </button>
