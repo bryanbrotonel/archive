@@ -37,7 +37,7 @@ const ArchiveList = () => {
             <button
               key={type}
               onClick={() => setMediaType(type)}
-              className={`px-3 py-1 rounded-md cursor-pointer ${
+              className={`px-3 py-1 rounded-md ${
                 mediaType === type ? 'bg-indigo-700' : 'bg-indigo-700/30'
               }`}
             >
@@ -54,7 +54,7 @@ const ArchiveList = () => {
           <div>
             <button
               onClick={handleRefresh}
-              className='px-3 py-1 rounded-md bg-indigo-700 hover:bg-indigo-800 text-white cursor-pointer'
+              className='px-3 py-1 rounded-md bg-indigo-700 hover:bg-indigo-800 text-white'
             >
               <span>&#128260;</span>
             </button>

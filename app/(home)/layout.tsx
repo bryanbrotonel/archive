@@ -1,5 +1,5 @@
-import { Metadata } from "next";
-import GlobalLayout from "./../globalLayout";
+import { Metadata } from 'next';
+import GlobalLayout from './../globalLayout';
 
 export const metadata: Metadata = {
   title: "Bryan's Archive",
@@ -11,9 +11,5 @@ export default function HomeLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return (
-    <GlobalLayout>
-      {children}
-    </GlobalLayout>
-  );
+  return <GlobalLayout>{children}</GlobalLayout>;
 }

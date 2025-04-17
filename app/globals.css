@@ -4,12 +4,17 @@
 
 @theme {
   --color-primary: #FBFBF2;
+  --color-primary-dark: #EFEEE7;
   --color-secondary: #EFEEE7;
   --color-black: #0B0014;
   --color-white: #FFFFFF;
 }
 
 @layer utilities {
+  html, body, span {
+    @apply font-mono;
+  }
+
   h1,
   h2,
   h3,
@@ -18,4 +23,8 @@
   h6 {
     @apply font-serif;
   }
+}
+
+button {
+  @apply cursor-pointer;
 }

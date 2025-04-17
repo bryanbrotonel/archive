@@ -33,7 +33,7 @@ export default function SearchItem({
     <div className='mb-2'>
       <button
         onClick={onClick}
-        className='w-full text-left hover:bg-indigo-400 rounded-md p-2 cursor-pointer'
+        className='w-full text-left hover:bg-indigo-400 rounded-md p-2'
       >
         <div className='flex row gap-2'>
           <Image
@@ -44,7 +44,7 @@ export default function SearchItem({
             className={`${imageClass} h-10 w-10`}
           />
           <div className='overflow-hidden'>
-            <p className='font-mono truncate'>{title}</p>
+            <p className='truncate'>{title}</p>
             {subTitleComponent()}
           </div>
         </div>
