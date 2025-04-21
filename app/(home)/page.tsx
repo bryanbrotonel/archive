@@ -2,27 +2,90 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import useSWR from 'swr';
-import { MediaType } from '../lib/types';
-import { swrFetcher, timeAgo } from '../lib/utils';
+import { DbAlbum, DbArtist, DbTrack, DbVideo, MediaType } from '../lib/types';
+import { swrFetcher } from '../lib/utils';
+import DisplayTable from './displayTable';
 
 export default function Home() {
   const [type, setType] = useState<MediaType>(MediaType.Album);
 
   const { data, error, isLoading } = useSWR<
     {
-      data: {
-        id: string;
-        name: string;
-        artist: string;
-        imageurl: string;
-        externalUrls: object;
-        createdat: string;
-      }[];
+      data: DbArtist[] | DbAlbum[] | DbTrack[] | DbVideo[];
     },
     Error
   >(`/api/database/getItems?type=${type}`, swrFetcher, {});
+
+  const convertToTableData = (
+    data: DbArtist[] | DbAlbum[] | DbTrack[] | DbVideo[],
+    type: MediaType
+  ): Array<{
+    key: string;
+    title: string;
+    imageurl: string;
+    externalurl: string;
+    [key: string]: string;
+  }> => {
+    switch (type) {
+      case MediaType.Artist:
+        return (data as DbArtist[]).map((artist) => ({
+          key: artist.id,
+          title: artist.name,
+          genres: artist.genres.join(', '),
+          imageurl: artist.imageurl,
+          externalurl: artist.externalurls.spotify,
+          createdat: artist.createdat,
+        }));
+      case MediaType.Album:
+        return (data as DbAlbum[]).map((album) => ({
+          key: album.id,
+          title: album.name,
+          artist: album.artist,
+          imageurl: album.imageurl,
+          externalurl: album.externalurls.spotify,
+          createdat: album.createdat,
+        }));
+      case MediaType.Track:
+        return (data as DbTrack[]).map((track) => ({
+          key: track.id,
+          title: track.name,
+          // artist: track.artists.map((artist) => artist.name).join(', '),
+          imageurl: track.imageurl,
+          externalurl: track.externalurls.spotify,
+          createdat: track.createdat,
+        }));
+      case MediaType.Video:
+        return (data as DbVideo[]).map((video) => ({
+          key: video.videoid,
+          title: video.videotitle,
+          channel: video.channeltitle,
+          imageurl: video.thumbnailurl,
+          externalurl: video.videourl,
+          createdat: video.createdat,
+        }));
+      default:
+        return [];
+    }
+  };
+
+  const headersMap: Record<MediaType, { key: string; label: string }[]> = {
+    [MediaType.Artist]: [{ key: 'title', label: 'Name' }],
+    [MediaType.Album]: [
+      { key: 'title', label: 'Title' },
+      { key: 'artist', label: 'Artist' },
+    ],
+    [MediaType.Track]: [
+      { key: 'title', label: 'Title' },
+      { key: 'artist', label: 'Artist' },
+    ],
+    [MediaType.Video]: [
+      { key: 'title', label: 'Title' },
+      { key: 'channeltitle', label: 'Channel' },
+    ],
+  };
+
+  const getTableHeaders = (type: MediaType) => headersMap[type] || [];
 
   const typeButtons = Object.values(MediaType).map((mediaType) => (
     <button
@@ -35,6 +98,7 @@ export default function Home() {
       {mediaType}
     </button>
   ));
+
   return (
     <div>
       <main className='space-y-4'>
@@ -63,53 +127,14 @@ export default function Home() {
                 />
               </div>
             </div>
-            {/* Headers */}
-            <div className='hidden px-2 gap-3 items-center sm:grid sm:grid-cols-16'>
-              <div className='flex gap-2 col-span-15 md:col-span-12 col-start-2! text-xs text-black/50'>
-                <span className='flex-3 truncate'>Title</span>
-                <span className='flex-2 truncate'>Artist</span>
-              </div>
-            </div>
-            {/* Results */}
             {isLoading && <div>Loading...</div>}
             {error && <div>Error: {error.message}</div>}
-            {data?.data &&
-              data.data.map(
-                (item: {
-                  id: string;
-                  name: string;
-                  artist: string;
-                  imageurl: string;
-                  externalUrls: object;
-                  createdat: string;
-                }) => (
-                  <div
-                    key={item.id}
-                    className='group flex flex-row p-2 gap-3 items-center sm:grid sm:grid-cols-16 hover:cursor-pointer hover:bg-primary-dark rounded-md'
-                  >
-                    <div className='relative h-12 w-12 sm:h-full sm:w-auto aspect-square border-1 border-black rounded-lg overflow-hidden sm:col-span-1'>
-                      <Image
-                        className='object-cover'
-                        src={item.imageurl}
-                        alt={`${item.name}`}
-                        fill={true}
-                      />
-                    </div>
-                    <div className='flex-1 flex flex-col gap-2 justify-between truncate sm:col-span-15 md:col-span-12 sm:flex-row'>
-                      <span className='flex-3 truncate font-bold'>
-                        {item.name}
-                      </span>
-                      <span className='flex-2 truncate'>{item.artist}</span>
-                    </div>
-                    <div className='hidden md:flex items-center justify-end text-xs md:col-span-3'>
-                      <span className='truncate'>
-                        {timeAgo(new Date(item.createdat).getTime())}
-                      </span>
-                      <div className='w-4 h-4 ml-2 rounded-full bg-transparent group-hover:bg-black/20 flex items-center justify-center'></div>
-                    </div>
-                  </div>
-                )
-              )}
+            {data?.data && (
+              <DisplayTable
+                headers={getTableHeaders(type)}
+                data={convertToTableData(data.data, type)}
+              />
+            )}
           </div>
         </div>
       </main>

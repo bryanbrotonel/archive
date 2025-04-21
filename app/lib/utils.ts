@@ -75,6 +75,7 @@ export const convertVideoData = (input: VideoInput): ConvertedVideo => {
 export const swrFetcher = async (url: string, options?: RequestInit) => {
   const res = await fetch(url, options);
   const data = await res.json();
+  console.log('🚀 ~ swrFetcher ~ data:', data)
 
   if (res.status !== 200) {
     throw new Error(data.error.message);

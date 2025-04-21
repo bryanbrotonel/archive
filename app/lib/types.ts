@@ -39,9 +39,52 @@ export interface Album {
   externalUrl: string
 }
 
-interface Localized {
-  title: string;
-  description: string;
+export interface DbArtist {
+  id: string;
+  name: string;
+  externalurls: {
+    spotify: string;
+  };
+  genres: string[];
+  imageurl: string;
+  createdat: string;
+}
+
+export interface DbAlbum {
+  id: string;
+  name: string;
+  artist: string;
+  imageurl: string;
+  totaltracks: number;
+  genres: string[];
+  releasedate: string;
+  externalurls: {
+    spotify: string;
+  };
+  createdat: string;
+}
+export interface DbTrack {
+  id: string;
+  name: string;
+  tracknumber: number;
+  externalurls: {
+    spotify: string;
+  };
+  previewurl: string | null;
+  createdat: string;
+  imageurl: string;
+  genres: string[] | null;
+}
+
+export interface DbVideo {
+  videoid: string;
+  videotitle: string;
+  channelid: string;
+  channeltitle: string;
+  thumbnailurl: string;
+  publishedat: string;
+  createdat: string;
+  videourl: string;
 }
 
 export interface VideoInput {
@@ -65,7 +108,10 @@ export interface VideoInput {
   categoryId: string;
   liveBroadcastContent: string;
   defaultLanguage: string;
-  localized: Localized;
+  localized: {
+    title: string;
+    description: string;
+  };
   defaultAudioLanguage: string;
 }
 
