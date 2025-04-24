@@ -90,8 +90,10 @@ export default function Home() {
   const typeButtons = Object.values(MediaType).map((mediaType) => (
     <button
       key={mediaType}
-      className={`px-4 py-1 rounded-md rounded-b-none border-black border-t-2 border-x-2 ${
-        type === mediaType ? 'bg-primary-dark text-black' : ''
+      className={`px-4 py-1 rounded-md rounded-b-none border-black border-2 ${
+        type === mediaType
+          ? 'bg-primary-dark text-black border-b-primary-dark'
+          : ''
       }`}
       onClick={() => setType(mediaType)}
     >
@@ -109,10 +111,12 @@ export default function Home() {
           <Link href='/dashboard'>Go to Dashboard</Link>
         </div>
         <div>
-          <div className='flex gap-2 border-b-2 overflow-x-auto'>
-            {typeButtons}
+          <div>
+            <div className=''>
+              <div className='flex gap-2 translate-y-[2px]'>{typeButtons}</div>
+            </div>
           </div>
-          <div className='border-1 border-black/20 rounded-b-sm bg-black/2 p-4 space-y-4'>
+          <div className='border-2 border-black/20 border-t-black rounded-b-sm bg-black/2 p-4 space-y-4'>
             {/* Search Bar */}
             <div className='flex justify-end'>
               <div className=''>
