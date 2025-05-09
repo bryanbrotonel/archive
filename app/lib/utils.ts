@@ -4,26 +4,21 @@ import {
   Artist as SpotifyArtist,
   SimplifiedArtist,
   SimplifiedAlbum,
-  Image,
   SearchResults,
 } from '@spotify/web-api-ts-sdk';
 import { Album, Artist, ConvertedVideo, MediaType, SearchItemType, Track, VideoInput } from './types';
+import { Middleware, SWRHook } from 'swr';
 
 export const convertArtistData = (
   data: SpotifyArtist | SimplifiedArtist
 ): Artist => ({
   id: data.id,
   name: data.name,
-  images:
-    'images' in data
-      ? data.images.map((img: Image) => ({
-        url: img.url,
-        height: img.height,
-        width: img.width,
-      }))
-      : [],
-  externalUrl: data.external_urls?.spotify ?? '',
+  imageUrl: 'images' in data ? data.images[0]?.url : '',
+  externalUrls: { spotify: data.external_urls.spotify },
   genres: 'genres' in data ? data.genres : [],
+  createdAt: '',
+  updatedAt: ''
 });
 
 export const convertAlbumData = (
@@ -31,30 +26,25 @@ export const convertAlbumData = (
 ): Album => ({
   id: data.id,
   name: data.name,
-  artists: data.artists.map((artist: SpotifyArtist | SimplifiedArtist) =>
-    convertArtistData(artist)
-  ),
-  images:
-    data.images.map((img: Image) => ({
-      url: img.url,
-      height: img.height,
-      width: img.width,
-    })) ?? [],
-  releaseDate: 'release_date' in data ? data.release_date : '',
-  totalTracks: 'total_tracks' in data ? data.total_tracks : 0,
-  externalUrl: data.external_urls?.spotify ?? '',
+  artist: data.artists.map((artist) => artist.name).join(', '),
+  imageUrl: 'images' in data ? data.images[0]?.url : '',
+  externalUrls: { spotify: data.external_urls.spotify },
+  genres: data.genres,
+  createdAt: '',
+  updatedAt: ''
 });
 
 export const convertTrackData = (data: SpotifyTrack): Track => ({
   id: data.id,
-  album: convertAlbumData(data.album),
   name: data.name,
-  artists: data.artists.map((artist: SimplifiedArtist) =>
-    convertArtistData(artist)
-  ),
-  externalUrl: data.external_urls.spotify,
+  artist: data.artists.map((artist) => artist.name).join(', '),
+  externalUrls: { spotify: data.external_urls.spotify },
   previewUrl: data.preview_url,
   trackNumber: data.track_number,
+  imageUrl: data.album.images[0]?.url || '',
+  genres: data.album?.genres ?? [],
+  createdAt: '',
+  updatedAt: ''
 });
 
 export const convertVideoData = (input: VideoInput): ConvertedVideo => {
@@ -75,12 +65,34 @@ export const convertVideoData = (input: VideoInput): ConvertedVideo => {
 export const swrFetcher = async (url: string, options?: RequestInit) => {
   const res = await fetch(url, options);
   const data = await res.json();
-  console.log('🚀 ~ swrFetcher ~ data:', data)
 
   if (res.status !== 200) {
     throw new Error(data.error.message);
   }
+
   return data;
+};
+
+export const swrMiddleware: Middleware = (useSWRNext: SWRHook) => (key, fetcher, config) => {
+  const snakeToCamel = (obj: any): any => {
+    if (Array.isArray(obj)) {
+      return obj.map(snakeToCamel);
+    } else if (obj && typeof obj === 'object') {
+      return Object.entries(obj).reduce((acc, [key, value]) => {
+        const camelKey = key.replace(/_([a-z])/g, (_, char) => char.toUpperCase());
+        acc[camelKey] = snakeToCamel(value);
+        return acc;
+      }, {} as Record<string, any>);
+    }
+    return obj;
+  };
+
+  const wrappedFetcher = async (...args: any[]) => {
+    const data = await fetcher?.(...args);
+    return snakeToCamel(data);
+  };
+
+  return useSWRNext(key, wrappedFetcher, config);
 };
 
 export const timeAgo = (timestamp: number): string => {

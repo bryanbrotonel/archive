@@ -1,8 +1,8 @@
 'use client';
 
 import useSWR, { mutate } from 'swr';
-import { MediaType } from '@/app/lib/types';
-import { swrFetcher } from '@/app/lib/utils';
+import { Entity, MediaType } from '@/app/lib/types';
+import { swrFetcher, swrMiddleware } from '@/app/lib/utils';
 import MediaList from './mediaList';
 import { useState } from 'react';
 
@@ -13,24 +13,39 @@ const ArchiveList = () => {
 
   const { data, error, isLoading } = useSWR<
     {
-      data: {
-        id: string;
-        name: string;
-        imageurl: string;
-        externalUrls: object;
-        createdat: string;
-      }[];
+      data: Entity[];
     },
     Error
-  >(`/api/database/getItems?type=${mediaType}`, swrFetcher, {});
+  >(`/api/database/getItems?type=${mediaType}`, swrFetcher, {
+    use: [swrMiddleware],
+  });
 
   const handleRefresh = () => {
+    mutate(`/api/database/getItems?type=${mediaType}`);
+  };
+
+  const seedDatabase = async () => {
+    const response = await fetch('/api/database/seed', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    if (!response.ok) {
+      throw new Error('Failed to seed database');
+    }
+    const data = await response.json();
+    console.log('Database seeded:', data);
+    // Optionally, you can trigger a refresh of the data after seeding
     mutate(`/api/database/getItems?type=${mediaType}`);
   };
 
   return (
     <div className='space-y-5'>
       <h2 className='mb-5 text-xl font-mono'>Archive List</h2>
+      <div>
+        <button onClick={seedDatabase}>Seed</button>
+      </div>
       <div className='space-y-5'>
         <div className='flex space-x-2'>
           {Object.values(MediaType).map((type) => (
@@ -47,9 +62,7 @@ const ArchiveList = () => {
         </div>
         <div className='flex gap-4 items-center'>
           <div className=''>
-            <h3 className='text-lg font-sans font-semibold'>
-              {mediaType}
-            </h3>
+            <h3 className='text-lg font-sans font-semibold'>{mediaType}</h3>
           </div>
           <div>
             <button

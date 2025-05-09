@@ -2,7 +2,7 @@ import { MediaType } from '@/app/lib/types';
 import useSWR from 'swr';
 import { Track } from '@spotify/web-api-ts-sdk';
 import { convertTrackData, swrFetcher } from '@/app/lib/utils';
-import MeidaPreview from './mediaPreview';
+import MediaPreview from './mediaPreview';
 import { onSaveTrack } from './api';
 
 export default function TrackPreview(props: { id: string }) {
@@ -16,15 +16,20 @@ export default function TrackPreview(props: { id: string }) {
   if (isLoading) return <div>Track Loading...</div>;
   if (!data) return <div>No track...</div>;
 
-  const { name, album, artists, externalUrl } = convertTrackData(data);
+  const {
+    name,
+    artist,
+    imageUrl,
+    externalUrls: { spotify },
+  } = convertTrackData(data);
 
   return (
     <div>
-      <MeidaPreview
+      <MediaPreview
         title={name}
-        subTitle={artists.map((artist) => artist.name).join(', ')}
-        imageUrl={album.images[0].url ?? ''}
-        externalUrl={externalUrl}
+        subTitle={artist}
+        imageUrl={imageUrl}
+        externalUrl={spotify || ''}
         type={MediaType.Track}
       />
       <div className='mt-5'>

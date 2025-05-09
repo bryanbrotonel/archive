@@ -16,14 +16,18 @@ export default function ArtistPreview({ id }: { id: string }) {
   if (isLoading) return <div>Artist Loading...</div>;
   if (!data) return <div>No artist...</div>;
 
-  const { name, externalUrl, images } = convertArtistData(data);
+  const {
+    name,
+    externalUrls: { spotify },
+    imageUrl,
+  } = convertArtistData(data);
 
   return (
     <div>
       <MediaPreview
         title={name}
-        imageUrl={images[0]?.url ?? ''}
-        externalUrl={externalUrl}
+        imageUrl={imageUrl}
+        externalUrl={spotify || ''}
         type={MediaType.Artist}
       />
       <div className='mt-5'>

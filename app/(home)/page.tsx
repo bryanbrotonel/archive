@@ -3,66 +3,65 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import useSWR from 'swr';
-import { DbAlbum, DbArtist, DbTrack, DbVideo, MediaType } from '../lib/types';
-import { swrFetcher } from '../lib/utils';
+import { Album, Artist, Track, Video, MediaType, Entity } from '../lib/types';
+import { swrFetcher, swrMiddleware } from '../lib/utils';
 import DisplayTable from './displayTable';
 
 export default function Home() {
   const [type, setType] = useState<MediaType>(MediaType.Album);
 
-  const { data, error, isLoading } = useSWR<
-    {
-      data: DbArtist[] | DbAlbum[] | DbTrack[] | DbVideo[];
-    },
-    Error
-  >(`/api/database/getItems?type=${type}`, swrFetcher, {});
+  const { data, error, isLoading } = useSWR<{ data: Entity[] }, Error>(
+    `/api/database/getItems?type=${type}`,
+    swrFetcher,
+    { use: [swrMiddleware] }
+  );
 
   const convertToTableData = (
-    data: DbArtist[] | DbAlbum[] | DbTrack[] | DbVideo[],
+    data: Entity[],
     type: MediaType
   ): Array<{
     key: string;
     title: string;
     imageurl: string;
     externalurl: string;
-    [key: string]: string;
+    // [key: string]: string;
   }> => {
     switch (type) {
       case MediaType.Artist:
-        return (data as DbArtist[]).map((artist) => ({
+        return (data as Artist[]).map((artist) => ({
           key: artist.id,
           title: artist.name,
           genres: artist.genres.join(', '),
-          imageurl: artist.imageurl,
-          externalurl: artist.externalurls.spotify,
-          createdat: artist.createdat,
+          imageurl: artist.imageUrl,
+          externalurl: artist.externalUrls.spotify || '',
+          createdat: artist.createdAt,
         }));
       case MediaType.Album:
-        return (data as DbAlbum[]).map((album) => ({
+        return (data as Album[]).map((album) => ({
           key: album.id,
           title: album.name,
           artist: album.artist,
-          imageurl: album.imageurl,
-          externalurl: album.externalurls.spotify,
-          createdat: album.createdat,
+          imageurl: album.imageUrl,
+          externalurl: album.externalUrls.spotify || '',
+          createdat: album.createdAt,
         }));
       case MediaType.Track:
-        return (data as DbTrack[]).map((track) => ({
+        return (data as Track[]).map((track) => ({
           key: track.id,
           title: track.name,
-          // artist: track.artists.map((artist) => artist.name).join(', '),
-          imageurl: track.imageurl,
-          externalurl: track.externalurls.spotify,
-          createdat: track.createdat,
+          artist: track.artist,
+          imageurl: track.imageUrl,
+          externalurl: track.externalUrls.spotify || '',
+          createdat: track.createdAt,
         }));
       case MediaType.Video:
-        return (data as DbVideo[]).map((video) => ({
-          key: video.videoid,
-          title: video.videotitle,
-          channel: video.channeltitle,
-          imageurl: video.thumbnailurl,
-          externalurl: video.videourl,
-          createdat: video.createdat,
+        return (data as Video[]).map((video) => ({
+          key: video.id,
+          title: video.videoTitle,
+          channel: video.channelTitle,
+          imageurl: video.thumbnailUrl,
+          externalurl: video.externalUrls.youtube || '',
+          createdat: video.createdAt,
         }));
       default:
         return [];
@@ -70,7 +69,10 @@ export default function Home() {
   };
 
   const headersMap: Record<MediaType, { key: string; label: string }[]> = {
-    [MediaType.Artist]: [{ key: 'title', label: 'Name' }],
+    [MediaType.Artist]: [
+      { key: 'title', label: 'Name' },
+      { key: 'genre', label: 'Genre' },
+    ],
     [MediaType.Album]: [
       { key: 'title', label: 'Title' },
       { key: 'artist', label: 'Artist' },
@@ -111,12 +113,10 @@ export default function Home() {
           <Link href='/dashboard'>Go to Dashboard</Link>
         </div>
         <div>
-          <div>
-            <div className=''>
-              <div className='flex gap-2 translate-y-[2px]'>{typeButtons}</div>
-            </div>
+          <div className='overflow-x-auto overflow-y-hidden'>
+            <div className='flex gap-2 translate-y-[2px]'>{typeButtons}</div>
           </div>
-          <div className='border-2 border-black/20 border-t-black rounded-b-sm bg-black/2 p-4 space-y-4'>
+          <div className='border-2 border-black/20 border-t-black rounded-b-sm bg-black/2 p-4 space-y-4 mt-[-2px]'>
             {/* Search Bar */}
             <div className='flex justify-end'>
               <div className=''>

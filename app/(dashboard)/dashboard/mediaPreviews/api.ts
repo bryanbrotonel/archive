@@ -18,7 +18,7 @@ export const onSaveVideo = async (convertedData: ConvertedVideo) => {
     channelID: channelId,
     channelTitle: channelTitle,
     thumbnailUrl: thumbnailUrl,
-    videoUrl: videoUrl,
+    external_urls: { youtube: videoUrl },
     publishedAt: publishedAt,
   };
 
@@ -45,10 +45,10 @@ export const onSaveTrack = async (data: Track) => {
   const saveData = {
     id: data?.id,
     name: data?.name,
+    artist: data.artists.map((artist) => artist.name).join(', '),
     trackNumber: data?.track_number,
     previewUrl: data?.preview_url,
-    externalUrls: data?.external_urls,
-    genres: data?.album.genres,
+    externalUrls: { spotify: data?.external_urls.spotify },
     imageUrl: data?.album.images[0].url,
   };
 
@@ -75,7 +75,7 @@ export const onSaveArtist = async (data: Artist) => {
   const saveData = {
     id: data?.id,
     name: data?.name,
-    externalUrls: data?.external_urls,
+    externalUrls: { spotify: data?.external_urls.spotify },
     genres: data?.genres,
     imageUrl: data?.images[0]?.url,
   };
@@ -104,10 +104,7 @@ export const onSaveAlbum = async (data: Album) => {
     id: data?.id,
     name: data?.name,
     artist: data?.artists.map((artist) => artist.name).join(', '),
-    totalTracks: data?.total_tracks,
-    releaseDate: data?.release_date,
     externalUrls: data?.external_urls,
-    genres: data?.genres,
     imageUrl: data?.images[0]?.url,
   };
 

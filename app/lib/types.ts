@@ -5,86 +5,77 @@ export enum MediaType {
   Video = 'Video',
 }
 
-interface Image {
-  url: string
-  height: number
-  width: number
-}
-
-export interface Artist {
-  id: string
-  name: string
-  externalUrl: string
-  genres: string[]
-  images: Image[]
-}
-
-export interface Track {
-  id: string
-  album: Album
-  name: string
-  artists: Artist[]
-  trackNumber: number
-  externalUrl: string
-  previewUrl: string | null
-}
-
-export interface Album {
-  id: string
-  name: string
-  artists: Artist[]
-  images: Image[]
-  releaseDate: string
-  totalTracks: number
-  externalUrl: string
-}
-
-export interface DbArtist {
+// Base interface with common fields
+interface BaseRecord {
   id: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+// External URLs type (used across multiple tables)
+interface ExternalUrls {
+  spotify?: string;
+  youtube?: string;
+  appleMusic?: string;
+  [key: string]: string | undefined; // Allow other platforms
+}
+
+// Artist
+export interface Artist extends BaseRecord {
   name: string;
-  externalurls: {
-    spotify: string;
-  };
+  imageUrl: string;
   genres: string[];
-  imageurl: string;
-  createdat: string;
+  externalUrls: ExternalUrls;
 }
 
-export interface DbAlbum {
-  id: string;
+// Album
+export interface Album extends BaseRecord {
   name: string;
   artist: string;
-  imageurl: string;
-  totaltracks: number;
+  imageUrl: string;
   genres: string[];
-  releasedate: string;
-  externalurls: {
-    spotify: string;
-  };
-  createdat: string;
-}
-export interface DbTrack {
-  id: string;
-  name: string;
-  tracknumber: number;
-  externalurls: {
-    spotify: string;
-  };
-  previewurl: string | null;
-  createdat: string;
-  imageurl: string;
-  genres: string[] | null;
+  externalUrls: ExternalUrls;
 }
 
-export interface DbVideo {
-  videoid: string;
-  videotitle: string;
-  channelid: string;
-  channeltitle: string;
-  thumbnailurl: string;
-  publishedat: string;
-  createdat: string;
-  videourl: string;
+// Track
+export interface Track extends BaseRecord {
+  name: string;
+  artist: string;
+  previewUrl?: string | null;
+  imageUrl: string;
+  genres: string[];
+  externalUrls: ExternalUrls;
+  trackNumber?: number | null;
+}
+
+// Video
+export interface Video extends BaseRecord {
+  videoTitle: string;
+  channelId?: string | null;
+  channelTitle: string;
+  thumbnailUrl: string;
+  externalUrls: ExternalUrls;
+  publishedAt?: Date | string | null;
+}
+
+// Union type of all entity types
+export type Entity = Artist | Album | Track | Video;
+
+// Type guards for entity types
+export function isArtist(entity: Entity): entity is Artist {
+  return 'name' in entity && !('videoTitle' in entity);
+}
+
+export function isAlbum(entity: Entity): entity is Album {
+  return 'name' in entity && 'artist' in entity && !('previewUrl' in entity);
+}
+
+export function isTrack(entity: Entity): entity is Track {
+  return 'previewUrl' in entity;
+}
+
+export function isVideo(entity: Entity): entity is Video {
+  return 'videoTitle' in entity;
 }
 
 export interface VideoInput {
@@ -94,9 +85,6 @@ export interface VideoInput {
   title: string;
   description: string;
   thumbnails: {
-    // default: Thumbnail;
-    // medium: Thumbnail;
-    // high: Thumbnail;
     standard: {
       url: string;
       width: number;
@@ -127,3 +115,24 @@ export type ConvertedVideo = {
 };
 
 export type SearchItemType = { id: string, type: MediaType, title: string, subTitle?: string, imageUrl: string, popularity?: number }
+
+// Database response types
+export interface DatabaseResult<T> {
+  data: T[];
+  error?: string;
+  count?: number;
+}
+
+// Pagination params
+export interface PaginationParams {
+  limit?: number;
+  offset?: number;
+}
+
+// Filter options
+export interface FilterOptions {
+  genre?: string;
+  artist?: string;
+  minDate?: Date | string;
+  maxDate?: Date | string;
+}

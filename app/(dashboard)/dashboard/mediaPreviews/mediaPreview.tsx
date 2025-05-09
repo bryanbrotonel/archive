@@ -11,7 +11,7 @@ export type artistProfileProps = {
   externalUrl: string;
 };
 
-export default function MeidaPreview(props: artistProfileProps) {
+export default function MediaPreview(props: artistProfileProps) {
   const { title, subTitle, imageUrl, externalUrl, type } = props;
 
   let formatTitle, formatSubtitle;

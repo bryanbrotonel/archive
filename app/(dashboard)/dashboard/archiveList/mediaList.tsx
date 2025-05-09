@@ -1,15 +1,16 @@
-import { MediaType } from '@/app/lib/types';
+import {
+  Album,
+  Artist,
+  Entity,
+  MediaType,
+  Track,
+  Video,
+} from '@/app/lib/types';
 import ArchivePreview from './archivePreview';
 
 interface MediaListProps {
   type: MediaType;
-  data: {
-    id: string;
-    name: string;
-    imageurl: string;
-    externalUrls: object;
-    createdat: string;
-  }[];
+  data: Entity[];
 }
 
 export default function MediaList(props: MediaListProps) {
@@ -19,95 +20,52 @@ export default function MediaList(props: MediaListProps) {
 
   switch (type) {
     case MediaType.Album:
-      mediaList = data.map(
-        (album: {
-          id: string;
-          name: string;
-          artist: string;
-          imageurl: string;
-          externalUrls: object;
-          createdat: string;
-        }) => {
-          return (
-            <ArchivePreview
-              key={album.id}
-              title={album.name}
-              subTitle={album.artist}
-              imageUrl={album.imageurl}
-              externalUrl={''}
-              createdAt={album.createdat}
-            />
-          );
-        }
-      );
+      mediaList = (data as Album[]).map((album) => (
+        <ArchivePreview
+          key={album.id}
+          title={album.name}
+          subTitle={album.artist}
+          imageUrl={album.imageUrl}
+          externalUrl={''}
+          createdAt={album.createdAt}
+        />
+      ));
       break;
     case MediaType.Track:
-      mediaList = data.map(
-        (track: {
-          id: string;
-          name: string;
-          artist: string;
-          imageurl: string;
-          externalUrls: object;
-          createdat: string;
-        }) => {
-          return (
-            <ArchivePreview
-              key={track.id}
-              title={track.name}
-              subTitle={track.artist}
-              imageUrl={track.imageurl}
-              externalUrl={''}
-              createdAt={track.createdat}
-            />
-          );
-        }
-      );
+      mediaList = (data as Track[]).map((track: Track) => (
+        <ArchivePreview
+          key={track.id}
+          title={track.name}
+          subTitle={track.artist}
+          imageUrl={track.imageUrl}
+          externalUrl={''}
+          createdAt={track.createdAt}
+        />
+      ));
       break;
     case MediaType.Video:
-      mediaList = data.map(
-        (video: {
-          videoid: string;
-          videotitle: string;
-          channelid: string;
-          channeltitle: string;
-          thumbnailurl: string;
-          createdat: string;
-        }) => {
-          return (
-            <ArchivePreview
-              key={video.videoid}
-              title={video.videotitle}
-              subTitle={video.channeltitle}
-              imageUrl={video.thumbnailurl}
-              externalUrl={''}
-              createdAt={video.createdat}
-            />
-          );
-        }
-      );
+      mediaList = (data as Video[]).map((video: Video) => (
+        <ArchivePreview
+          key={video.id}
+          title={video.videoTitle}
+          subTitle={video.channelTitle}
+          imageUrl={video.thumbnailUrl}
+          externalUrl={video.externalUrls.youtube ?? ''}
+          createdAt={video.createdAt}
+        />
+      ));
       break;
     case MediaType.Artist:
-      mediaList = data.map(
-        (artist: {
-          id: string;
-          name: string;
-          imageurl: string;
-          externalUrls: object;
-          createdat: string;
-        }) => {
-          return (
-            <ArchivePreview
-              key={artist.id} // Assuming each artist has a unique id
-              title={artist.name}
-              subTitle={''}
-              imageUrl={artist.imageurl}
-              externalUrl={''}
-              createdAt={artist.createdat}
-            />
-          );
-        }
-      );
+      mediaList = (data as Artist[]).map((artist: Artist) => (
+        <ArchivePreview
+          key={artist.id}
+          title={artist.name}
+          subTitle={''}
+          imageUrl={artist.imageUrl}
+          externalUrl={''}
+          createdAt={artist.createdAt}
+        />
+      ));
       break;
     default:
       mediaList = <></>;
