@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { MediaType } from '@/app/lib/types';
 import AlbumPreview from './mediaPreviews/albumPreview';
 import ArtistPreview from './mediaPreviews/artistPreview';
@@ -14,10 +14,10 @@ export default function MediaSearch() {
     id: string;
   }>({ type: MediaType.Artist, id: '' });
 
-  const handleSearchResults = (type: MediaType, id: string) => {
+  const handleSearchResults = useCallback((type: MediaType, id: string) => {
     console.log('Search results:', type, id);
     setMediaPreview({ type, id });
-  };
+  }, []);
 
   let mediaContent;
 
