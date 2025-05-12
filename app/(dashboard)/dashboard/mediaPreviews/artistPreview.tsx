@@ -16,6 +16,7 @@ export default function ArtistPreview({ id }: { id: string }) {
   if (isLoading) return <div>Artist Loading...</div>;
   if (!data) return <div>No artist...</div>;
 
+
   const {
     name,
     externalUrls: { spotify },

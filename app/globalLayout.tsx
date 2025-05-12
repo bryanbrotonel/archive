@@ -21,9 +21,12 @@ export default function GlobalLayout({
 }>) {
   const theme = darkMode ? 'dark' : 'light';
   return (
-    <html lang='en'>
+    <html
+      lang='en'
+      className={`${robotoMono.className} ${sourceSerif.className}`}
+    >
       <body
-        className={`${robotoMono.className} ${sourceSerif.className} ${theme} antialiased dark:bg-black dark:text-primary text-black bg-primary`}
+        className={` ${theme} antialiased dark:bg-black dark:text-primary text-black bg-primary`}
       >
         <div className='container mx-auto flex flex-col h-full min-h-screen p-8 lg:px-0 w-full max-w-4xl'>
           <div className='flex-1'>{children}</div>
