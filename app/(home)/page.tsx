@@ -1,19 +1,34 @@
 'use client';
 
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import Link from 'next/link';
 import useSWR from 'swr';
-import { Album, Artist, Track, Video, MediaType, Entity } from '../lib/types';
-import { swrFetcher, swrMiddleware } from '../lib/utils';
+import {
+  Album,
+  Artist,
+  Track,
+  Video,
+  MediaType,
+  Entity,
+  SortOptionsType,
+  sortOptions,
+} from '../lib/types';
+import { sortEntityData, swrFetcher, swrMiddleware } from '../lib/utils';
 import DisplayTable from './displayTable';
 
 export default function Home() {
   const [type, setType] = useState<MediaType>(MediaType.Album);
+  const [sortBy, setSortBy] = useState<SortOptionsType>('createdAt:desc');
 
   const { data, error, isLoading } = useSWR<{ data: Entity[] }, Error>(
     `/api/database/getItems?type=${type}`,
     swrFetcher,
     { use: [swrMiddleware] }
+  );
+
+  const sortedData = useMemo(
+    () => sortEntityData(data?.data || [], type, sortBy),
+    [data, type, sortBy]
   );
 
   const convertToTableData = (
@@ -118,8 +133,22 @@ export default function Home() {
           </div>
           <div className='border-2 border-black/20 border-t-black rounded-b-sm bg-black/2 p-4 space-y-4 mt-[-2px]'>
             {/* Search Bar */}
-            <div className='flex justify-end'>
-              <div className=''>
+            <div className='flex flex-col-reverse md:flex-row justify-end md:items-center gap-2'>
+              <div>
+                <select
+                  value={sortBy}
+                  onChange={(e) => setSortBy(e.target.value as SortOptionsType)}
+                  className='px-3 py-1 border border-gray-300 rounded-md text-gray-500 dark:text-white'
+                  aria-label='Sort Options'
+                >
+                  {sortOptions.map((option) => (
+                    <option key={option.value} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div>
                 <input
                   type='text'
                   value={''}
@@ -136,7 +165,7 @@ export default function Home() {
             {data?.data && (
               <DisplayTable
                 headers={getTableHeaders(type)}
-                data={convertToTableData(data.data, type)}
+                data={convertToTableData(sortedData, type)}
               />
             )}
           </div>

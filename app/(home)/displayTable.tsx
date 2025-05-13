@@ -65,7 +65,7 @@ export default function DisplayTable({ headers, data }: DisplayTableProps) {
                           index === 0 ? 'flex-3 font-bold' : 'flex-2'
                         }`}
                       >
-                        {value}
+                        {value === '' ? '-' : value}
                       </span>
                     ))}
                 </div>

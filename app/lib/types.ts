@@ -136,3 +136,12 @@ export interface FilterOptions {
   minDate?: Date | string;
   maxDate?: Date | string;
 }
+
+export type SortOptionsType = 'createdAt:asc' | 'createdAt:desc' | 'title:asc' | 'title:desc';
+
+export const sortOptions: Array<{ value: SortOptionsType; label: string }> = [
+  { value: 'createdAt:asc', label: 'Archive date (asc)' },
+  { value: 'createdAt:desc', label: 'Archive date (desc)' },
+  { value: 'title:asc', label: 'Title (asc)' },
+  { value: 'title:desc', label: 'Title (desc)' },
+];

@@ -6,7 +6,7 @@ import {
   SimplifiedAlbum,
   SearchResults,
 } from '@spotify/web-api-ts-sdk';
-import { Album, Artist, ConvertedVideo, MediaType, SearchItemType, Track, VideoInput } from './types';
+import { Album, Artist, ConvertedVideo, Entity, MediaType, SearchItemType, SortOptionsType, Track, Video, VideoInput } from './types';
 import { Middleware, SWRHook } from 'swr';
 
 export const convertArtistData = (
@@ -161,4 +161,29 @@ export const sortSearchResults = (data: SearchResults<['album', 'artist', 'track
   );
 
   return searchItems.sort((a, b) => (b.popularity || 0) - (a.popularity || 0));
+};
+
+// Sort data by createdAt in descending order
+export const sortEntityData = (data: Entity[], type: MediaType, sortBy: SortOptionsType) => {
+  const getTitle = (item: Entity): string => {
+    if (type === MediaType.Video) {
+      return (item as Video).videoTitle;
+    }
+    return (item as Album | Track | Artist).name;
+  };
+
+  return [...data].sort((a, b) => {
+    switch (sortBy) {
+      case 'createdAt:asc':
+        return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
+      case 'createdAt:desc':
+        return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+      case 'title:asc':
+        return getTitle(a).localeCompare(getTitle(b));
+      case 'title:desc':
+        return getTitle(b).localeCompare(getTitle(a));
+      default:
+        return 0;
+    }
+  });
 };

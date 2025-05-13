@@ -20,32 +20,9 @@ const ArchiveList = () => {
     use: [swrMiddleware],
   });
 
-  const handleRefresh = () => {
-    mutate(`/api/database/getItems?type=${mediaType}`);
-  };
-
-  const seedDatabase = async () => {
-    const response = await fetch('/api/database/seed', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-    if (!response.ok) {
-      throw new Error('Failed to seed database');
-    }
-    const data = await response.json();
-    console.log('Database seeded:', data);
-    // Optionally, you can trigger a refresh of the data after seeding
-    mutate(`/api/database/getItems?type=${mediaType}`);
-  };
-
   return (
     <div className='space-y-5'>
       <h2 className='mb-5 text-xl font-mono'>Archive List</h2>
-      <div>
-        <button onClick={seedDatabase}>Seed</button>
-      </div>
       <div className='space-y-5'>
         <div className='flex space-x-2'>
           {Object.values(MediaType).map((type) => (
@@ -59,19 +36,6 @@ const ArchiveList = () => {
               {type}
             </button>
           ))}
-        </div>
-        <div className='flex gap-4 items-center'>
-          <div className=''>
-            <h3 className='text-lg font-sans font-semibold'>{mediaType}</h3>
-          </div>
-          <div>
-            <button
-              onClick={handleRefresh}
-              className='px-3 py-1 rounded-md bg-indigo-700 hover:bg-indigo-800 text-white'
-            >
-              <span>&#128260;</span>
-            </button>
-          </div>
         </div>
       </div>
 

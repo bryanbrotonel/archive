@@ -10,6 +10,7 @@ export type ArchivePreviewProps = {
   externalUrl: string;
   createdAt: string;
   deleteEntry?: () => void;
+  className?: string;
 };
 
 export default function ArchivePreview({
@@ -19,39 +20,67 @@ export default function ArchivePreview({
   externalUrl,
   createdAt,
   deleteEntry,
+  className = '',
 }: ArchivePreviewProps) {
   return (
-    <div className='flex flex-row gap-2'>
-      <div className='shrink-0'>
-        <Link href={externalUrl} target='_blank' rel='noopener noreferrer'>
-          <Image
-            className='rounded-lg border-2 border-white bg-cover'
-            src={imageUrl}
-            alt={`${title} - Artist Image`}
-            width={50}
-            height={50}
-          />
-        </Link>
-      </div>
-      <div className='flex-1 space-y-1 overflow-hidden'>
-        <div className=''>
-          <p className=' font-sans font-bold truncate'>{title}</p>
-          {subTitle && <p className='text-sm text-gray-500'>{subTitle}</p>}
-        </div>
-        <div className='flex flex-row items-center gap-2'>
-          <p className='text-xs text-gray-400'>
-            {timeAgo(new Date(createdAt).getTime())}
-          </p>
-          <div>
-            <button
-              onClick={deleteEntry}
-              className={`text-xs px-1 py-1 rounded-md bg-red-800 hover:bg-red-700`}
-            >
-              delete
-            </button>
+    <div className={`${className}`}>
+      <Link href={externalUrl} target='_blank' rel='noopener noreferrer'>
+        <div className='flex flex-col md:flex-row gap-2 justify-between hover:bg-primary/10 p-2 rounded-md transition-colors duration-50 group'>
+          <div className='flex flex-row gap-2'>
+            <div className='shrink-0'>
+              <Image
+                className='rounded-lg border-2 border-white bg-cover'
+                src={imageUrl}
+                alt={`${title} - Artist Image`}
+                width={50}
+                height={50}
+              />
+            </div>
+            <div className='flex-1 space-y-1 overflow-hidden'>
+              <div className='overflow-y-clip'>
+                <p className='font-sans font-bold break-words'>{title}</p>
+                {subTitle && (
+                  <p className='text-sm text-gray-500'>{subTitle}</p>
+                )}
+              </div>
+              <div className='flex flex-row items-center gap-2'>
+                <p className='text-xs text-gray-400'>
+                  {timeAgo(new Date(createdAt).getTime())}
+                </p>
+              </div>
+            </div>
+          </div>
+          <div className='flex flex-col items-end justify-between'>
+            {deleteEntry && (
+              <button
+                onClick={(e) => {
+                  e.stopPropagation(); // Prevent event propagation
+                  e.preventDefault(); // Prevent default link behavior
+                  deleteEntry();
+                }}
+                className='flex items-center gap-1 rounded-md py-1 px-3 bg-red-500 hover:bg-red-600 text-sm text-white font-medium transition-colors duration-150'
+                aria-label='Delete Entry'
+              >
+                <svg
+                  xmlns='http://www.w3.org/2000/svg'
+                  fill='none'
+                  viewBox='0 0 24 24'
+                  strokeWidth={2}
+                  stroke='currentColor'
+                  className='w-4 h-4'
+                >
+                  <path
+                    strokeLinecap='round'
+                    strokeLinejoin='round'
+                    d='M6 18L18 6M6 6l12 12'
+                  />
+                </svg>
+                Delete
+              </button>
+            )}
           </div>
         </div>
-      </div>
+      </Link>
     </div>
   );
 }

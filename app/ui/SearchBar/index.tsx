@@ -31,9 +31,6 @@ export default function SearchBar({ onSubmit }: SearchBarProps) {
               setShowResults(true);
             }
           }}
-          onBlur={() => {
-            setTimeout(() => setShowResults(false), 100); // Delay to allow click event on results
-          }}
         />
         {searchValue && (
           <button
@@ -53,20 +50,51 @@ export default function SearchBar({ onSubmit }: SearchBarProps) {
         </p>
       )}
       {showResults && (
-        <div className='absolute max-h-96 min-w-60 max-w-96 bg-white text-black border border-indigo-200 rounded-md p-2 overflow-y-scroll overflow-x-hidden'>
-          {searchResults.map((result) => (
-            <SearchItem
-              key={result.id}
-              type={result.type}
-              title={result.title}
-              subTitle={result.subTitle}
-              imageUrl={result.imageUrl}
-              onClick={() => {
-                onSubmit(result.type, result.id);
-                setShowResults(false);
-              }}
-            />
-          ))}
+        <div className='absolute max-h-96 w-80 bg-white text-black border border-indigo-200 rounded-md shadow-lg overflow-hidden z-10'>
+          <div className='flex p-2 justify-between items-center border-b border-gray-200'>
+            <span className='text-sm text-gray-500'>Search Results</span>
+            <button
+              className='text-gray-500 hover:text-gray-700'
+              onClick={() => setShowResults(false)}
+              aria-label='Close search results'
+            >
+              <svg
+                xmlns='http://www.w3.org/2000/svg'
+                fill='none'
+                viewBox='0 0 24 24'
+                strokeWidth={2}
+                stroke='currentColor'
+                className='w-4 h-4'
+              >
+                <path
+                  strokeLinecap='round'
+                  strokeLinejoin='round'
+                  d='M6 18L18 6M6 6l12 12'
+                />
+              </svg>
+            </button>
+          </div>
+          <div className='overflow-y-auto max-h-80'>
+            {searchResults.length > 0 ? (
+              searchResults.map((result) => (
+                <SearchItem
+                  key={result.id}
+                  type={result.type}
+                  title={result.title}
+                  subTitle={result.subTitle}
+                  imageUrl={result.imageUrl}
+                  onClick={() => {
+                    onSubmit(result.type, result.id);
+                    setShowResults(false);
+                  }}
+                />
+              ))
+            ) : (
+              <div className='p-4 text-center text-gray-500'>
+                No results found.
+              </div>
+            )}
+          </div>
         </div>
       )}
     </div>
