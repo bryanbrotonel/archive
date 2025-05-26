@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import GlobalLayout from "../globalLayout";
+import GlobalLayout from "../ui/globalLayout";
 
 export const metadata: Metadata = {
   title: "Bryan's Archive | Dashboard",

@@ -14,7 +14,7 @@ import {
   sortOptions,
 } from '../lib/types';
 import { sortEntityData, swrFetcher, swrMiddleware } from '../lib/utils';
-import DisplayTable from './displayTable';
+import DisplayTable from '../ui/displayTable';
 
 export default function Home() {
   const [type, setType] = useState<MediaType>(MediaType.Album);

@@ -6,8 +6,6 @@ import { useActionState } from 'react';
 
 export default function DashboardSignIn() {
   const [state, formAction, pending] = useActionState(authenticate, undefined);
-  console.log('🚀 ~ DashboardSignIn ~ pending:', pending);
-  console.log('🚀 ~ DashboardSignIn ~ state:', state);
 
   return (
     <div className='flex flex-col items-center justify-center'>

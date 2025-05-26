@@ -1,13 +1,12 @@
 import React from 'react';
-import MediaSearch from './mediaSearch';
-import ArchiveList from './archiveList';
+import MediaSearch from '../../ui/mediaSearch';
+import ArchiveList from '../../ui/archiveList';
 import Link from 'next/link';
 import { auth, signOut } from '@/auth';
 import { redirect } from 'next/navigation';
 
 export default async function Dashboard() {
   const session = await auth();
-  console.log('🚀 ~ Dashboard ~ session:', session);
 
   if (!session) {
     redirect('/dashboard/login');

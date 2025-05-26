@@ -30,7 +30,6 @@ export async function POST(
 
     return NextResponse.json({ message: responseMessage });
   } catch (error) {
-    console.log('🚀 ~ error:', error)
     return NextResponse.json({ error }, { status: 500 });
   } finally {
     client.release();
