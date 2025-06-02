@@ -10,6 +10,23 @@
   --color-white: #ffffff;
   --font-mono: 'Roboto Mono', monospace;
   --font-serif: 'Source Serif 4', serif;
+
+  --animate-fade-in-out: fade-in-out 3s forwards;
+
+  @keyframes fade-in-out {
+    0% {
+      opacity: 0;
+    }
+    10% {
+      opacity: 1;
+    }
+    90% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
 }
 
 @layer utilities {
@@ -44,7 +61,6 @@
   .scrollbar::-webkit-scrollbar-thumb {
     background-color: var(--color-secondary);
     border-radius: 10px;
-    border: 0.5px solid var(--color-primary-dark);
     transition: background-color 0.3s ease, border-color 0.3s ease;
   }
 
@@ -54,12 +70,11 @@
   }
 
   .dark .scrollbar::-webkit-scrollbar-track {
-    background-color: var(--color-black);
+    background-color: transparent;
   }
 
   .dark .scrollbar::-webkit-scrollbar-thumb {
-    background-color: --alpha(var(--color-primary) / 80%);
-    border: 0.5px solid var(--color-black);
+    background-color: --alpha(var(--color-white) / 20%);
   }
 
   .dark .scrollbar::-webkit-scrollbar-thumb:hover {

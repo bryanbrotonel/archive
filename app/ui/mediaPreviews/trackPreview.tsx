@@ -1,11 +1,14 @@
-import { MediaType } from '@/app/lib/types';
 import useSWR from 'swr';
+import { useToast } from '@/app/toast-povider';
+import { MediaType } from '@/app/lib/types';
 import { Track } from '@spotify/web-api-ts-sdk';
 import { convertTrackData, swrFetcher } from '@/app/lib/utils';
 import MediaPreview from './mediaPreview';
 import { onSaveTrack } from './api';
 
 export default function TrackPreview(props: { id: string }) {
+  const { showToast } = useToast();
+
   const { data, error, isLoading } = useSWR<Track, Error>(
     `/api/spotify/track/${props.id}`,
     swrFetcher,
@@ -34,7 +37,15 @@ export default function TrackPreview(props: { id: string }) {
       />
       <div className='mt-5'>
         <button
-          onClick={() => onSaveTrack(data)}
+          onClick={async () => {
+            try {
+              await onSaveTrack(data);
+              showToast({ message: 'Track Saved', type: 'success' });
+            } catch (error) {
+              console.error('Error saving track:', error);
+              showToast({ message: 'Failed to save track', type: 'error' });
+            }
+          }}
           className='rounded-md bg-white text-black p-2'
         >
           Save Changes

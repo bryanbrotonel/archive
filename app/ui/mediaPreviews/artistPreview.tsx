@@ -4,8 +4,11 @@ import { Artist } from '@spotify/web-api-ts-sdk';
 import { convertArtistData, swrFetcher } from '@/app/lib/utils';
 import MediaPreview from './mediaPreview';
 import { onSaveArtist } from './api';
+import { useToast } from '@/app/toast-povider';
 
 export default function ArtistPreview({ id }: { id: string }) {
+  const { showToast } = useToast();
+
   const { data, error, isLoading } = useSWR<Artist, Error>(
     id ? `/api/spotify/artist/${id}` : null,
     swrFetcher,
@@ -15,7 +18,6 @@ export default function ArtistPreview({ id }: { id: string }) {
   if (error) return <div>{error.message}</div>;
   if (isLoading) return <div>Artist Loading...</div>;
   if (!data) return <div>No artist...</div>;
-
 
   const {
     name,
@@ -33,7 +35,15 @@ export default function ArtistPreview({ id }: { id: string }) {
       />
       <div className='mt-5'>
         <button
-          onClick={() => onSaveArtist(data)}
+          onClick={async () => {
+            try {
+              await onSaveArtist(data);
+              showToast({ message: 'Artist Saved', type: 'success' });
+            } catch (error) {
+              console.error('Error saving artist:', error);
+              showToast({ message: 'Failed to save artist', type: 'error' });
+            }
+          }}
           className='rounded-md bg-white text-black p-2'
         >
           Save Changes

@@ -4,8 +4,10 @@ import { Album } from '@spotify/web-api-ts-sdk';
 import { convertAlbumData, swrFetcher } from '@/app/lib/utils';
 import MediaPreview from './mediaPreview';
 import { onSaveAlbum } from './api';
+import { useToast } from '@/app/toast-povider';
 
 export default function AlbumPreview(props: { id: string }) {
+  const { showToast } = useToast();
   const { data, error, isLoading } = useSWR<Album, Error>(
     `/api/spotify/album/${props.id}`,
     swrFetcher,
@@ -33,7 +35,15 @@ export default function AlbumPreview(props: { id: string }) {
       />
       <div className='mt-5'>
         <button
-          onClick={() => onSaveAlbum(data)}
+          onClick={async () => {
+            try {
+              await onSaveAlbum(data);
+              showToast({ message: 'Album Saved', type: 'success' });
+            } catch (error) {
+              console.error('Error saving album:', error);
+              showToast({ message: 'Failed to save album', type: 'error' });
+            }
+          }}
           className='rounded-md bg-white text-black p-2'
         >
           Save Changes

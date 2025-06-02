@@ -3,6 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { timeAgo } from '@/app/lib/utils';
 import { useModal } from '@/app/modal-provider';
+import { useToast } from '@/app/toast-povider';
 
 export type ArchivePreviewProps = {
   title: string;
@@ -23,7 +24,10 @@ export default function ArchivePreview({
   deleteEntry,
   className = '',
 }: ArchivePreviewProps) {
+
+  const { showToast } = useToast();
   const { queueModal } = useModal();
+
   return (
     <div className={`${className}`}>
       <Link href={externalUrl} target='_blank' rel='noopener noreferrer'>
@@ -67,7 +71,13 @@ export default function ArchivePreview({
                         cannot be undone.
                       </p>
                     ),
-                    onSuccess: deleteEntry,
+                    onSuccess: () => {
+                      deleteEntry();
+                      showToast({
+                        message: 'Entry deleted successfully.',
+                        type: 'success',
+                      })
+                    },
                     successButtonText: 'Yes, delete',
                     dismissButtonText: 'No, keep it',
                   });

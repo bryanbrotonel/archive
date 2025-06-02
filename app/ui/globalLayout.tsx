@@ -6,6 +6,7 @@ import Footer from './footer';
 import '../globals.css';
 import { ModalProvider, useModal } from '../modal-provider';
 import Modal from './modal';
+import { ToastProvider } from '../toast-povider';
 
 const robotoMono = Roboto_Mono({
   subsets: ['latin'],
@@ -51,15 +52,17 @@ export default function GlobalLayout({
       <body
         className={`${theme} antialiased dark:bg-black dark:text-primary text-black bg-primary`}
       >
-        <ModalProvider>
-          <GlobalModal />
-          <div className='container mx-auto flex flex-col h-full min-h-screen p-8 lg:px-0 w-full max-w-4xl'>
-            <div className='flex-1'>{children}</div>
-            <div>
-              <Footer />
+        <ToastProvider>
+          <ModalProvider>
+            <GlobalModal />
+            <div className='container mx-auto flex flex-col h-full min-h-screen p-8 lg:px-0 w-full max-w-4xl'>
+              <div className='flex-1'>{children}</div>
+              <div>
+                <Footer />
+              </div>
             </div>
-          </div>
-        </ModalProvider>
+          </ModalProvider>
+        </ToastProvider>
       </body>
     </html>
   );
