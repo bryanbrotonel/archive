@@ -1,6 +1,6 @@
 'use client';
 
-import useSWR, { mutate } from 'swr';
+import useSWR from 'swr';
 import { Entity, MediaType } from '@/app/lib/types';
 import { swrFetcher, swrMiddleware } from '@/app/lib/utils';
 import MediaList from './mediaList';

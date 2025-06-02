@@ -2,6 +2,7 @@ import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { timeAgo } from '@/app/lib/utils';
+import { useModal } from '@/app/modal-provider';
 
 export type ArchivePreviewProps = {
   title: string;
@@ -22,6 +23,7 @@ export default function ArchivePreview({
   deleteEntry,
   className = '',
 }: ArchivePreviewProps) {
+  const { queueModal } = useModal();
   return (
     <div className={`${className}`}>
       <Link href={externalUrl} target='_blank' rel='noopener noreferrer'>
@@ -56,7 +58,19 @@ export default function ArchivePreview({
                 onClick={(e) => {
                   e.stopPropagation(); // Prevent event propagation
                   e.preventDefault(); // Prevent default link behavior
-                  deleteEntry();
+
+                  queueModal({
+                    title: 'Delete Entry',
+                    content: (
+                      <p>
+                        Are you sure you want to delete this entry? This action
+                        cannot be undone.
+                      </p>
+                    ),
+                    onSuccess: deleteEntry,
+                    successButtonText: 'Yes, delete',
+                    dismissButtonText: 'No, keep it',
+                  });
                 }}
                 className='flex items-center gap-1 rounded-md py-1 px-3 bg-red-500 hover:bg-red-600 text-sm text-white font-medium transition-colors duration-150'
                 aria-label='Delete Entry'
