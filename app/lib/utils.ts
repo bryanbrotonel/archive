@@ -6,7 +6,18 @@ import {
   SimplifiedAlbum,
   SearchResults,
 } from '@spotify/web-api-ts-sdk';
-import { Album, Artist, ConvertedVideo, Entity, MediaType, SearchItemType, SortOptionsType, Track, Video, VideoInput } from './types';
+import {
+  Album,
+  Artist,
+  ConvertedVideo,
+  Entity,
+  MediaType,
+  SearchItemType,
+  SortOptionsType,
+  Track,
+  Video,
+  VideoInput,
+} from './types';
 import { Middleware, SWRHook } from 'swr';
 
 export const convertArtistData = (
@@ -18,7 +29,7 @@ export const convertArtistData = (
   externalUrls: { spotify: data.external_urls.spotify },
   genres: 'genres' in data ? data.genres : [],
   createdAt: '',
-  updatedAt: ''
+  updatedAt: '',
 });
 
 export const convertAlbumData = (
@@ -31,7 +42,7 @@ export const convertAlbumData = (
   externalUrls: { spotify: data.external_urls.spotify },
   genres: data.genres,
   createdAt: '',
-  updatedAt: ''
+  updatedAt: '',
 });
 
 export const convertTrackData = (data: SpotifyTrack): Track => ({
@@ -44,7 +55,7 @@ export const convertTrackData = (data: SpotifyTrack): Track => ({
   imageUrl: data.album.images[0]?.url || '',
   genres: data.album?.genres ?? [],
   createdAt: '',
-  updatedAt: ''
+  updatedAt: '',
 });
 
 export const convertVideoData = (input: VideoInput): ConvertedVideo => {
@@ -73,27 +84,30 @@ export const swrFetcher = async (url: string, options?: RequestInit) => {
   return data;
 };
 
-export const swrMiddleware: Middleware = (useSWRNext: SWRHook) => (key, fetcher, config) => {
-  const snakeToCamel = (obj: any): any => {
-    if (Array.isArray(obj)) {
-      return obj.map(snakeToCamel);
-    } else if (obj && typeof obj === 'object') {
-      return Object.entries(obj).reduce((acc, [key, value]) => {
-        const camelKey = key.replace(/_([a-z])/g, (_, char) => char.toUpperCase());
-        acc[camelKey] = snakeToCamel(value);
-        return acc;
-      }, {} as Record<string, any>);
-    }
-    return obj;
-  };
+export const swrMiddleware: Middleware =
+  (useSWRNext: SWRHook) => (key, fetcher, config) => {
+    const snakeToCamel = (obj: any): any => {
+      if (Array.isArray(obj)) {
+        return obj.map(snakeToCamel);
+      } else if (obj && typeof obj === 'object') {
+        return Object.entries(obj).reduce((acc, [key, value]) => {
+          const camelKey = key.replace(/_([a-z])/g, (_, char) =>
+            char.toUpperCase()
+          );
+          acc[camelKey] = snakeToCamel(value);
+          return acc;
+        }, {} as Record<string, any>);
+      }
+      return obj;
+    };
 
-  const wrappedFetcher = async (...args: any[]) => {
-    const data = await fetcher?.(...args);
-    return snakeToCamel(data);
-  };
+    const wrappedFetcher = async (...args: any[]) => {
+      const data = await fetcher?.(...args);
+      return snakeToCamel(data);
+    };
 
-  return useSWRNext(key, wrappedFetcher, config);
-};
+    return useSWRNext(key, wrappedFetcher, config);
+  };
 
 export const timeAgo = (timestamp: number): string => {
   const now = Date.now(); // Current time in milliseconds
@@ -105,7 +119,7 @@ export const timeAgo = (timestamp: number): string => {
   const days = Math.floor(hours / 24);
 
   if (seconds <= 0) {
-    return "Just now"
+    return 'Just now';
   } else if (seconds < 60) {
     return `${seconds} second${seconds === 1 ? '' : 's'} ago`;
   } else if (minutes < 60) {
@@ -122,18 +136,21 @@ export const timeAgo = (timestamp: number): string => {
       day: 'numeric',
     });
   }
-}
+};
 
-export const sortSearchResults = (data: SearchResults<['album', 'artist', 'track']>): SearchItemType[] => {
+export const sortSearchResults = (
+  data: SearchResults<['album', 'artist', 'track']>
+): SearchItemType[] => {
   const searchItems: SearchItemType[] = [];
 
   searchItems.push(
-    ...data.albums.items.filter((album: SimplifiedAlbum) => album.album_type !== 'single')
+    ...data.albums.items
+      .filter((album: SimplifiedAlbum) => album.album_type !== 'single')
       .map((album: SimplifiedAlbum) => ({
         id: album.id,
         type: MediaType.Album,
         title: album.name,
-        subTitle: album.artists.map(artist => artist.name).join(', '),
+        subTitle: album.artists.map((artist) => artist.name).join(', '),
         imageUrl: album.images[0]?.url || '',
         popularity: album.popularity,
       }))
@@ -154,7 +171,7 @@ export const sortSearchResults = (data: SearchResults<['album', 'artist', 'track
       id: track.id,
       type: MediaType.Track,
       title: track.name,
-      subTitle: track.artists.map(artist => artist.name).join(', '),
+      subTitle: track.artists.map((artist) => artist.name).join(', '),
       imageUrl: track.album.images[0]?.url || '',
       popularity: track.popularity,
     }))
@@ -164,7 +181,12 @@ export const sortSearchResults = (data: SearchResults<['album', 'artist', 'track
 };
 
 // Sort data by createdAt in descending order
-export const sortEntityData = (data: Entity[], type: MediaType, sortBy: SortOptionsType) => {
+export const sortEntityData = (
+  data: Entity[],
+  type: MediaType,
+  sortBy: SortOptionsType,
+  search?: string
+) => {
   const getTitle = (item: Entity): string => {
     if (type === MediaType.Video) {
       return (item as Video).videoTitle;
@@ -172,12 +194,47 @@ export const sortEntityData = (data: Entity[], type: MediaType, sortBy: SortOpti
     return (item as Album | Track | Artist).name;
   };
 
-  return [...data].sort((a, b) => {
+  const getSubtitle = (item: Entity): string => {
+    if (type === MediaType.Video) {
+      return (item as Video).channelTitle;
+    }
+    if (type === MediaType.Track) {
+      return (item as Track).artist;
+    }
+    if (type === MediaType.Album) {
+      return (item as Album).artist;
+    }
+    return '';
+  };
+
+  let filteredData = data;
+  if (search && search.trim() !== '') {
+    const lowerSearch = search.toLowerCase();
+    filteredData = data.filter((item) => {
+      switch (type) {
+        case MediaType.Album:
+        case MediaType.Track:
+        case MediaType.Video:
+          return (
+            getTitle(item).toLowerCase().includes(lowerSearch) ||
+            getSubtitle(item).toLowerCase().includes(lowerSearch)
+          );
+        default:
+          return getTitle(item).toLowerCase().includes(lowerSearch);
+      }
+    });
+  }
+
+  return [...filteredData].sort((a, b) => {
     switch (sortBy) {
       case 'createdAt:asc':
-        return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
+        return (
+          new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+        );
       case 'createdAt:desc':
-        return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+        return (
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        );
       case 'title:asc':
         return getTitle(a).localeCompare(getTitle(b));
       case 'title:desc':
