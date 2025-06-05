@@ -6,7 +6,7 @@ import ArchiveList from './archiveList';
 
 export default function Home() {
   return (
-    <main className='space-y-4'>
+    <main className='h-full max-w-4xl mx-auto'>
       <div className='flex flex-col items-center justify-center max-w-xl mx-auto text-center text-sm space-y-4 mb-10'>
         <div className='w-fit'>
           <Image

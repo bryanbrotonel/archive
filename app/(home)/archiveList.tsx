@@ -68,12 +68,12 @@ export default function ArchiveList() {
       </div>
       <div className='border-2 border-black/20 border-t-black rounded-b-sm bg-black/2 p-4 space-y-4 mt-[-2px]'>
         {/* Search Bar */}
-        <div className='flex flex-col-reverse md:flex-row justify-end md:items-center gap-2'>
+        <div className='flex flex-col-reverse md:flex-row justify-end md:items-start gap-2'>
           <div>
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value as SortOptionsType)}
-              className='px-3 py-1 border border-gray-300 rounded-md text-gray-500 dark:text-white'
+              className='w-full md:w-auto px-3 py-1.5 border border-gray-300 rounded-md text-gray-500 dark:text-white hover:cursor-pointer'
               aria-label='Sort Options'
             >
               {sortOptions.map((option) => (

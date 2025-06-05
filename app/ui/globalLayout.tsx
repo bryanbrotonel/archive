@@ -47,15 +47,15 @@ export default function GlobalLayout({
   return (
     <html
       lang='en'
-      className={`${robotoMono.className} ${sourceSerif.className}`}
+      className={`h-full ${robotoMono.className} ${sourceSerif.className}`}
     >
       <body
-        className={`${theme} antialiased dark:bg-black dark:text-primary text-black bg-primary`}
+        className={`min-h-full ${theme} antialiased dark:bg-black dark:text-primary text-black bg-primary`}
       >
         <ToastProvider>
           <ModalProvider>
             <GlobalModal />
-            <div className='container mx-auto flex flex-col h-full min-h-screen p-8 lg:px-0 w-full max-w-4xl'>
+            <div className='min-h-screen h-full container mx-auto flex flex-1 flex-col p-8 lg:px-0'>
               <div className='flex-1'>{children}</div>
               <div className='mt-8'>
                 <Footer />

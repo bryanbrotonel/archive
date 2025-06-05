@@ -15,7 +15,7 @@ export type DisplayTableProps = {
 
 export default function DisplayTable({ headers, data }: DisplayTableProps) {
   return (
-    <div>
+    <div className='overflow-y-scroll scrollbar'>
       <div className='hidden px-2 gap-3 items-center sm:grid sm:grid-cols-16'>
         <div className='flex gap-2 col-span-15 md:col-span-12 col-start-2! text-xs text-black/50'>
           {headers.map((header: { key: string; label: string }) => (
@@ -61,7 +61,7 @@ export default function DisplayTable({ headers, data }: DisplayTableProps) {
                     .map(([key, value], index) => (
                       <span
                         key={key}
-                        className={`truncate ${
+                        className={`truncate select-text ${
                           index === 0 ? 'flex-3 font-bold' : 'flex-2'
                         }`}
                       >

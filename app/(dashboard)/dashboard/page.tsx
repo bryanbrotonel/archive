@@ -12,7 +12,7 @@ export default async function Dashboard() {
     redirect('/dashboard/login');
   }
   return (
-    <div>
+    <div className='max-w-4xl mx-auto px-4 md:px-0'>
       <div className='my-10 space-y-2 flex flex-col md:flex-row md:items-center md:justify-between'>
         <h1 className='text-4xl font-bold'>Dashboard</h1>
         <div className='flex flex-row items-center gap-2'>

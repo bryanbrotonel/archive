@@ -8,8 +8,6 @@ export const metadata: Metadata = {
 
 export default function HomeLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: Readonly<{ children: React.ReactNode }>) {
   return <GlobalLayout>{children}</GlobalLayout>;
 }
