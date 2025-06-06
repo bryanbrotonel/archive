@@ -1,5 +1,6 @@
-import { ConvertedVideo } from "@/app/lib/types";
+import { ConvertedVideo, MediaType } from '@/app/lib/types';
 import { Album, Artist, Track } from '@spotify/web-api-ts-sdk';
+import { handleRefresh } from '../archiveList/api';
 
 export const onSaveVideo = async (convertedData: ConvertedVideo) => {
   const {
@@ -35,7 +36,7 @@ export const onSaveVideo = async (convertedData: ConvertedVideo) => {
       throw new Error('Failed to save video');
     }
 
-    console.log('Save successful');
+    handleRefresh(MediaType.Video);
   } catch (error) {
     console.error('Error saving video:', error);
   }
@@ -65,7 +66,7 @@ export const onSaveTrack = async (data: Track) => {
       throw new Error('Failed to save track');
     }
 
-    console.log('Save successful');
+    handleRefresh(MediaType.Track);
   } catch (error) {
     console.error('Error saving track:', error);
   }
@@ -93,7 +94,7 @@ export const onSaveArtist = async (data: Artist) => {
       throw new Error('Failed to save artist');
     }
 
-    console.log('Save successful');
+    handleRefresh(MediaType.Artist);
   } catch (error) {
     console.error('Error saving artist:', error);
   }
@@ -121,7 +122,7 @@ export const onSaveAlbum = async (data: Album) => {
       throw new Error('Failed to save album');
     }
 
-    console.log('Save successful');
+    handleRefresh(MediaType.Album);
   } catch (error) {
     console.error('Error saving album:', error);
   }

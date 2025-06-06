@@ -14,6 +14,7 @@ const ArchiveList = () => {
   const { data, error, isLoading } = useSWR<
     {
       data: Entity[];
+      total: number;
     },
     Error
   >(`/api/database/getItems?type=${mediaType}`, swrFetcher, {
@@ -34,11 +35,11 @@ const ArchiveList = () => {
               }`}
             >
               {type}
+              {type === mediaType && data?.total && `(${data.total})`}
             </button>
           ))}
         </div>
       </div>
-
       {isLoading && <div>Loading...</div>}
       {error && <div>Error: {error.message}</div>}
       {data && (

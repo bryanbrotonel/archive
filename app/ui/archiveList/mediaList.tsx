@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import {
   Album,
   Artist,
@@ -19,12 +19,20 @@ interface MediaListProps {
 }
 
 export default function MediaList({ type, data }: MediaListProps) {
+  const [searchTerm, setSearchTerm] = useState('');
+  const [debouncedSearchQuery, setDebouncedSearchQuery] = useState('');
   const [sortBy, setSortBy] = useState<SortOptionsType>('createdAt:desc');
 
   const sortedData = useMemo(
-    () => sortEntityData(data, type, sortBy),
-    [data, type, sortBy]
+    () => sortEntityData(data, type, sortBy, debouncedSearchQuery),
+    [data, type, sortBy, debouncedSearchQuery]
   );
+
+  // Debounce search query
+  useEffect(() => {
+    const handler = setTimeout(() => setDebouncedSearchQuery(searchTerm), 500);
+    return () => clearTimeout(handler);
+  }, [searchTerm]);
 
   const mediaList = sortedData.map((item: Entity, index: number) => {
     const commonProps = {
@@ -104,7 +112,16 @@ export default function MediaList({ type, data }: MediaListProps) {
     <div className='space-y-6 md:w-xl max-w-full'>
       {/* Header Section */}
       <div className='flex flex-col md:justify-between'>
-        <h3 className='text-lg font-sans font-semibold capitalize'>{type}</h3>
+        <div className='mb-4'>
+          <input
+            type='text'
+            placeholder='Search...'
+            className='w-full px-3 py-2 rounded-md bg-gray-300/10 text-white focus:outline-none focus:ring-1 focus:ring-gray-400'
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            aria-label='Search'
+          />
+        </div>
         <div className='flex flex-col md:flex-row gap-2 md:items-center md:justify-between'>
           <div className='flex items-center'>
             <span className='text-sm text-white/50'>Sort by:</span>

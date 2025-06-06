@@ -1,4 +1,4 @@
-import { Album, Artist, Entity, MediaType, SortOptionsType, Track, Video } from "@/app/lib/types";
+import { MediaType } from "@/app/lib/types";
 import { mutate } from "swr";
 
 export const handleRefresh = (type: MediaType) => {
