@@ -45,6 +45,7 @@ export default function DisplayTable({ headers, data }: DisplayTableProps) {
                     src={item.imageurl}
                     alt={`Image of ${item.key}`}
                     fill={true}
+                    sizes='(max-width: 640px) 100vw, (max-width: 768px) 50vw, 33vw'
                   />
                 </div>
                 <div className='flex-1 flex flex-col gap-2 justify-between truncate sm:col-span-15 md:col-span-12 sm:flex-row'>

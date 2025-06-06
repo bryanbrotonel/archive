@@ -5,9 +5,14 @@ import { NextRequest } from 'next/server';
 
 export async function GET(
   request: NextRequest
-): Promise<NextResponse<{ data: object[] } | { error: unknown }>> {
+): Promise<
+  NextResponse<{ data: object[]; total: number } | { error: unknown }>
+> {
   const { searchParams } = new URL(request.url);
   const type = searchParams.get('type') as MediaType;
+  const page = parseInt(searchParams.get('page') || '1', 10);
+  const limit = parseInt(searchParams.get('limit') || '20', 10);
+  const order = searchParams.get('order') || 'default';
   let table;
 
   switch (type) {
@@ -30,10 +35,19 @@ export async function GET(
   const client = await db.connect();
 
   try {
-    const query = `SELECT * FROM ${table}`;
-    const result = await client.query(query);
+    const offset = (page - 1) * limit;
+    let query = `SELECT * FROM ${table}`;
+    if (order === 'latest') {
+      query += ` ORDER BY created_at DESC`;
+    }
+    query += ` LIMIT $1 OFFSET $2`;
 
-    return NextResponse.json({ data: result.rows });
+    const result = await client.query(query, [limit, offset]);
+
+    const countResult = await client.query(`SELECT COUNT(*) FROM ${table}`);
+    const total = parseInt(countResult.rows[0].count, 10);
+
+    return NextResponse.json({ data: result.rows, total });
   } catch (error) {
     return NextResponse.json({ error }, { status: 500 });
   } finally {
