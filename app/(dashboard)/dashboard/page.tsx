@@ -40,11 +40,8 @@ export default async function Dashboard() {
           </div>
         </div>
       </div>
-      <div className='flex flex-col md:flex-row md:space-x-5 md:justify-between'>
-        <div>
-          <h2 className='mb-5 text-xl font-mono'>Archive Something Cool!</h2>
-          <MediaSearch />
-        </div>
+      <div className='flex flex-col lg:flex-row md:space-x-5 md:justify-between'>
+        <MediaSearch />
         <ArchiveList />
       </div>
     </div>

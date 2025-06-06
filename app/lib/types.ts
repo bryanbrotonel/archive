@@ -1,7 +1,7 @@
 export enum MediaType {
-  Artist = 'Artist',
-  Album = 'Album',
   Track = 'Track',
+  Album = 'Album',
+  Artist = 'Artist',
   Video = 'Video',
 }
 

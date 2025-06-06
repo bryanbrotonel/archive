@@ -44,7 +44,10 @@ export default function MediaSearch() {
 
   return (
     <div className='space-y-5'>
-      <SearchBar onSubmit={handleSearchResults} />
+      <div>
+        <h2 className='mb-5 text-xl font-mono'>Archive Something Cool!</h2>
+        <SearchBar onSubmit={handleSearchResults} />
+      </div>
       <div>{mediaPreview.id && mediaContent}</div>
       <details>
         <summary>Show Raw Data</summary>

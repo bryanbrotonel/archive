@@ -101,7 +101,7 @@ export default function MediaList({ type, data }: MediaListProps) {
   });
 
   return (
-    <div className='space-y-6 w-xl max-w-full'>
+    <div className='space-y-6 md:w-xl max-w-full'>
       {/* Header Section */}
       <div className='flex flex-col md:justify-between'>
         <h3 className='text-lg font-sans font-semibold capitalize'>{type}</h3>

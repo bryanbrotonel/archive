@@ -1,4 +1,4 @@
-import { useMemo, useState, useEffect, useCallback } from 'react';
+import { useMemo, useState, useEffect, useCallback, useRef } from 'react';
 import useSWR from 'swr';
 import { MediaType, Entity, SortOptionsType, sortOptions } from '../lib/types';
 import { sortEntityData, swrFetcher, swrMiddleware } from '../lib/utils';
@@ -40,27 +40,27 @@ const headersMap: Record<MediaType, { key: string; label: string }[]> = {
 };
 
 export default function ArchiveList() {
-  const [type, setType] = useState<MediaType>(MediaType.Album);
+  const [type, setType] = useState<MediaType>(MediaType.Track);
   const [sortBy, setSortBy] = useState<SortOptionsType>('createdAt:desc');
   const [mediaState, setMediaState] =
     useState<Record<MediaType, MediaTypeState>>(INITIAL_MEDIA_STATE);
   const [searchQuery, setSearchQuery] = useState('');
   const [debouncedSearchQuery, setDebouncedSearchQuery] = useState('');
   const [fetchingData, setFetchingData] = useState(true);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const sentinelRef = useRef<HTMLDivElement>(null);
 
-  // Fetch data with SWR
   const { data, error, isLoading } = useSWR<
     { data: Entity[]; total: number },
     Error
   >(
     fetchingData
-      ? `/api/database/getItems?type=${type}&page=${mediaState[type].page}&limit=2&order=latest`
+      ? `/api/database/getItems?type=${type}&page=${mediaState[type].page}&limit=10&order=latest`
       : null,
     swrFetcher,
     { use: [swrMiddleware] }
   );
 
-  // Update mediaState when new data arrives
   useEffect(() => {
     if (data) {
       setMediaState((prev) => ({
@@ -74,6 +74,42 @@ export default function ArchiveList() {
       setFetchingData(false);
     }
   }, [data, type]);
+
+  const handleLoadMore = useCallback(() => {
+    setMediaState((prev) => ({
+      ...prev,
+      [type]: {
+        ...prev[type],
+        page: prev[type].page + 1,
+      },
+    }));
+    setFetchingData(true);
+  }, [type]);
+
+  useEffect(() => {
+    if (!sentinelRef.current) return;
+    const currentSentinel = sentinelRef.current;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (
+          entries[0].isIntersecting &&
+          !isLoading &&
+          !fetchingData &&
+          mediaState[type].data.length < mediaState[type].total
+        ) {
+          handleLoadMore();
+        }
+      },
+      {
+        root: scrollContainerRef.current,
+        rootMargin: '0px 0px -80px 0px',
+      }
+    );
+    observer.observe(currentSentinel);
+    return () => {
+      if (currentSentinel) observer.unobserve(currentSentinel);
+    };
+  }, [isLoading, fetchingData, type, mediaState, handleLoadMore]);
 
   // Debounce search query
   useEffect(() => {
@@ -93,22 +129,10 @@ export default function ArchiveList() {
     [mediaState, type, sortBy, debouncedSearchQuery]
   );
 
-  // Handlers
   const handleTypeChange = (mediaType: MediaType) => {
     setType(mediaType);
     if (mediaState[mediaType].data.length === 0) setFetchingData(true);
   };
-
-  const handleLoadMore = useCallback(() => {
-    setMediaState((prev) => ({
-      ...prev,
-      [type]: {
-        ...prev[type],
-        page: prev[type].page + 1,
-      },
-    }));
-    setFetchingData(true);
-  }, [type]);
 
   return (
     <div>
@@ -129,7 +153,6 @@ export default function ArchiveList() {
         </div>
       </div>
       <div className='border-2 border-black/20 border-t-black rounded-b-sm bg-black/2 p-4 space-y-4 mt-[-2px]'>
-        {/* Search Bar */}
         <div className='flex flex-col-reverse md:flex-row justify-end md:items-start gap-2'>
           <div>
             <select
@@ -161,19 +184,10 @@ export default function ArchiveList() {
               headers={headersMap[type] || []}
               data={convertToTableData(sortedData, type)}
             />
-            {mediaState[type].data.length < mediaState[type].total && (
-              <div className='flex justify-center my-4'>
-                <button
-                  className='px-4 py-1 bg-black/5 text-black rounded hover:bg-primary-dark transition'
-                  onClick={handleLoadMore}
-                >
-                  {isLoading ? 'Loading' : 'Load more'}
-                </button>
-              </div>
-            )}
           </div>
         )}
         {error && <div>Error: {error.message}</div>}
+        <div ref={sentinelRef} style={{ height: 1, borderWidth: 0 }} />
       </div>
     </div>
   );
