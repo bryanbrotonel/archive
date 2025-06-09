@@ -17,7 +17,7 @@ export default async function Dashboard() {
         <div className='flex flex-row items-center gap-2'>
           <Link href='/'>
             <span className='text-white/70 hover:text-white hover:underline transition-colors duration-200 text-sm'>
-              &#8592; Home
+              &#8592;&#8239;Home
             </span>
           </Link>
           <h1 className='text-4xl font-bold'>Dashboard</h1>

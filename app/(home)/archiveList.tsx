@@ -47,6 +47,7 @@ export default function ArchiveList() {
   const [searchQuery, setSearchQuery] = useState('');
   const [debouncedSearchQuery, setDebouncedSearchQuery] = useState('');
   const [fetchingData, setFetchingData] = useState(true);
+
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const sentinelRef = useRef<HTMLDivElement>(null);
 
@@ -152,7 +153,7 @@ export default function ArchiveList() {
           ))}
         </div>
       </div>
-      <div className='border-2 border-black/20 border-t-black rounded-b-sm bg-black/2 p-4 space-y-4 mt-[-2px]'>
+      <div className='border-2 border-black/20 border-t-black rounded-b-sm p-4 space-y-4 mt-[-2px]'>
         <div className='flex flex-col-reverse md:flex-row justify-end md:items-start gap-2'>
           <div>
             <select
@@ -179,15 +180,19 @@ export default function ArchiveList() {
           </div>
         </div>
         {sortedData && (
-          <div>
+          <div className='overflow-y-scroll scrollbar h-[calc(100vh-300px)]'>
             <DisplayTable
               headers={headersMap[type] || []}
               data={convertToTableData(sortedData, type)}
             />
+            <div
+              ref={sentinelRef}
+              className='h-1 w-full bg-transparent'
+              aria-hidden='true'
+            />
           </div>
         )}
         {error && <div>Error: {error.message}</div>}
-        <div ref={sentinelRef} style={{ height: 1, borderWidth: 0 }} />
       </div>
     </div>
   );

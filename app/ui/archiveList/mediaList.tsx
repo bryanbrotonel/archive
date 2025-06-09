@@ -16,9 +16,16 @@ import { sortEntityData } from '@/app/lib/utils';
 interface MediaListProps {
   type: MediaType;
   data: Entity[];
+  total: number;
+  scrollRef?: React.RefObject<HTMLDivElement>;
 }
 
-export default function MediaList({ type, data }: MediaListProps) {
+export default function MediaList({
+  type,
+  data,
+  total,
+  scrollRef,
+}: MediaListProps) {
   const [searchTerm, setSearchTerm] = useState('');
   const [debouncedSearchQuery, setDebouncedSearchQuery] = useState('');
   const [sortBy, setSortBy] = useState<SortOptionsType>('createdAt:desc');
@@ -138,7 +145,7 @@ export default function MediaList({ type, data }: MediaListProps) {
               ))}
             </select>
           </div>
-          <div className='flex items-center space-x-2'>
+          <div className='flex items-center space-x-2 lg:flex-row-reverse gap-2'>
             <button
               onClick={() => handleRefresh(type)}
               className='px-3 py-1 rounded-md bg-indigo-700 hover:bg-indigo-800 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500'
@@ -146,19 +153,23 @@ export default function MediaList({ type, data }: MediaListProps) {
             >
               &#128260;
             </button>
-            <button
+            {/* <button
               onClick={() => seedDatabase(type)}
               className='px-3 py-1 rounded-md bg-indigo-700 hover:bg-indigo-800 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500'
               aria-label='Refresh'
             >
               &#127793;
-            </button>
+            </button> */}
+            <span> {data && ` (${data.length}/${total})`}</span>
           </div>
         </div>
       </div>
 
       {/* Media List Section */}
-      <div className='space-y-4 max-h-80 overflow-auto scrollbar'>
+      <div
+        ref={scrollRef}
+        className='space-y-4 max-h-80 overflow-auto scrollbar'
+      >
         {mediaList.length > 0 ? (
           <div className='rounded-md overflow-hidden'>{mediaList}</div>
         ) : (

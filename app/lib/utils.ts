@@ -64,7 +64,7 @@ export const convertVideoData = (input: VideoInput): ConvertedVideo => {
   return {
     id,
     title,
-    thumbnailUrl: thumbnails.standard.url,
+    thumbnailUrl: thumbnails.medium.url,
     videoUrl: `https://www.youtube.com/watch?v=${id}`,
     channelTitle,
     channelId,

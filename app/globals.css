@@ -49,39 +49,29 @@
     @apply cursor-pointer;
   }
 
-  input, select {
-    @apply focus:outline-black/50
+  input,
+  select {
+    @apply focus:outline-black/50;
   }
+
+  .no-scrollbar {
+    @apply [scrollbar-width:none] [&::-webkit-scrollbar]:hidden;
+  }
+
   .scrollbar::-webkit-scrollbar {
-    width: 10px;
-    height: 10px;
+    @apply w-2.5 h-2.5;
   }
-
   .scrollbar::-webkit-scrollbar-track {
-    border-radius: 10px;
+    @apply rounded-[10px];
   }
-
   .scrollbar::-webkit-scrollbar-thumb {
-    background-color: --alpha(var(--color-black) / 10%);
-    border-radius: 10px;
+    @apply bg-[--alpha(var(--color-black)_/_10%)] rounded-[10px] hover:bg-[color:var(--color-primary-dark)] hover:border-[color:var(--color-secondary)];
     transition: background-color 0.3s ease, border-color 0.3s ease;
   }
-
-  .scrollbar::-webkit-scrollbar-thumb:hover {
-    background-color: var(--color-primary-dark);
-    border-color: var(--color-secondary);
-  }
-
   .dark .scrollbar::-webkit-scrollbar-track {
-    background-color: transparent;
+    @apply bg-transparent;
   }
-
   .dark .scrollbar::-webkit-scrollbar-thumb {
-    background-color: --alpha(var(--color-white) / 20%);
-  }
-
-  .dark .scrollbar::-webkit-scrollbar-thumb:hover {
-    background-color: var(--color-secondary);
-    border-color: var(--color-primary-dark);
+    @apply bg-[--alpha(var(--color-white)_/_20%)] hover:bg-[color:var(--color-secondary)] hover:border-[color:var(--color-primary-dark)];
   }
 }

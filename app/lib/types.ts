@@ -85,7 +85,12 @@ export interface VideoInput {
   title: string;
   description: string;
   thumbnails: {
-    standard: {
+    medium: {
+      url: string;
+      width: number;
+      height: number;
+    };
+    maxres: {
       url: string;
       width: number;
       height: number;

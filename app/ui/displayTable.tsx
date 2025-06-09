@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import { timeAgo } from '../lib/utils';
 import Link from 'next/link';
+import ScrollableText from './scrollableText';
 
 export type DisplayTableProps = {
   headers: Array<{ key: string; label: string }>;
@@ -60,21 +61,49 @@ export default function DisplayTable({ headers, data }: DisplayTableProps) {
                         ].includes(key)
                     )
                     .map(([key, value], index) => (
-                      <span
+                      <div
                         key={key}
-                        className={`truncate select-text ${
+                        className={`relative block max-w-full select-text ${
                           index === 0 ? 'flex-3 font-bold' : 'flex-2'
                         }`}
+                        style={{ overflow: 'hidden' }}
                       >
-                        {value === '' ? '-' : value}
-                      </span>
+                        {/* Dots background (desktop only) */}
+                        {key === 'title' && (
+                          <div
+                            aria-hidden='true'
+                            className='hidden sm:block absolute left-0 right-0 top-1/2 -translate-y-1/2 w-full h-px pointer-events-none bg-[repeating-linear-gradient(to_right,transparent_0_0.1em,#aaa_0em_0.3em)] bg-[length:1.5em_1px] bg-repeat-x z-0 opacity-100'
+                          />
+                        )}
+                        <ScrollableText>
+                          <span className='bg-primary group-hover:bg-primary-dark'>
+                            {value}
+                          </span>
+                        </ScrollableText>
+                      </div>
                     ))}
                 </div>
                 <div className='hidden md:flex items-center justify-end text-xs md:col-span-3'>
                   <span className='truncate'>
                     {timeAgo(new Date(item.createdat).getTime())}
                   </span>
-                  <div className='w-4 h-4 ml-2 rounded-full bg-transparent group-hover:bg-black/20 flex items-center justify-center'></div>
+                  <span className='w-4 h-4 ml-2 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-100'>
+                    <svg
+                      xmlns='http://www.w3.org/2000/svg'
+                      width='16'
+                      height='16'
+                      viewBox='0 0 16 16'
+                      fill='none'
+                      stroke='currentColor'
+                      strokeWidth='1.5'
+                      strokeLinecap='round'
+                      strokeLinejoin='round'
+                      className='text-black/50'
+                    >
+                      <path d='M12 4L4 12' />
+                      <path d='M5.5 4h6.5v6.5' />
+                    </svg>
+                  </span>
                 </div>
               </div>
             </Link>

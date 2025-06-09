@@ -7,7 +7,7 @@ export async function GET(
   { params }: { params: { id: string } },
 ): Promise<NextResponse<VideoInput | { error: unknown }>> {
 
-  const { id } = params
+  const { id } = await params
 
   try {
     const response = await getYouTubeVideo(id)
