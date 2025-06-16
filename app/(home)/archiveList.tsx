@@ -153,8 +153,10 @@ export default function ArchiveList() {
           ))}
         </div>
       </div>
-      <div className='border-2 border-black/20 border-t-black rounded-b-sm p-4 space-y-4 mt-[-2px]'>
-        <div className='flex flex-col-reverse md:flex-row justify-end md:items-start gap-2'>
+      <div className='flex flex-col border-2 border-black/20 border-t-black rounded-b-sm p-4 space-y-4 mt-[-2px] h-[calc(100vh-300px)]'>
+        <div
+          className='flex flex-col-reverse md:flex-row justify-end md:items-start gap-2'
+        >
           <div>
             <select
               value={sortBy}
@@ -180,15 +182,11 @@ export default function ArchiveList() {
           </div>
         </div>
         {sortedData && (
-          <div className='overflow-y-scroll scrollbar h-[calc(100vh-300px)]'>
+          <div className='flex-1 min-h-0'>
             <DisplayTable
               headers={headersMap[type] || []}
               data={convertToTableData(sortedData, type)}
-            />
-            <div
-              ref={sentinelRef}
-              className='h-1 w-full bg-transparent'
-              aria-hidden='true'
+              loadRef={sentinelRef}
             />
           </div>
         )}

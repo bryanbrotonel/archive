@@ -1,6 +1,5 @@
 'use client';
 
-import Link from 'next/link';
 import Image from 'next/image';
 import ArchiveList from './archiveList';
 
@@ -24,7 +23,6 @@ export default function Home() {
             <br />
             Find something new, share it with your friends.
           </p>
-          <Link href='/dashboard'>Go to Dashboard</Link>
         </div>
       </div>
       <ArchiveList />

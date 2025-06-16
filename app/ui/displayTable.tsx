@@ -3,6 +3,8 @@ import { timeAgo } from '../lib/utils';
 import Link from 'next/link';
 import ScrollableText from './scrollableText';
 
+import React from 'react';
+
 export type DisplayTableProps = {
   headers: Array<{ key: string; label: string }>;
   data: Array<{
@@ -12,13 +14,18 @@ export type DisplayTableProps = {
     externalurl: string;
     [key: string]: string;
   }>;
+  loadRef: React.RefObject<HTMLDivElement>;
 };
 
-export default function DisplayTable({ headers, data }: DisplayTableProps) {
+export default function DisplayTable({
+  headers,
+  data,
+  loadRef,
+}: DisplayTableProps) {
   return (
-    <div className='overflow-y-scroll scrollbar'>
+    <div className='h-full flex flex-col'>
       <div className='hidden px-2 gap-3 items-center sm:grid sm:grid-cols-16'>
-        <div className='flex gap-2 col-span-15 md:col-span-12 col-start-2! text-xs text-black/50'>
+        <div className='flex pb-2 gap-2 col-span-15 md:col-span-12 col-start-2! text-xs text-black/50'>
           {headers.map((header: { key: string; label: string }) => (
             <span
               key={header.key}
@@ -31,7 +38,7 @@ export default function DisplayTable({ headers, data }: DisplayTableProps) {
           ))}
         </div>
       </div>
-      <div>
+      <div className='h-full overflow-y-scroll scrollbar'>
         {data.map(
           (item: {
             imageurl: string;
@@ -109,6 +116,11 @@ export default function DisplayTable({ headers, data }: DisplayTableProps) {
             </Link>
           )
         )}
+        <div
+          ref={loadRef}
+          className='h-1 w-full bg-transparent'
+          aria-hidden='true'
+        />
       </div>
     </div>
   );
