@@ -4,6 +4,7 @@ import { MediaType, Entity, SortOptionsType, sortOptions } from '../lib/types';
 import { sortEntityData, swrFetcher, swrMiddleware } from '../lib/utils';
 import DisplayTable from '../ui/displayTable';
 import { convertToTableData } from './api';
+import { useArchiveSearch } from '../lib/useArchiveSearch';
 
 // Define the type for each media type's state
 type MediaTypeState = {
@@ -23,7 +24,7 @@ const INITIAL_MEDIA_STATE: Record<MediaType, MediaTypeState> = {
 const headersMap: Record<MediaType, { key: string; label: string }[]> = {
   [MediaType.Artist]: [
     { key: 'title', label: 'Name' },
-    { key: 'genre', label: 'Genre' },
+    { key: 'genres', label: 'Genre(s)' },
   ],
   [MediaType.Album]: [
     { key: 'title', label: 'Title' },
@@ -35,7 +36,7 @@ const headersMap: Record<MediaType, { key: string; label: string }[]> = {
   ],
   [MediaType.Video]: [
     { key: 'title', label: 'Title' },
-    { key: 'channeltitle', label: 'Channel' },
+    { key: 'channel', label: 'Channel' },
   ],
 };
 
@@ -44,8 +45,6 @@ export default function ArchiveList() {
   const [sortBy, setSortBy] = useState<SortOptionsType>('createdAt:desc');
   const [mediaState, setMediaState] =
     useState<Record<MediaType, MediaTypeState>>(INITIAL_MEDIA_STATE);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [debouncedSearchQuery, setDebouncedSearchQuery] = useState('');
   const [fetchingData, setFetchingData] = useState(true);
 
   const scrollContainerRef = useRef<HTMLDivElement>(null);
@@ -56,11 +55,20 @@ export default function ArchiveList() {
     Error
   >(
     fetchingData
-      ? `/api/database/getItems?type=${type}&page=${mediaState[type].page}&limit=10&order=latest`
+      ? `/api/database/getItems?type=${type}&page=${mediaState[type].page}&limit=10`
       : null,
     swrFetcher,
     { use: [swrMiddleware] }
   );
+
+  const {
+    searchValue,
+    setSearchValue,
+    searchResults,
+    showResults: showSearchResults,
+    loadMore,
+    clearResults: clearSearchResults,
+  } = useArchiveSearch(type);
 
   useEffect(() => {
     if (data) {
@@ -77,33 +85,33 @@ export default function ArchiveList() {
   }, [data, type]);
 
   const handleLoadMore = useCallback(() => {
-    setMediaState((prev) => ({
-      ...prev,
-      [type]: {
-        ...prev[type],
-        page: prev[type].page + 1,
-      },
-    }));
-    setFetchingData(true);
-  }, [type]);
+    if (showSearchResults) {
+      loadMore();
+    } else if (mediaState[type].data.length < mediaState[type].total) {
+      setMediaState((prev) => ({
+        ...prev,
+        [type]: {
+          ...prev[type],
+          page: prev[type].page + 1,
+        },
+      }));
+      setFetchingData(true);
+    }
+  }, [loadMore, mediaState, showSearchResults, type]);
 
   useEffect(() => {
     if (!sentinelRef.current) return;
     const currentSentinel = sentinelRef.current;
     const observer = new IntersectionObserver(
       (entries) => {
-        if (
-          entries[0].isIntersecting &&
-          !isLoading &&
-          !fetchingData &&
-          mediaState[type].data.length < mediaState[type].total
-        ) {
+        const entry = entries[0];
+        if (entry.isIntersecting && !isLoading && !fetchingData) {
           handleLoadMore();
         }
       },
       {
         root: scrollContainerRef.current,
-        rootMargin: '0px 0px -80px 0px',
+        rootMargin: '0px 0px -100px 0px',
       }
     );
     observer.observe(currentSentinel);
@@ -112,25 +120,19 @@ export default function ArchiveList() {
     };
   }, [isLoading, fetchingData, type, mediaState, handleLoadMore]);
 
-  // Debounce search query
-  useEffect(() => {
-    const handler = setTimeout(() => setDebouncedSearchQuery(searchQuery), 500);
-    return () => clearTimeout(handler);
-  }, [searchQuery]);
-
   // Sort and filter data
   const sortedData = useMemo(
     () =>
       sortEntityData(
-        mediaState[type].data || [],
+        (showSearchResults ? searchResults : mediaState[type].data) || [],
         type,
-        sortBy,
-        debouncedSearchQuery
+        sortBy
       ),
-    [mediaState, type, sortBy, debouncedSearchQuery]
+    [showSearchResults, searchResults, mediaState, type, sortBy]
   );
 
   const handleTypeChange = (mediaType: MediaType) => {
+    clearSearchResults();
     setType(mediaType);
     if (mediaState[mediaType].data.length === 0) setFetchingData(true);
   };
@@ -154,9 +156,7 @@ export default function ArchiveList() {
         </div>
       </div>
       <div className='flex flex-col border-2 border-black/20 border-t-black rounded-b-sm p-4 space-y-4 mt-[-2px] h-[calc(100vh-300px)]'>
-        <div
-          className='flex flex-col-reverse md:flex-row justify-end md:items-start gap-2'
-        >
+        <div className='flex flex-col-reverse md:flex-row justify-end md:items-start gap-2'>
           <div>
             <select
               value={sortBy}
@@ -174,10 +174,10 @@ export default function ArchiveList() {
           <div>
             <input
               type='text'
-              value={searchQuery}
+              value={searchValue}
               className='text-sm border border-gray-300 rounded-md p-2 w-full text-black dark:text-white'
               placeholder='Search...'
-              onChange={(e) => setSearchQuery(e.target.value)}
+              onChange={(e) => setSearchValue(e.target.value)}
             />
           </div>
         </div>

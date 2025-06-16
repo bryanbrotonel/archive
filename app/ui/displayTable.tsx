@@ -76,12 +76,16 @@ export default function DisplayTable({
                         style={{ overflow: 'hidden' }}
                       >
                         {/* Dots background (desktop only) */}
-                        {key === 'title' && (
-                          <div
-                            aria-hidden='true'
-                            className='hidden sm:block absolute left-0 right-0 top-1/2 -translate-y-1/2 w-full h-px pointer-events-none bg-[repeating-linear-gradient(to_right,transparent_0_0.1em,#aaa_0em_0.3em)] bg-[length:1.5em_1px] bg-repeat-x z-0 opacity-100'
-                          />
-                        )}
+                        {key === 'title' &&
+                          headers.length > 1 &&
+                          data.length > 0 &&
+                          item[headers[1].key] !== undefined &&
+                          item[headers[1].key] !== '' && (
+                            <div
+                              aria-hidden='true'
+                              className='hidden sm:block absolute left-0 right-0 top-1/2 -translate-y-1/2 w-full h-px pointer-events-none bg-[repeating-linear-gradient(to_right,transparent_0_0.1em,#aaa_0em_0.3em)] bg-[length:1.5em_1px] bg-repeat-x z-0 opacity-100'
+                            />
+                          )}
                         <ScrollableText>
                           <span className='bg-primary group-hover:bg-primary-dark'>
                             {value}
