@@ -4,24 +4,26 @@ import { Artist } from '@spotify/web-api-ts-sdk';
 
 export async function GET(
   request: Request,
-  { params }: { params: { id: string } },
 ): Promise<NextResponse<Artist | { error: unknown }>> {
-
-  const { id } = params
-
   try {
-    const response = await getArtist(id)
+    const url = new URL(request.url);
+    const id = url.pathname.split('/').pop();
 
-    const data = await response.json()
-
-    if (response.status !== 200) {
-      throw data.error
+    if (!id) {
+      return NextResponse.json({ error: 'Missing artist id' }, { status: 400 });
     }
 
-    return NextResponse.json(data)
+    const response = await getArtist(id);
+    const data = await response.json();
+
+    if (response.status !== 200) {
+      throw data.error;
+    }
+
+    return NextResponse.json(data);
 
   } catch (error: unknown) {
-    console.error('~ Fetch album failed:', error);
-    return NextResponse.json({ error: error }, { status: 500 })
+    console.error('~ Fetch artist failed:', error);
+    return NextResponse.json({ error: error }, { status: 500 });
   }
 }

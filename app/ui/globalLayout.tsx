@@ -49,6 +49,14 @@ export default function GlobalLayout({
       lang='en'
       className={`h-full ${robotoMono.className} ${sourceSerif.className}`}
     >
+      <meta name='apple-mobile-web-app-title' content="Bryan's Archive" />
+      <link rel='icon' href='/favicon.ico' sizes='any' />
+      <link
+        rel='apple-touch-icon'
+        href='/apple-icon?<generated>'
+        type='image/<generated>'
+        sizes='<generated>'
+      />
       <body
         className={`min-h-full ${theme} highlight antialiased dark:bg-black dark:text-primary text-black bg-primary`}
       >
