@@ -175,7 +175,7 @@ export default function ArchiveList() {
                 </option>
               ))}
             </select>
-          </div>
+        </div>
           <div>
             <input
               type='text'
@@ -192,6 +192,7 @@ export default function ArchiveList() {
               headers={headersMap[type] || []}
               data={convertToTableData(sortedData, type)}
               loadRef={sentinelRef}
+              isLoading={isLoading}
             />
           </div>
         )}

@@ -32,7 +32,7 @@ export default function Modal(props: ModalProps) {
     <div
       className={`fixed inset-0 z-50 flex items-center justify-center ${
         isOpen ? 'block' : 'hidden'
-      } ${overlayClassName} bg-black/50`}
+      } ${overlayClassName} bg-black-secondary`}
       onClick={onClose}
     >
       <div

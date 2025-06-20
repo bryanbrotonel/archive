@@ -7,7 +7,10 @@
   --color-primary-dark: #efeee7;
   --color-secondary: #efeee7;
   --color-black: #0b0014;
+  --color-black-secondary: #837D83;
   --color-white: #ffffff;
+  --color-highlight: #f1f1d4;
+  --color-highlight-dark: #9874ff;
   --font-mono: 'Roboto Mono', monospace;
   --font-serif: 'Source Serif 4', serif;
 
@@ -51,7 +54,7 @@
 
   input,
   select {
-    @apply focus:outline-black/50;
+    @apply focus:outline-black-secondary;
   }
 
   .no-scrollbar {
@@ -73,5 +76,14 @@
   }
   .dark .scrollbar::-webkit-scrollbar-thumb {
     @apply bg-[--alpha(var(--color-white)_/_20%)] hover:bg-[color:var(--color-secondary)] hover:border-[color:var(--color-primary-dark)];
+  }
+
+  ::selection {
+    background: var(--color-highlight);
+    color: var(--color-black);
+  }
+  .dark ::selection {
+    background: var(--color-highlight-dark);
+    color: var(--color-white);
   }
 }

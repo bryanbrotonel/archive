@@ -20,7 +20,7 @@ export default function SearchItem({
   const subTitleComponent = () => (
     <h2
       className={`font-sans text-sm truncate ${
-        type === MediaType.Artist ? 'text-black/50' : 'text-black'
+        type === MediaType.Artist ? 'text-black-secondary' : 'text-black'
       }`}
     >
       {type === MediaType.Artist ? type : subTitle}

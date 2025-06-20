@@ -69,7 +69,7 @@ export const ArchiveItem = ({
             strokeWidth='1.5'
             strokeLinecap='round'
             strokeLinejoin='round'
-            className='text-black/50'
+            className='text-black-secondary'
           >
             <path d='M12 4L4 12' />
             <path d='M5.5 4h6.5v6.5' />

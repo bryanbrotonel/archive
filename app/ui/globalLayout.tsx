@@ -50,7 +50,7 @@ export default function GlobalLayout({
       className={`h-full ${robotoMono.className} ${sourceSerif.className}`}
     >
       <body
-        className={`min-h-full ${theme} antialiased dark:bg-black dark:text-primary text-black bg-primary`}
+        className={`min-h-full ${theme} highlight antialiased dark:bg-black dark:text-primary text-black bg-primary`}
       >
         <ToastProvider>
           <ModalProvider>
