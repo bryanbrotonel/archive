@@ -86,27 +86,32 @@ export const swrFetcher = async (url: string, options?: RequestInit) => {
 
 export const swrMiddleware: Middleware =
   (useSWRNext: SWRHook) => (key, fetcher, config) => {
-    const snakeToCamel = (obj: any): any => {
+    function snakeToCamel<T>(obj: T): T {
       if (Array.isArray(obj)) {
-        return obj.map(snakeToCamel);
+        return obj.map(snakeToCamel) as unknown as T;
       } else if (obj && typeof obj === 'object') {
-        return Object.entries(obj).reduce((acc, [key, value]) => {
-          const camelKey = key.replace(/_([a-z])/g, (_, char) =>
-            char.toUpperCase()
-          );
-          acc[camelKey] = snakeToCamel(value);
-          return acc;
-        }, {} as Record<string, any>);
+        return Object.entries(obj as Record<string, object>).reduce(
+          (acc, [key, value]) => {
+            const camelKey = key.replace(/_([a-z])/g, (_, char) =>
+              char.toUpperCase()
+            );
+            (acc as Record<string, object>)[camelKey] = snakeToCamel(value);
+            return acc;
+          },
+          {} as Record<string, object>
+        ) as T;
       }
       return obj;
-    };
+    }
 
-    const wrappedFetcher = async (...args: any[]) => {
+    const wrappedFetcher = async <Data = unknown>(
+      ...args: Parameters<NonNullable<typeof fetcher>>
+    ): Promise<Data> => {
       const data = await fetcher?.(...args);
-      return snakeToCamel(data);
+      return snakeToCamel(data) as Data;
     };
 
-    return useSWRNext(key, wrappedFetcher, config);
+    return useSWRNext(key, wrappedFetcher as typeof fetcher, config);
   };
 
 export const timeAgo = (timestamp: number): string => {
