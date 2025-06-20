@@ -1,6 +1,6 @@
 import React from 'react';
 import MediaSearch from '../../ui/mediaSearch';
-import ArchiveList from '../../ui/archiveList';
+import ArchiveList from '../../ui/previewList';
 import Link from 'next/link';
 import { auth, signOut } from '@/auth';
 import { redirect } from 'next/navigation';

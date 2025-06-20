@@ -4,7 +4,7 @@ import { Artist } from '@spotify/web-api-ts-sdk';
 import { convertArtistData, swrFetcher } from '@/app/lib/utils';
 import MediaPreview from './mediaPreview';
 import { onSaveArtist } from './api';
-import { useToast } from '@/app/toast-povider';
+import { useToast } from '@/app/hooks/toast-povider';
 
 export default function ArtistPreview({ id }: { id: string }) {
   const { showToast } = useToast();

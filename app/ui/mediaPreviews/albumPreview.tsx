@@ -4,7 +4,7 @@ import { Album } from '@spotify/web-api-ts-sdk';
 import { convertAlbumData, swrFetcher } from '@/app/lib/utils';
 import MediaPreview from './mediaPreview';
 import { onSaveAlbum } from './api';
-import { useToast } from '@/app/toast-povider';
+import { useToast } from '@/app/hooks/toast-povider';
 
 export default function AlbumPreview(props: { id: string }) {
   const { showToast } = useToast();

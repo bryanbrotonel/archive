@@ -2,8 +2,8 @@ import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { timeAgo } from '@/app/lib/utils';
-import { useModal } from '@/app/modal-provider';
-import { useToast } from '@/app/toast-povider';
+import { useModal } from '@/app/hooks/modal-provider';
+import { useToast } from '@/app/hooks/toast-povider';
 
 export type ArchivePreviewProps = {
   title: string;

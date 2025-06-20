@@ -2,11 +2,11 @@
 
 import React, { useState } from 'react';
 import { MediaType } from '@/app/lib/types';
-import AlbumPreview from './mediaPreviews/albumPreview';
-import ArtistPreview from './mediaPreviews/artistPreview';
-import TrackPreview from './mediaPreviews/trackPreview';
-import VideoPreview from './mediaPreviews/videoPreview';
-import SearchBar from '@/app/ui/SearchBar';
+import AlbumPreview from '../mediaPreviews/albumPreview';
+import ArtistPreview from '../mediaPreviews/artistPreview';
+import TrackPreview from '../mediaPreviews/trackPreview';
+import VideoPreview from '../mediaPreviews/videoPreview';
+import SearchBar from './SearchBar';
 
 export default function MediaSearch() {
   const [mediaPreview, setMediaPreview] = useState<{

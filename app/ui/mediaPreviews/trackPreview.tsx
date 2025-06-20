@@ -1,5 +1,5 @@
 import useSWR from 'swr';
-import { useToast } from '@/app/toast-povider';
+import { useToast } from '@/app/hooks/toast-povider';
 import { MediaType } from '@/app/lib/types';
 import { Track } from '@spotify/web-api-ts-sdk';
 import { convertTrackData, swrFetcher } from '@/app/lib/utils';

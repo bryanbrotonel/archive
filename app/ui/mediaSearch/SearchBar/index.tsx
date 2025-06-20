@@ -1,5 +1,5 @@
 import React from 'react';
-import { useSearch } from './useSearch';
+import { useSearch } from '../../../hooks/useSearch';
 import SearchItem from './searchItem';
 import { MediaType } from '@/app/lib/types';
 

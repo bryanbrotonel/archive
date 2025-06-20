@@ -5,7 +5,7 @@ import React, {
   ReactNode,
   useCallback,
 } from 'react';
-import Toast from './ui/toast';
+import Toast from '../ui/toast';
 
 type Toast = {
   id: number;

@@ -1,17 +1,15 @@
-'use client';
-
+import { useMemo, useState, useEffect, useCallback, useRef } from 'react';
 import useSWR from 'swr';
 import {
-  Entity,
   MediaType,
-  sortOptions,
+  Entity,
   SortOptionsType,
-} from '@/app/lib/types';
-import { sortEntityData, swrFetcher, swrMiddleware } from '@/app/lib/utils';
-import MediaList from './mediaList';
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import { useArchiveSearch } from '@/app/lib/useArchiveSearch';
-import { handleRefresh } from './api';
+  sortOptions,
+} from '../../lib/types';
+import { sortEntityData, swrFetcher, swrMiddleware } from '../../lib/utils';
+import ArchiveTable from './archiveTable';
+import { convertToTableData } from '../../(home)/api';
+import { useArchiveSearch } from '../../lib/useArchiveSearch';
 
 // Define the type for each media type's state
 type MediaTypeState = {
@@ -28,12 +26,34 @@ const INITIAL_MEDIA_STATE: Record<MediaType, MediaTypeState> = {
   [MediaType.Video]: { page: 1, total: 0, data: [] },
 };
 
+const headersMap: Record<MediaType, { key: string; label: string }[]> = {
+  [MediaType.Artist]: [
+    { key: 'title', label: 'Name' },
+    { key: 'genres', label: 'Genre(s)' },
+  ],
+  [MediaType.Album]: [
+    { key: 'title', label: 'Title' },
+    { key: 'artist', label: 'Artist' },
+  ],
+  [MediaType.Track]: [
+    { key: 'title', label: 'Title' },
+    { key: 'artist', label: 'Artist' },
+  ],
+  [MediaType.Video]: [
+    { key: 'title', label: 'Title' },
+    { key: 'channel', label: 'Channel' },
+  ],
+};
+
 export default function ArchiveList() {
   const [type, setType] = useState<MediaType>(MediaType.Track);
   const [sortBy, setSortBy] = useState<SortOptionsType>('createdAt:desc');
   const [mediaState, setMediaState] =
     useState<Record<MediaType, MediaTypeState>>(INITIAL_MEDIA_STATE);
   const [fetchingData, setFetchingData] = useState(true);
+
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const sentinelRef = useRef<HTMLDivElement>(null);
 
   const { data, error, isLoading } = useSWR<
     { data: Entity[]; total: number },
@@ -84,6 +104,27 @@ export default function ArchiveList() {
     }
   }, [loadMore, mediaState, showSearchResults, type]);
 
+  useEffect(() => {
+    if (!sentinelRef.current) return;
+    const currentSentinel = sentinelRef.current;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const entry = entries[0];
+        if (entry.isIntersecting && !isLoading && !fetchingData) {
+          handleLoadMore();
+        }
+      },
+      {
+        root: scrollContainerRef.current,
+        rootMargin: '0px 0px -100px 0px',
+      }
+    );
+    observer.observe(currentSentinel);
+    return () => {
+      if (currentSentinel) observer.unobserve(currentSentinel);
+    };
+  }, [isLoading, fetchingData, type, mediaState, handleLoadMore]);
+
   // Sort and filter data
   const sortedData = useMemo(
     () =>
@@ -102,42 +143,30 @@ export default function ArchiveList() {
   };
 
   return (
-    <div className='space-y-5'>
-      <h2 className='mb-5 text-xl font-mono'>Archive List</h2>
-      <div className='space-y-5'>
-        <div className='flex space-x-2 overflow-x-scroll no-scrollbar'>
+    <div>
+      <div className='overflow-x-auto overflow-y-hidden'>
+        <div className='flex gap-2 translate-y-[2px]'>
           {Object.values(MediaType).map((mediaType) => (
             <button
               key={mediaType}
-              onClick={() => handleTypeChange(mediaType)}
-              className={`px-3 py-1 rounded-md whitespace-nowrap ${
-                type === mediaType ? 'bg-indigo-700' : 'bg-indigo-700/30'
+              className={`px-4 py-1 rounded-md rounded-b-none border-black border-2 ${
+                type === mediaType &&
+                'bg-primary-dark text-black border-b-primary-dark'
               }`}
+              onClick={() => handleTypeChange(mediaType)}
             >
               {mediaType}
             </button>
           ))}
         </div>
       </div>
-      {error && <div>Error: {error.message}</div>}
-      <div className='flex flex-col md:justify-between'>
-        <div className='mb-4'>
-          <input
-            type='text'
-            placeholder='Search...'
-            className='w-full px-3 py-2 rounded-md bg-gray-300/10 text-white focus:outline-none focus:ring-1 focus:ring-gray-400'
-            value={searchValue}
-            onChange={(e) => setSearchValue(e.target.value)}
-            aria-label='Search'
-          />
-        </div>
-        <div className='flex flex-col md:flex-row gap-2 md:items-center md:justify-between'>
-          <div className='flex items-center'>
-            <span className='text-sm text-white/50'>Sort by:</span>
+      <div className='flex flex-col border-2 border-black/20 border-t-black rounded-b-sm p-4 space-y-4 mt-[-2px] h-[calc(100vh-300px)]'>
+        <div className='flex flex-col-reverse md:flex-row justify-end md:items-start gap-2'>
+          <div>
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value as SortOptionsType)}
-              className='px-3 py-1 text-white'
+              className='w-full md:w-auto px-3 py-1.5 border border-gray-300 rounded-md text-gray-500 dark:text-white hover:cursor-pointer'
               aria-label='Sort Options'
             >
               {sortOptions.map((option) => (
@@ -147,41 +176,27 @@ export default function ArchiveList() {
               ))}
             </select>
           </div>
-          <div className='flex items-center space-x-2 lg:flex-row-reverse gap-2'>
-            <button
-              onClick={() => handleRefresh(type)}
-              className='px-3 py-1 rounded-md bg-indigo-700 hover:bg-indigo-800 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500'
-              aria-label='Refresh'
-            >
-              &#128260;
-            </button>
-            <span> {data && ` (${sortedData.length}/${data.total})`}</span>
+          <div>
+            <input
+              type='text'
+              value={searchValue}
+              className='text-sm border border-gray-300 rounded-md p-2 w-full text-black dark:text-white'
+              placeholder='Search...'
+              onChange={(e) => setSearchValue(e.target.value)}
+            />
           </div>
         </div>
+        {sortedData && (
+          <div className='flex-1 min-h-0'>
+            <ArchiveTable
+              headers={headersMap[type] || []}
+              data={convertToTableData(sortedData, type)}
+              loadRef={sentinelRef}
+            />
+          </div>
+        )}
+        {error && <div>Error: {error.message}</div>}
       </div>
-      {sortedData && (
-        <div className='space-y-4'>
-          <MediaList data={sortedData} total={data?.total || 0} type={type} />
-          {mediaState[type].data.length < mediaState[type].total && (
-            <div className='w-full flex items-center justify-center'>
-              <button
-                className='px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700'
-                onClick={() => {
-                  if (!isLoading && !fetchingData) {
-                    handleLoadMore();
-                  }
-                }}
-              >
-                {isLoading ? 'Loading...' : 'Load More'}
-              </button>
-            </div>
-          )}
-          <details>
-            <summary>Show Raw Data</summary>
-            <pre>{JSON.stringify(sortedData, null, 1)}</pre>
-          </details>
-        </div>
-      )}
     </div>
   );
 }

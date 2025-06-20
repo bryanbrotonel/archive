@@ -1,6 +1,6 @@
 import { ConvertedVideo, MediaType } from '@/app/lib/types';
 import { Album, Artist, Track } from '@spotify/web-api-ts-sdk';
-import { handleRefresh } from '../archiveList/api';
+import { handleRefresh } from '../previewList/api';
 
 export const onSaveVideo = async (convertedData: ConvertedVideo) => {
   const {

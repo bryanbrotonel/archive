@@ -4,9 +4,9 @@ import { PropsWithChildren } from 'react';
 import { Roboto_Mono, Source_Serif_4 } from 'next/font/google';
 import Footer from './footer';
 import '../globals.css';
-import { ModalProvider, useModal } from '../modal-provider';
+import { ModalProvider, useModal } from '../hooks/modal-provider';
+import { ToastProvider } from '../hooks/toast-povider';
 import Modal from './modal';
-import { ToastProvider } from '../toast-povider';
 
 const robotoMono = Roboto_Mono({
   subsets: ['latin'],

@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import ArchiveList from './archiveList';
+import ArchiveList from '../ui/archiveList';
 
 export default function Home() {
   return (
