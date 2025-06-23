@@ -3,19 +3,12 @@ import { searchForItem } from '@/app/lib/api/spotify';
 import { SearchResults } from '@spotify/web-api-ts-sdk';
 
 export async function GET(
-  request: Request
+  request: Request,
+  { params }: { params: Promise<{ query: string }> }
 ): Promise<
   NextResponse<SearchResults<['album', 'artist', 'track']> | { error: unknown }>
 > {
-  const { searchParams } = new URL(request.url);
-  const query = searchParams.get('query');
-
-  if (!query) {
-    return NextResponse.json(
-      { error: 'Missing query parameter' },
-      { status: 400 }
-    );
-  }
+  const { query } = await params;
 
   try {
     const response = await searchForItem(query);

@@ -3,17 +3,14 @@ import { getYouTubeVideo } from '@/app/lib/api/youtube';
 import { VideoInput } from '@/app/lib/types';
 
 export async function GET(
-  request: Request
+  request: Request,
+  { params }: { params: Promise<{ id: string }> }
 ): Promise<NextResponse<VideoInput | { error: unknown }>> {
+  const { id } = await params;
+
   try {
-    const url = new URL(request.url);
-    const id = url.searchParams.get('id');
-
-    if (!id) {
-      return NextResponse.json({ error: 'Missing video id' }, { status: 400 });
-    }
-
     const response = await getYouTubeVideo(id);
+
     const data = await response.json();
 
     if (response.status !== 200) {

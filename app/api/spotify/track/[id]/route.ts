@@ -3,17 +3,14 @@ import { getTrack } from '@/app/lib/api/spotify';
 import { Track } from '@spotify/web-api-ts-sdk';
 
 export async function GET(
-  request: Request
+  request: Request,
+  { params }: { params: Promise<{ id: string }> }
 ): Promise<NextResponse<Track | { error: unknown }>> {
-  const url = new URL(request.url);
-  const id = url.searchParams.get('id');
-
-  if (!id) {
-    return NextResponse.json({ error: 'Missing track id' }, { status: 400 });
-  }
+  const { id } = await params;
 
   try {
     const response = await getTrack(id);
+
     const data = await response.json();
 
     if (response.status !== 200) {
