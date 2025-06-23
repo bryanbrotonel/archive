@@ -56,11 +56,17 @@ export default function ArchiveTable({
                 </Link>
               )
             )}
-        <div
-          ref={loadRef}
-          className='h-1 w-full bg-transparent'
-          aria-hidden='true'
-        />
+        <div ref={loadRef} className='h-1 w-full' aria-hidden='true'>
+          {isLoading && (
+            <div className='flex justify-center items-center py-2'>
+              <div className='flex flex-row gap-2'>
+                <div className='w-1 h-1 rounded-full bg-black-secondary animate-bounce'></div>
+                <div className='w-1 h-1 rounded-full bg-black-secondary animate-bounce [animation-delay:-.3s]'></div>
+                <div className='w-1 h-1 rounded-full bg-black-secondary animate-bounce [animation-delay:-.5s]'></div>
+              </div>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

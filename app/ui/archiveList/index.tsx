@@ -155,12 +155,12 @@ export default function ArchiveList() {
               }`}
               onClick={() => handleTypeChange(mediaType)}
             >
-              {mediaType}
+              {mediaType}s
             </button>
           ))}
         </div>
       </div>
-      <div className='flex flex-col border-2 border-black/20 border-t-black rounded-b-sm p-4 space-y-4 mt-[-2px] h-[calc(100vh-300px)]'>
+      <div className='flex flex-col border-2 border-black/20 border-t-black rounded-b-sm p-4 space-y-4 mt-[-2px] h-[calc(100vh-100px)]'>
         <div className='flex flex-col-reverse md:flex-row justify-end md:items-start gap-2'>
           <div>
             <select

@@ -4,6 +4,7 @@ const YOUTUBE_VIDEO_ENDPOINT = (id: string) => `https://www.googleapis.com/youtu
 const YOUTUBE_URL_REGEX = /^((?:https?:)?\/\/)?((?:www|m)\.)?((?:youtube(?:-nocookie)?\.com|youtu.be))(\/(?:[\w\-]+\?v=|embed\/|live\/|v\/)?)([\w\-]+)(\S+)?$/;
 
 export const getYouTubeVideo = async (videoId: string): Promise<Response> => {
+  console.log('🚀 ~ getYouTubeVideo ~ videoId:', videoId)
   return fetch(YOUTUBE_VIDEO_ENDPOINT(videoId), {
     method: "GET",
     cache: 'no-store',

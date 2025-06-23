@@ -11,14 +11,14 @@ export default function Home() {
           <Image
             src='/images/logo.svg'
             alt="Bryan's Archive Logo"
-            width={100}
-            height={100}
+            width={65}
+            height={65}
             priority
           />
         </div>
-        <h1 className='text-3xl font-bold'>Bryan&apos;s Archive</h1>
+        <h1 className='text-2xl font-bold'>Bryan&apos;s Archive</h1>
         <div className='space-y-2'>
-          <p className='text-center text-gray-500 dark:text-gray-400'>
+          <p className='text-center text-gray-500 dark:text-gray-400 text-xs'>
             My space for stuff I like, music related for now.
             <br />
             Find something new, share it with your friends.
