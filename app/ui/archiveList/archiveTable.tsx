@@ -25,8 +25,8 @@ export default function ArchiveTable({
 }: ArchiveTableProps) {
   return (
     <div className='h-full flex flex-col'>
-      <div className='hidden px-2 gap-3 items-center sm:grid sm:grid-cols-16'>
-        <div className='flex pb-2 gap-2 col-span-15 md:col-span-12 col-start-2! text-xs text-black-secondary'>
+      <div className='sticky top-27 py-3 z-10 bg-primary hidden gap-3 items-center sm:grid sm:grid-cols-16'>
+        <div className='flex gap-2 col-span-15 md:col-span-12 col-start-2! text-xs text-black-secondary'>
           {headers.map((header: { key: string; label: string }) => (
             <span
               key={header.key}
@@ -39,7 +39,7 @@ export default function ArchiveTable({
           ))}
         </div>
       </div>
-      <div className='h-full overflow-y-scroll scrollbar'>
+      <div className='h-full'>
         {isLoading && data.length === 0
           ? // Fill the visible area with skeletons
             Array.from({ length: 7 }).map((_, idx) => (

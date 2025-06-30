@@ -144,48 +144,49 @@ export default function ArchiveList() {
 
   return (
     <div>
-      <div className='overflow-x-auto overflow-y-hidden'>
-        <div className='flex gap-2 translate-y-[2px]'>
-          {Object.values(MediaType).map((mediaType) => (
-            <button
-              key={mediaType}
-              className={`px-4 py-1 rounded-md rounded-b-none border-black border-2 ${
-                type === mediaType &&
-                'bg-primary-dark text-black border-b-primary-dark'
-              }`}
-              onClick={() => handleTypeChange(mediaType)}
-            >
-              {mediaType}s
-            </button>
-          ))}
-        </div>
-      </div>
-      <div className='flex flex-col border-2 border-black/20 border-t-black rounded-b-sm p-4 space-y-4 mt-[-2px] h-[calc(100vh-100px)]'>
-        <div className='flex flex-col-reverse md:flex-row justify-end md:items-start gap-2'>
-          <div>
-            <select
-              value={sortBy}
-              onChange={(e) => setSortBy(e.target.value as SortOptionsType)}
-              className='w-full md:w-auto px-3 py-1.5 border border-gray-300 rounded-md text-gray-500 dark:text-white hover:cursor-pointer'
-              aria-label='Sort Options'
-            >
-              {sortOptions.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
-            </select>
-        </div>
-          <div>
-            <input
-              type='text'
-              value={searchValue}
-              className='text-sm border border-gray-300 rounded-md p-2 w-full text-black dark:text-white'
-              placeholder='Search...'
-              onChange={(e) => setSearchValue(e.target.value)}
-            />
+      <div className='sticky top-0 z-20 bg-primary overflow-x-auto'>
+        <div className='relative mt-3'>
+          <div className='absolute left-0 bottom-0 z-0 h-[2px] w-full bg-black' />
+          <div className='relative z-10 flex gap-2'>
+            {Object.values(MediaType).map((mediaType) => (
+              <button
+                key={mediaType}
+                className={`rounded-md rounded-b-none border-2 border-black px-4 py-1 ${
+                  type === mediaType &&
+                  'bg-primary-dark text-black border-b-primary-dark'
+                }`}
+                onClick={() => handleTypeChange(mediaType)}
+              >
+                {mediaType}s
+              </button>
+            ))}
           </div>
         </div>
+      </div>
+      <div className='sticky top-12 z-10 bg-primary border-x-2 border-black/20 p-3'>
+        <div className='flex flex-col items-center justify-between gap-2 md:flex-row'>
+          <input
+            type='text'
+            value={searchValue}
+            className='w-full rounded-md border border-gray-300 p-2 text-sm text-black dark:text-white'
+            placeholder='Search...'
+            onChange={(e) => setSearchValue(e.target.value)}
+          />
+          <select
+            value={sortBy}
+            onChange={(e) => setSortBy(e.target.value as SortOptionsType)}
+            className='w-full rounded-md border border-gray-300 px-3 py-1.5 text-gray-500 hover:cursor-pointer dark:text-white md:w-auto'
+            aria-label='Sort Options'
+          >
+            {sortOptions.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </select>
+        </div>
+      </div>
+      <div className='flex flex-col space-y-4 rounded-b-sm border-2 border-t-0 border-black/20 p-4'>
         {sortedData && (
           <div className='flex-1 min-h-0'>
             <ArchiveTable
